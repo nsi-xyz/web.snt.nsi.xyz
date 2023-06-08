@@ -1,2 +1,2 @@
 # web.snt.nsi.xyz
-énigmes à résoudre pour découvrir le web
+Énigmes à résoudre pour faire découvrir le web aux élèves de SNT
