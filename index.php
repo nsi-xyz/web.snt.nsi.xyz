@@ -22,15 +22,14 @@
       <div class="pure-menu">
         <a class="pure-menu-heading" href="#company">10 Énigmes à résoudre</a>
         <ul class="pure-menu-list">
-          <li class="pure-menu-item"><a href="#home" class="pure-menu-link"><span class="material-symbols-outlined">lock</span> Énigme web 01</a></li>
-          <li class="pure-menu-item"><a href="#home" class="pure-menu-link"><span class="material-symbols-outlined">lock</span> Énigme web 02</a></li>                
-          <li class="pure-menu-item"><a href="#home" class="pure-menu-link"><span class="material-symbols-outlined">lock</span> Énigme web 03</a></li>
-          <li class="pure-menu-item"><a href="#home" class="pure-menu-link"><span class="material-symbols-outlined">lock</span> Énigme web 04</a></li>
-          <li class="pure-menu-item"><a href="#home" class="pure-menu-link"><span class="material-symbols-outlined">lock</span> Énigme web 05</a></li>                
-          <li class="pure-menu-item"><a href="#home" class="pure-menu-link"><span class="material-symbols-outlined">lock</span> Énigme web 06</a></li>
-          <li class="pure-menu-item"><a href="#home" class="pure-menu-link"><span class="material-symbols-outlined">lock</span> Énigme web 07</a></li>
-          <li class="pure-menu-item"><a href="#home" class="pure-menu-link"><span class="material-symbols-outlined">lock</span> Énigme web 08</a></li>                
-          <li class="pure-menu-item"><a href="#home" class="pure-menu-link"><span class="material-symbols-outlined">lock</span> Énigme web 09</a></li>
+          <li class="pure-menu-item"><a href="./puzzles/puzzle-1.php" class="pure-menu-link"><span class="material-symbols-outlined"></span> Énigme web 01</a></li>
+          <?php
+          for ($i = 2; $i < 10; $i++) {
+            $path = $_SESSION["puzzle-".$i-1] == TRUE ? "./puzzles/puzzle-".$i.".php" : "#";
+            $locker = $_SESSION["puzzle-1"] == TRUE ? "" : "lock";
+            echo '<li class="pure-menu-item"><a href="' .$path. '" class="pure-menu-link"><span class="material-symbols-outlined">'.$locker.'</span> Énigme web 0'.$i.'</a></li>';
+          }
+          ?>
           <li class="pure-menu-item"><a href="#home" class="pure-menu-link"><span class="material-symbols-outlined">help</span> Aide & Boite à outils</a></li>
         </ul>
       </div>
