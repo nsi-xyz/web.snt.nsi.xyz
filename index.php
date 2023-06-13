@@ -25,9 +25,8 @@
           <li class="pure-menu-item"><a href="./puzzles/puzzle-1.php" class="pure-menu-link"><span class="material-symbols-outlined"></span> Énigme web 01</a></li>
           <?php
           for ($i = 2; $i < 10; $i++) {
-            $path = $_SESSION["puzzle-".$i-1] == TRUE ? "./puzzles/puzzle-".$i.".php" : "#";
             $locker = $_SESSION["puzzle-1"] == TRUE ? "" : "lock";
-            echo '<li class="pure-menu-item"><a href="' .$path. '" class="pure-menu-link"><span class="material-symbols-outlined">'.$locker.'</span> Énigme web 0'.$i.'</a></li>';
+            echo '<li class="pure-menu-item"><a href="./puzzles/puzzle-'.$i.'.php" class="pure-menu-link"><span class="material-symbols-outlined">'.$locker.'</span> Énigme web 0'.$i.'</a></li>';
           }
           ?>
           <li class="pure-menu-item"><a href="#home" class="pure-menu-link"><span class="material-symbols-outlined">help</span> Aide & Boite à outils</a></li>
