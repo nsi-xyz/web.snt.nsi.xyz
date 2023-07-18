@@ -25,6 +25,10 @@ if (!isset($_SESSION["magic_word_1"])) {
         <div class="header">
             <h1>web.snt.nsi.xyz</h1> <!--Titre de niveau 1-->
             <h2>10 enigmes à résoudre pour découvrir le web<br>Énigme 1</h2> <!--Titre de niveau 2-->
+            <?php
+            if (in_array(filter_var(basename($_SERVER['PHP_SELF']), FILTER_SANITIZE_NUMBER_INT), $_SESSION["resolvedPuzzles"])) {
+                echo '<b>/!\ Cette énigme a déjà été résolue /!\\</b>';
+            }?>
     </div>
     <div class="content">
         <?php echo '<h2 class="content-subhead">Le mot mystère</h2> <!--Mot mystère: '.$_SESSION["magic_word_1"].' -->'; ?>
@@ -38,7 +42,7 @@ if (!isset($_SESSION["magic_word_1"])) {
                     include("../include/tickpuzzle.php");
                     include("../include/nav.php");
                 } else {
-                    echo "<p>Réponse incorrecte.</p>";
+                    echo '<script>window.location.replace(window.location.href);</script>';
                 }
     }?>
             <input type="text" name="response" id="response" required>
