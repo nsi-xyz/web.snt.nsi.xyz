@@ -30,6 +30,23 @@ include("./include/checksession.php");
       <div class="header">
         <h1>web.snt.nsi.xyz</h1>
         <h2>10 enigmes à résoudre pour découvrir le web</h2>
+        <?php if (isset($_SESSION["resolvedPuzzles"])) {
+          echo "<p>DEBUG</p>";
+          echo "<pre>";
+          print_r($_SESSION["resolvedPuzzles"]);
+          echo "</pre>";
+        } else {
+          echo 'none';
+        }
+        if (isset($_POST['reset_session'])) {
+          session_unset();
+          echo 'Session successfully reset. Refresh.';
+      }
+        ?>
+        <form method="POST" action="">
+          <input type="hidden" name="reset_session" value="true">
+          <input type="submit" value="[DEBUG] Reset session">
+    </form>
       </div>
 
       <div class="content">
