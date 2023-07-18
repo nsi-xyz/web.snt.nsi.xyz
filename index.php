@@ -1,3 +1,8 @@
+<?php
+session_start();
+
+include("./include/checksession.php");
+?>
 <!doctype html>
 <html lang="fr">
 <head>
@@ -18,21 +23,7 @@
       <span></span>
     </a>
 
-    <div id="menu">
-      <div class="pure-menu">
-        <a class="pure-menu-heading" href="#company">10 Énigmes à résoudre</a>
-        <ul class="pure-menu-list">
-          <li class="pure-menu-item"><a href="./puzzles/puzzle-1.php" class="pure-menu-link"><span class="material-symbols-outlined"></span> Énigme web 01</a></li>
-          <?php
-          for ($i = 2; $i < 10; $i++) {
-            $locker = $_SESSION["puzzle-1"] == TRUE ? "" : "lock";
-            echo '<li class="pure-menu-item"><a href="./puzzles/puzzle-'.$i.'.php" class="pure-menu-link"><span class="material-symbols-outlined">'.$locker.'</span> Énigme web 0'.$i.'</a></li>';
-          }
-          ?>
-          <li class="pure-menu-item"><a href="#home" class="pure-menu-link"><span class="material-symbols-outlined">help</span> Aide & Boite à outils</a></li>
-        </ul>
-      </div>
-    </div>
+    <?php include("./include/nav.php"); ?>
 
     <div id="main">
 
