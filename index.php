@@ -1,8 +1,6 @@
 <?php
 session_start();
-
-include("./include/checksession.php");
-?>
+include("./include/checksession.php");?>
 <!doctype html>
 <html lang="fr">
 <head>

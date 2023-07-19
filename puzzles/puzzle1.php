@@ -1,14 +1,12 @@
 <?php
 session_start();
-
 include("../include/checksession.php");
+include("../include/functions.php");
 
 $words = array("Schwob", "Vivien", "Gracq", "Follain", "Michaux", "Perec", "Giono", "Green", "Ernaux", "Sarraute", "Michon", "Godeau", "Ramuz", "Réda", "Noël", "Ollier", "Thomas", "Calaferte", "Nourissier", "Bergounioux", "Galois", "Ramanujan", "Noether", "Kovalevskaya", "Cartan", "Jacobi", "Weierstrass", "Riemann", "Serre", "Poincaré", "Pontryagin", "Chandra", "Lyapunov", "Minkowski", "Deligne", "Ahlfors", "Perelman", "Perelman", "Chern", "Vergne");
 if (!isset($_SESSION["magic_word_1"])) {
     $_SESSION["magic_word_1"] = $words[array_rand($words)];
-}
-
-?>
+}?>
 <!DOCTYPE html>
 <html lang="fr">
 <head>
@@ -24,9 +22,9 @@ if (!isset($_SESSION["magic_word_1"])) {
     <div id="main">
         <div class="header">
             <h1>web.snt.nsi.xyz</h1> <!--Titre de niveau 1-->
-            <h2>10 enigmes à résoudre pour découvrir le web<br>Énigme 1</h2> <!--Titre de niveau 2-->
+            <h2>10 enigmes à résoudre pour découvrir le web<br>Énigme <?php echo getCurrentPuzzleID();?></h2> <!--Titre de niveau 2-->
             <?php
-            if (in_array(filter_var(basename($_SERVER['PHP_SELF']), FILTER_SANITIZE_NUMBER_INT), $_SESSION["resolvedPuzzles"])) {
+            if (puzzleIsResolved(getCurrentPuzzleID())) {
                 echo '<b>/!\ Cette énigme a déjà été résolue /!\\</b>';
             }?>
     </div>
