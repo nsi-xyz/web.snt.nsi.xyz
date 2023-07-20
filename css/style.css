@@ -79,6 +79,8 @@ The content `<div>` is where all your content goes.
      text-align: center;
      padding: 1em 2em 0;
      border-top: 1px solid #eee;
+     display: flex;
+     flex-direction: column;
  }
 
 /*
@@ -261,4 +263,8 @@ Hides the menu at `48em`, but modify this based on your app's needs.
 
 .material-symbols-outlined {
     font-size: 18px;
+}
+
+.footer-content {
+    margin: 0.2%;
 }

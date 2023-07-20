@@ -1,7 +1,10 @@
 <?php
 session_start();
 include("../include/checksession.php");
-include("../include/functions.php");?>
+include("../include/functions.php");
+$cookie_name = "misc";
+$cookie_value = "0";
+?>
 <!DOCTYPE html>
 <html lang="fr">
 <head>
@@ -16,18 +19,17 @@ include("../include/functions.php");?>
     <?php
     include("../include/nav.php");
     if (!puzzleIsResolved(getCurrentPuzzleID())) {
-        setcookie("resolved", "false", time() + 2520);
-    }
-    ?>
+        setcookie($cookie_name, $cookie_value, time() + 2520);
+    }?>
     <div id="main">
         <div class="header">
-            <h1>web.snt.nsi.xyz</h1> <!--Titre de niveau 1-->
-            <h2>10 enigmes à résoudre pour découvrir le web<br>Énigme <?php echo getCurrentPuzzleID();?></h2> <!--Titre de niveau 2-->
+            <h1>web.snt.nsi.xyz</h1>
+            <h2>10 enigmes à résoudre pour découvrir le web<br>Énigme <?php echo getCurrentPuzzleID();?></h2>
             <?php
             if (puzzleIsResolved(getCurrentPuzzleID())) {
                 echo '<b>/!\ Cette énigme a déjà été résolue /!\\</b>';
             }
-            if (isset($_COOKIE["resolved"]) && $_COOKIE["resolved"] == "true") {
+            if (!isset($_COOKIE[$cookie_name])) {
                 include("../include/tickpuzzle.php");
                 include("../include/nav.php");
                 echo '<script>window.location.replace(window.location.href);</script>';
