@@ -10,7 +10,7 @@ include("./include/functions.php");
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="description" content="Le web, également connu sous le nom de World Wide Web (WWW), est un système d'information en ligne qui permet de consulter et de partager des documents et des ressources sur Internet. Sa découverte est au programme de SNT, en classe de seconde en France.">
   <title>Accueil • web.snt.nsi.xyz</title>
-  <link rel="stylesheet" href="css/pure-read.css">
+  <link rel="stylesheet" href="css/pure-min.css">
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20,400,0,0">
   <link rel="stylesheet" href="css/style.css">
 </head>
@@ -81,17 +81,8 @@ include("./include/functions.php");
         </div>
       </div>
     </div>
-    <div class="footer">
-      <p class="footer-content">Une idée originale de Vincent ROBERT, enseignant de spécialité NSI au Lycée Louis Pasteur d'Avignon.</p>
-      <p class="footer-content">Développé avec Ilyas RAHMOUN<!--, Thomas SANCHEZ, et Robin CERISIER-->.</p>
-      <div class="pure-menu-horizontal">
-        <ul>
-          <li class="pure-menu-item"><a href="https://nsi.xyz" class="pure-menu-link" target="_blank">nsi.xyz</a></li>
-          <li class="pure-menu-item"><a href="https://purecss.io" class="pure-menu-link" target="_blank">Pure CSS</a></li>
-        </ul>
-      </div>
-    </div>
+    <?php include("./include/footer.php"); ?>
   </div>
-  <script src="/js/ui.js"></script>
+  <script src="./js/ui.js"></script>
 </body>
 </html>

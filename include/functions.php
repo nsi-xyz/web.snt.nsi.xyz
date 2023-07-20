@@ -48,6 +48,7 @@ function tickPuzzle($puzzleID = NULL) {
     }
     if (!puzzleIsResolved($puzzleID)) {
         $_SESSION["resolvedPuzzles"][] = $puzzleID;
+        include("../include/nav.php");
     }
 }
 ?>

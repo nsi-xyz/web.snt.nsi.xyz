@@ -15,39 +15,39 @@ if (!isset($_SESSION["magic_word_1"])) {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title><?php echo setPageTitle();?></title>
     <link rel="stylesheet" href="../css/pure-min.css">
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20,400,0,0" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20,400,0,0">
     <link rel="stylesheet" href="../css/style.css">
 </head>
 <body>
-    <?php include("../include/nav.php"); ?>
-    <div id="main">
-        <div class="header">
-            <h1>web.snt.nsi.xyz</h1>
-            <h2>10 enigmes à résoudre pour découvrir le web<br>Énigme <?php echo getCurrentPuzzleID();?></h2>
-            <?php
-            if (puzzleIsResolved()) {
-                echo '<b>/!\ Cette énigme a déjà été résolue /!\\</b>';
-            }?>
+    <div id="layout">
+        <?php include("../include/nav.php"); ?>
+        <div id="main">
+            <div class="header">
+                <h1>web.snt.nsi.xyz</h1>
+                <h2>10 enigmes à résoudre pour découvrir le web<br>Énigme <?php echo getCurrentPuzzleID(); ?></h2>
+            </div>
+            <div class="content">
+                <?php echo '<h2 class="content-subhead">Le mot mystère</h2> <!--Mot mystère: '.$_SESSION["magic_word_1"].' -->'; ?>
+                <form method="POST" action="">
+                    <label for="response">Entrez le mot mystère :</label>
+                    <?php
+                    if (isset($_POST['submit'])) {
+                        $response = $_POST['response'];
+                        if ($response == $_SESSION["magic_word_1"]) {
+                            echo "<p>Réponse correcte. L'énigme est validé !</p>";
+                            tickPuzzle();
+                        } else {
+                            echo '<script>window.location.replace(window.location.href);</script>';
+                        }
+                    }
+                    ?>
+                    <input type="text" name="response" id="response" required>
+                    <input type="submit" name="submit" value="Valider">
+                </form>
+            </div>
+            <script src="../js/ui.js"></script>
+        </div>
+        <?php include("../include/footer.php"); ?>
     </div>
-    <div class="content">
-        <?php echo '<h2 class="content-subhead">Le mot mystère</h2> <!--Mot mystère: '.$_SESSION["magic_word_1"].' -->'; ?>
-        <form method="POST" action="">
-            <label for="response">Entrez le mot mystère :</label>
-            <?php
-            if (isset($_POST['submit'])) {
-                $response = $_POST['response'];
-                if ($response == $_SESSION["magic_word_1"]) {
-                    echo "<p>Réponse correcte. L'énigme est validé !</p>";
-                    tickPuzzle();
-                    include("../include/nav.php");
-                } else {
-                    echo '<script>window.location.replace(window.location.href);</script>';
-                }
-    }?>
-            <input type="text" name="response" id="response" required>
-            <input type="submit" name="submit" value="Valider">
-        </form>
-    </div>
-    <script src="../js/ui.js"></script>
 </body>
 </html>
