@@ -28,21 +28,19 @@ if (!isset($_SESSION["magic_word_1"])) {
             </div>
             <div class="content">
                 <?php echo '<h2 class="content-subhead">Le mot mystère</h2> <!--Mot mystère: '.$_SESSION["magic_word_1"].' -->'; ?>
-                <form method="POST" action="">
+                <form method="GET" action="">
                     <label for="response">Entrez le mot mystère :</label>
                     <?php
-                    if (isset($_POST['submit'])) {
-                        $response = $_POST['response'];
+                    if (isset($_GET['response'])) {
+                        $response = $_GET['response'];
                         if ($response == $_SESSION["magic_word_1"]) {
                             echo "<p>Réponse correcte. L'énigme est validé !</p>";
                             tickPuzzle();
-                        } else {
-                            echo '<script>window.location.replace(window.location.href);</script>';
                         }
                     }
                     ?>
-                    <input type="text" name="response" id="response" required>
-                    <input type="submit" name="submit" value="Valider">
+                    <input type="text" name="response" required>
+                    <input type="submit" value="Valider">
                 </form>
             </div>
             <script src="../js/ui.js"></script>
