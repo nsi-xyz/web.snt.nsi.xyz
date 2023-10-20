@@ -72,6 +72,19 @@ The content `<div>` is where all your content goes.
     color: #161616;
 }
 
+.msgbox-ok {
+    margin: 50px 0 20px 0;
+    font-weight: 700;
+    text-align: center;
+    color: #7cb342;
+}
+
+.msgbox-ko {
+    margin: 50px 0 20px 0;
+    font-weight: 700;
+    text-align: center;
+    color: #ff9800;
+}
 
 .footer {
     background-color: #eeeeee;

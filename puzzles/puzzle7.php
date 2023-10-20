@@ -28,7 +28,6 @@ $cookie_value = "SW5ncsOpZGllbnRzIDoNCjIwMCBnIGRlIGNob2NvbGF0IG5vaXIgKG91IHDDqXB
                 <?php
                 if (!isset($_COOKIE[$cookie_name])) {
                     tickPuzzle();
-                    echo '<script>window.location.replace(window.location.href);</script>';
                 }
                 ?>
             </div>

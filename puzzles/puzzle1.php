@@ -28,6 +28,7 @@ if (!isset($_SESSION["magic_word_1"])) {
                 <h2>10 enigmes à résoudre pour découvrir le web<br>Énigme <?php echo getCurrentPuzzleID(); ?></h2>
             </div>
             <div class="content">
+                <h2 class="msgbox-<?php echo puzzleIsResolved() ? "ok" : "ko" ?>"><?php echo puzzleIsResolved() ? "OK" : "KO" ?></h2>
                 <h2 class="content-subhead">Le mot mystère</h2>
                 <p class="p-content">Sur cette page, a été cachée un mot mystère. Pour résoudre cette énigme, il faut trouver le mot mystère. Ce mot mystère n'est ni "mot" ni "mystère". La légende raconte que sur une page d'un site web, on peut cacher du texte dans le code de la page HTML.</p>
                 <h2 class="content-subhead">Le web</h2>
