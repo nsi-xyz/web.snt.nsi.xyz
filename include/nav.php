@@ -14,6 +14,9 @@ for ($i = 1; $i < 10; $i++) {
     echo '            <li class="'.$class.'"><a href=".'.$p_i.'/puzzles/puzzle'.$i.'.php" class="pure-menu-link">'.$emoji.' Énigme web 0'.$i.'</a></li>
 ';
 };
+$d = $i != 10 ? "0" : "";
+echo '            <li class="pure-menu-item"><a href="" class="pure-menu-link-hidden">&#x26AB; Énigme web 10</a></li>
+';
 $class = $p == "help.php" ? "pure-menu-item menu-item-divided pure-menu-selected-help" : "pure-menu-item-help";
 echo '            <li class="'.$class.'"><a href="'.$p_h.'/help.php" class="pure-menu-link">&#x1F537; Aide & Boite à outils</a></li>
           </ul>
