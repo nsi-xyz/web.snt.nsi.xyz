@@ -96,7 +96,7 @@ appears on the left side of the page.
     left: 0;
     bottom: 0;
     z-index: 1000; /* so the menu or its navicon stays above all content */
-    background: #191818;
+    background: #141414;
     overflow-y: auto;
     font-size: 18px;
 }
@@ -104,7 +104,7 @@ appears on the left side of the page.
     All anchors inside the menu should be styled like this.
     */
     #menu a {
-        color: #999;
+        color: #fff;
         border: none;
         padding: 0.6em 0 0.6em 0.6em;
     }
@@ -119,25 +119,36 @@ appears on the left side of the page.
     }
 
     /*
-    Add that light border to separate items into groups.
+    Change color of the anchor links on hover/focus.
     */
-    #menu .pure-menu ul,
-    #menu .pure-menu .menu-item-divided {
-        border-top: 1px solid #333;
+    #menu .pure-menu-item-unresolved a:hover,
+    #menu .pure-menu-item-unresolved a:focus {
+        color: #ff9800;
     }
-        /*
-        Change color of the anchor links on hover/focus.
-        */
-        #menu .pure-menu li a:hover,
-        #menu .pure-menu li a:focus {
-            background: #ffb3312a;
-        }
+
+    #menu .pure-menu-item-resolved a:hover,
+    #menu .pure-menu-item-resolved a:focus {
+        color: #7cb342;
+    }
+
+    #menu .pure-menu-item-help a:hover,
+    #menu .pure-menu-item-help a:focus {
+        color: #1976d2;
+    }
 
     /*
     This styles the selected menu item `<li>`.
     */
-    #menu .pure-menu-selected {
-        background: #ffb531;
+    #menu .pure-menu-selected-unresolved {
+        background: #ff9800;
+    }
+
+    #menu .pure-menu-selected-resolved {
+        background: #7cb342;
+    }
+
+    #menu .pure-menu-selected-help {
+        background: #1976d2;
     }
 
     #menu .pure-menu-heading {
@@ -267,4 +278,16 @@ Hides the menu at `48em`, but modify this based on your app's needs.
 
 .footer-content {
     margin: 0.2%;
+}
+
+.link {
+    position: relative;
+    transition: 150ms;
+    text-decoration: none;
+    font-weight: bold;
+    color: #EC4E20;
+}
+
+.p-content {
+    text-align: justify;
 }

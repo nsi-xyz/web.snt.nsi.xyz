@@ -22,7 +22,53 @@ include("./include/functions.php");
         <h1>web.snt.nsi.xyz</h1>
         <h2>10 enigmes à résoudre pour découvrir le web</h2>
       </div>
-      <div class="content"></div>
+      <div class="content">
+        <h2 id="Comment afficher le code source html d'une page web" class="content-subhead">Comment afficher le code source html d'une page web</h2>
+        <p class="p-content"><strong>L'une des méthodes les plus simples</strong> pour afficher le code source d'une page web est d'utiliser le raccourci clavier "Ctrl + U" (ou "Cmd + U" sur Mac) dans de nombreux navigateurs. Ce raccourci ouvre une nouvelle fenêtre ou un nouvel onglet contenant le code source HTML de la page web.</p>
+        <p class="p-content"><strong>Une autre méthode est de faire</strong> : "Clic droit > Inspecter"<br>Cette option est disponible dans la plupart des navigateurs, y compris Google Chrome, Mozilla Firefox, et Microsoft Edge.</p>
+        <ol>
+            <li>Allez sur la page web dont vous souhaitez afficher le code source.</li>
+            <li>Cliquez avec le bouton droit de la souris sur n'importe quelle partie de la page (sauf sur des liens ou des images) pour faire apparaître un menu contextuel.</li>
+            <li>Sélectionnez "Inspecter" ou "Inspecter l'élément" dans le menu.</li>
+        </ol>
+        <p class="p-content">Cette action ouvrira les outils de développement du navigateur, et vous verrez le code source HTML de la page dans l'onglet correspondant.</p>
+        <h2 id="Comment afficher le code source CSS d'une page web" class="content-subhead">Comment afficher le code source CSS d'une page web</h2>
+        <p class="p-content"><strong>L'une des méthodes les plus simples</strong> pour afficher le code source d'une page web est d'utiliser le raccourci clavier "Ctrl + U" (ou "Cmd + U" sur Mac) dans de nombreux navigateurs. Ce raccourci ouvre une nouvelle fenêtre ou un nouvel onglet contenant le code source HTML de la page web.</p>
+        <p class="p-content"><strong>Une autre méthode est de faire</strong> : "Clic droit > Inspecter"<br>Cette option est disponible dans la plupart des navigateurs, y compris Google Chrome, Mozilla Firefox, et Microsoft Edge.</p>
+        <ol>
+            <li>Allez sur la page web dont vous souhaitez afficher le code source.</li>
+            <li>Cliquez avec le bouton droit de la souris sur n'importe quelle partie de la page (sauf sur des liens ou des images) pour faire apparaître un menu contextuel.</li>
+            <li>Sélectionnez "Inspecter" ou "Inspecter l'élément" dans le menu.</li>
+        </ol>
+        <p class="p-content">Cette action ouvrira les outils de développement du navigateur, et vous verrez le code source HTML de la page dans l'onglet correspondant.</p>
+        <h2 id="Comment afficher le code source JS d'une page web" class="content-subhead">Comment afficher le code source JS d'une page web</h2>
+        <p class="p-content"><strong>L'une des méthodes les plus simples</strong> pour afficher le code source d'une page web est d'utiliser le raccourci clavier "Ctrl + U" (ou "Cmd + U" sur Mac) dans de nombreux navigateurs. Ce raccourci ouvre une nouvelle fenêtre ou un nouvel onglet contenant le code source HTML de la page web.</p>
+        <p class="p-content"><strong>Une autre méthode est de faire</strong> : "Clic droit > Inspecter"<br>Cette option est disponible dans la plupart des navigateurs, y compris Google Chrome, Mozilla Firefox, et Microsoft Edge.</p>
+        <ol>
+            <li>Allez sur la page web dont vous souhaitez afficher le code source.</li>
+            <li>Cliquez avec le bouton droit de la souris sur n'importe quelle partie de la page (sauf sur des liens ou des images) pour faire apparaître un menu contextuel.</li>
+            <li>Sélectionnez "Inspecter" ou "Inspecter l'élément" dans le menu.</li>
+        </ol>
+        <p class="p-content">Cette action ouvrira les outils de développement du navigateur, et vous verrez le code source HTML de la page dans l'onglet correspondant.</p>
+        <h2 id="Comment désactiver l'exécution des scripts JS d'une page web" class="content-subhead">Comment désactiver l'exécution des scripts JS d'une page web</h2>
+        <p class="p-content"><strong>L'une des méthodes les plus simples</strong> pour afficher le code source d'une page web est d'utiliser le raccourci clavier "Ctrl + U" (ou "Cmd + U" sur Mac) dans de nombreux navigateurs. Ce raccourci ouvre une nouvelle fenêtre ou un nouvel onglet contenant le code source HTML de la page web.</p>
+        <p class="p-content"><strong>Une autre méthode est de faire</strong> : "Clic droit > Inspecter"<br>Cette option est disponible dans la plupart des navigateurs, y compris Google Chrome, Mozilla Firefox, et Microsoft Edge.</p>
+        <ol>
+            <li>Allez sur la page web dont vous souhaitez afficher le code source.</li>
+            <li>Cliquez avec le bouton droit de la souris sur n'importe quelle partie de la page (sauf sur des liens ou des images) pour faire apparaître un menu contextuel.</li>
+            <li>Sélectionnez "Inspecter" ou "Inspecter l'élément" dans le menu.</li>
+        </ol>
+        <p class="p-content">Cette action ouvrira les outils de développement du navigateur, et vous verrez le code source HTML de la page dans l'onglet correspondant.</p>
+        <h2 id="Comment visualiser les cookies d'une page web" class="content-subhead">Comment visualiser les cookies d'une page web</h2>
+        <p class="p-content"><strong>L'une des méthodes les plus simples</strong> pour afficher le code source d'une page web est d'utiliser le raccourci clavier "Ctrl + U" (ou "Cmd + U" sur Mac) dans de nombreux navigateurs. Ce raccourci ouvre une nouvelle fenêtre ou un nouvel onglet contenant le code source HTML de la page web.</p>
+        <p class="p-content"><strong>Une autre méthode est de faire</strong> : "Clic droit > Inspecter"<br>Cette option est disponible dans la plupart des navigateurs, y compris Google Chrome, Mozilla Firefox, et Microsoft Edge.</p>
+        <ol>
+            <li>Allez sur la page web dont vous souhaitez afficher le code source.</li>
+            <li>Cliquez avec le bouton droit de la souris sur n'importe quelle partie de la page (sauf sur des liens ou des images) pour faire apparaître un menu contextuel.</li>
+            <li>Sélectionnez "Inspecter" ou "Inspecter l'élément" dans le menu.</li>
+        </ol>
+        <p class="p-content">Cette action ouvrira les outils de développement du navigateur, et vous verrez le code source HTML de la page dans l'onglet correspondant.</p>
+      </div>
     </div>
     <?php include("./include/footer.php"); ?>
   </div>
