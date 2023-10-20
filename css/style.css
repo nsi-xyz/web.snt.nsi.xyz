@@ -65,6 +65,20 @@ The content `<div>` is where all your content goes.
         padding: 0;
         margin-top: 0;
     }
+    .h3-resolved {
+        font-size: 3em;
+        font-weight: 300;
+        color: #7cb342;
+        padding: 0;
+        margin-top: 0;
+    }
+    .h3-unresolved {
+        font-size: 3em;
+        font-weight: 300;
+        color: #ff9800;
+        padding: 0;
+        margin-top: 0;
+    }
 
 .content-subhead {
     margin: 50px 0 20px 0;
@@ -77,6 +91,7 @@ The content `<div>` is where all your content goes.
     font-weight: 700;
     text-align: center;
     color: #7cb342;
+    border-bottom: 1px solid #eee;
 }
 
 .msgbox-ko {
@@ -84,6 +99,7 @@ The content `<div>` is where all your content goes.
     font-weight: 700;
     text-align: center;
     color: #ff9800;
+    border-bottom: 1px solid #eee;
 }
 
 .footer {
