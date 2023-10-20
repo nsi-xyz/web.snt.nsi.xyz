@@ -20,6 +20,9 @@ if (!isset($_SESSION["magic_word_3"])) {
 </head>
 <body>
     <div id="layout">
+        <a href="#menu" id="menuLink" class="menu-link">
+            <span></span>
+        </a>
         <?php include("../include/nav.php"); ?>
         <div id="main">
             <div class="header">

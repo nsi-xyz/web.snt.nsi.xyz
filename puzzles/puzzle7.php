@@ -17,6 +17,9 @@ $cookie_value = "SW5ncsOpZGllbnRzIDoNCjIwMCBnIGRlIGNob2NvbGF0IG5vaXIgKG91IHDDqXB
 </head>
 <body>
     <div id="layout">
+        <a href="#menu" id="menuLink" class="menu-link">
+            <span></span>
+        </a>
         <?php include("../include/nav.php"); ?>
         <div id="main">
             <div class="header">
