@@ -51,4 +51,14 @@ function tickPuzzle($puzzleID = NULL) {
         include("../include/nav.php");
     }
 }
+
+/**
+ * La fonction renvoie un mot mystère aléatoire.
+ * 
+ * @return string Un élément du tableau.
+ */
+function getMysteryWord() {
+    $words = array("Schwob", "Vivien", "Gracq", "Follain", "Michaux", "Perec", "Giono", "Green", "Ernaux", "Sarraute", "Michon", "Godeau", "Ramuz", "Réda", "Noël", "Ollier", "Thomas", "Calaferte", "Nourissier", "Bergounioux", "Galois", "Ramanujan", "Noether", "Kovalevskaya", "Cartan", "Jacobi", "Weierstrass", "Riemann", "Serre", "Poincaré", "Pontryagin", "Chandra", "Lyapunov", "Minkowski", "Deligne", "Ahlfors", "Perelman", "Perelman", "Chern", "Vergne");
+    return $words[array_rand($words)];
+}
 ?>

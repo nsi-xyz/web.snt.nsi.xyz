@@ -2,11 +2,8 @@
 session_start();
 include("../include/checksession.php");
 include("../include/functions.php");
-$cookie_name = "Cookies_au_chocolat";
-$cookie_value = "https://www.marmiton.org/recettes/recette_cookies-au-chocolat_17825.aspx";
-if (!puzzleIsResolved()) {
-    setcookie($cookie_name, $cookie_value, time() + 60*60*2);
-}
+
+$magic_word = "nsi";
 ?>
 <!DOCTYPE html>
 <html lang="fr">
@@ -20,19 +17,33 @@ if (!puzzleIsResolved()) {
 </head>
 <body>
     <div id="layout">
-        <?php include("../include/nav.php"); ?>
+        <?php
+        include("../include/nav.php");
+        ?>
         <div id="main">
             <div class="header">
                 <h1>web.snt.nsi.xyz</h1>
                 <h2>10 enigmes à résoudre pour découvrir le web<br>Énigme <?php echo getCurrentPuzzleID(); ?></h2>
-                <?php
-                if (!isset($_COOKIE[$cookie_name])) {
-                    tickPuzzle();
-                }
-                ?>
+                <
             </div>
         </div>
     </div>
     <script src="../js/ui.js"></script>
+    <script>
+    let index = 0;
+    let magic_word = "<?php echo $magic_word; ?>";
+    let found = false;
+    document.onkeypress = function(e) {
+        if (e.key == magic_word[index]) {
+            index++;
+            if (index == magic_word.length) {
+                found = true;
+                index = 0;
+            };
+        } else {
+            index = 0;
+        };
+    };
+    </script>
 </body>
 </html>
