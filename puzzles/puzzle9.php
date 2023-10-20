@@ -2,11 +2,6 @@
 session_start();
 include("../include/checksession.php");
 include("../include/functions.php");
-$cookie_name = "Cookies_au_chocolat";
-$cookie_value = "https://www.marmiton.org/recettes/recette_cookies-au-chocolat_17825.aspx";
-if (!puzzleIsResolved()) {
-    setcookie($cookie_name, $cookie_value, time() + 60*60*2);
-}
 ?>
 <!DOCTYPE html>
 <html lang="fr">
@@ -25,11 +20,6 @@ if (!puzzleIsResolved()) {
             <div class="header">
                 <h1>web.snt.nsi.xyz</h1>
                 <h2>10 enigmes à résoudre pour découvrir le web<br>Énigme <?php echo getCurrentPuzzleID(); ?></h2>
-                <?php
-                if (!isset($_COOKIE[$cookie_name])) {
-                    tickPuzzle();
-                }
-                ?>
             </div>
         </div>
     <?php include("../include/footer.php"); ?>

@@ -24,9 +24,9 @@ $magic_word = "nsi";
             <div class="header">
                 <h1>web.snt.nsi.xyz</h1>
                 <h2>10 enigmes à résoudre pour découvrir le web<br>Énigme <?php echo getCurrentPuzzleID(); ?></h2>
-                <
             </div>
         </div>
+    <?php include("../include/footer.php"); ?>
     </div>
     <script src="../js/ui.js"></script>
     <script>

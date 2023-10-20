@@ -32,6 +32,7 @@ include("../include/functions.php");
                 ?>
             </div>
         </div>
+    <?php include("../include/footer.php"); ?>
     </div>
     <script src="../js/ui.js"></script>
 </body>
