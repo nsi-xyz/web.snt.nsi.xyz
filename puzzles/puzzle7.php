@@ -3,17 +3,14 @@ session_start();
 include("../include/checksession.php");
 include("../include/functions.php");
 $cookie_name = "Cookies_au_chocolat";
-$cookie_value = "https://www.marmiton.org/recettes/recette_cookies-au-chocolat_17825.aspx";
-if (!puzzleIsResolved()) {
-    setcookie($cookie_name, $cookie_value, time() + 60*60*2);
-}
+$cookie_value = "SW5ncsOpZGllbnRzIDoNCjIwMCBnIGRlIGNob2NvbGF0IG5vaXIgKG91IHDDqXBpdGVzIGRlIGNob2NvbGF0KQ0KMjI1IGcgZGUgZmFyaW5lIHRvdXQgdXNhZ2UNCjExNSBnIGRlIGJldXJyZSBtb3UNCjE1MCBnIGRlIHN1Y3JlIGJydW4NCjEgxZN1Zg0KMSBjdWlsbMOocmUgw6AgY2Fmw6kgZCdleHRyYWl0IGRlIHZhbmlsbGUNCjEvMiBjdWlsbMOocmUgw6AgY2Fmw6kgZGUgbGV2dXJlIGNoaW1pcXVlDQoxLzIgY3VpbGzDqHJlIMOgIGNhZsOpIGRlIGJpY2FyYm9uYXRlIGRlIHNvdWRlDQoxIHBpbmPDqWUgZGUgc2Vs";
 ?>
 <!DOCTYPE html>
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title><?php echo setPageTitle();?></title>
+    <title><?php echo setPageTitle(); ?></title>
     <link rel="stylesheet" href="../css/pure-min.css">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20,400,0,0">
     <link rel="stylesheet" href="../css/style.css">
@@ -28,6 +25,7 @@ if (!puzzleIsResolved()) {
                 <?php
                 if (!isset($_COOKIE[$cookie_name])) {
                     tickPuzzle();
+                    echo '<script>window.location.replace(window.location.href);</script>';
                 }
                 ?>
             </div>
