@@ -24,10 +24,8 @@ if (!isset($_SESSION["magic_word_10"])) {
         </a>
         <?php include("../include/nav.php"); ?>
         <div id="main">
-            <div class="header">
-                <h1>web.snt.nsi.xyz</h1>
-                <h2>10 enigmes à résoudre pour découvrir le web<br>Énigme <?php echo getCurrentPuzzleID(); ?></h2>
-            </div>
+            <?php include("../include/header.php"); ?>
+            <?php include("../include/compute.php"); ?>
             <div class="content">
                 <h2 class="content-subhead">Le mot mystère</h2>
                 <p class="p-content">Sur cette page, a été cachée un mot mystère. Pour résoudre cette énigme, il faut trouver le mot mystère. Ce mot mystère n'est ni "mot" ni "mystère". La légende raconte que sur une page d'un site web, on peut cacher du texte dans le code de la page HTML.</p>
@@ -36,19 +34,23 @@ if (!isset($_SESSION["magic_word_10"])) {
                 <h2 class="content-subhead">Le HTML</h2>
                 <p class="p-content">Le HTML, acronyme de "Hypertext Markup Language" (langage de balisage hypertexte), est le langage de base utilisé pour créer des pages web. Il s'agit d'un langage de balisage qui permet de structurer le contenu d'une page web en utilisant des éléments, appelés balises, pour définir la signification et la présentation du texte et des médias. Par exemple, une balise <p> est utilisée pour définir un paragraphe de texte, tandis qu'une balise <img> est employée pour insérer une image. Le HTML joue un rôle crucial en indiquant au navigateur web comment afficher le contenu, ce qui permet de présenter le texte, les images et d'autres éléments de manière structurée et cohérente. L'une des caractéristiques intéressantes du HTML est qu'il permet d'inclure des commentaires dans le code source des pages web. Ces commentaires, délimités par <!-- et -->, sont invisibles pour les visiteurs de la page, mais ils sont visibles dans le code source. Les commentaires sont souvent utilisés par les développeurs pour ajouter des notes, des explications ou des indications sur le code, ce qui peut être très utile lors de la maintenance et de la collaboration sur un site web. Ainsi, le HTML offre la possibilité d'inclure des commentaires cachés par défaut, ce qui permet de garder une trace des détails importants concernant la structure et le fonctionnement de la page.</p>
                 <h2 class="content-subhead">Le mot mystère</h2>
-                <p class="p-content">La réponse à l'énigme est <?php echo $_SESSION["magic_word_10"]["hex"]; ?></p>
-                <form method="GET" action="" class="pure-form">
-                    <?php
-                    if (isset($_GET['response'])) {
-                        $response = $_GET['response'];
-                        if (strtoupper($response) == strtoupper($_SESSION["magic_word_10"]["name"])) {
-                            tickPuzzle();
-                        };
+                <p class="p-content">La réponse à l'énigme est <strong><?php echo $_SESSION["magic_word_10"]["hex"]; ?></strong>.</p>
+                <?php
+                if (!puzzleIsResolved()) {
+                echo '                <form method="GET" action="" class="pure-form">';
+                if (isset($_GET['response'])) {
+                    $response = $_GET['response'];
+                    if (strtoupper($response) == strtoupper($_SESSION["magic_word_10"]["name"])) {
+                        tickPuzzle();
                     };
-                    ?>
-                    <input type="text" name="response" placeholder="Mot mystère" required>
-                    <button type="submit" class="<?php echo !puzzleIsResolved() ? "pure-button" : "pure-button pure-button-disabled" ?>">Valider</button>
-                </form>
+                };
+                echo '                <input type="text" name="response" placeholder="Mot mystère" required>
+                <button type="submit" class="pure-button">Valider</button>
+            </form>';
+                } else {
+                    include("../include/table.php");
+                };
+                ?>
             </div>
             <script src="../js/ui.js"></script>
         </div>
