@@ -25,15 +25,12 @@ include("../include/functions.php");
         }
         ?>
         <div id="main">
-            <div class="header">
-                <h1>web.snt.nsi.xyz</h1>
-                <h2>10 enigmes à résoudre pour découvrir le web<br>Énigme <?php echo getCurrentPuzzleID(); ?></h2>
-                <?php
+            <?php include("../include/header.php"); ?>
+            <?php
                 if (isset($_COOKIE["resolved"]) && $_COOKIE["resolved"] == "true") {
                     tickPuzzle();
                 }
                 ?>
-            </div>
         </div>
     <?php include("../include/footer.php"); ?>
     </div>

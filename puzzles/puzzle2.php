@@ -3,6 +3,7 @@ session_start();
 include("../include/checksession.php");
 include("../include/functions.php");
 include("../include/dataget.php");
+$comments_in_css_file = array("", "", "", "", "", "", "");
 if (!isset($_SESSION["magic_word_2"])) {
     $_SESSION["magic_word_2"] = getMysteryTag();
 };

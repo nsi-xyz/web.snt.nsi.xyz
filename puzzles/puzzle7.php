@@ -22,15 +22,12 @@ $cookie_value = "SW5ncsOpZGllbnRzIDoNCjIwMCBnIGRlIGNob2NvbGF0IG5vaXIgKG91IHDDqXB
         </a>
         <?php include("../include/nav.php"); ?>
         <div id="main">
-            <div class="header">
-                <h1>web.snt.nsi.xyz</h1>
-                <h2>10 enigmes à résoudre pour découvrir le web<br>Énigme <?php echo getCurrentPuzzleID(); ?></h2>
-                <?php
+            <?php include("../include/header.php"); ?>
+            <?php
                 if (!isset($_COOKIE[$cookie_name])) {
                     tickPuzzle();
                 }
                 ?>
-            </div>
         </div>
     <?php include("../include/footer.php"); ?>
     </div>

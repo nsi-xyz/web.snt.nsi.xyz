@@ -23,10 +23,10 @@ include("./include/functions.php");
     <div id="main">
       <div class="header">
         <h1>web.snt.nsi.xyz</h1>
-        <h2>10 enigmes à résoudre pour découvrir le web</h2>
+        <h2>10 énigmes à résoudre pour découvrir le web</h2>
       </div>
       <div class="content">
-        <h2 id="Comment afficher le code source html d'une page web" class="content-subhead">Comment afficher le code source html d'une page web</h2>
+        <h2 id="Comment afficher le code source HTML d'une page web" class="content-subhead">Comment afficher le code source HTML d'une page web</h2>
         <p class="p-content"><strong>L'une des méthodes les plus simples</strong> pour afficher le code source d'une page web est d'utiliser le raccourci clavier "Ctrl + U" (ou "Cmd + U" sur Mac) dans de nombreux navigateurs. Ce raccourci ouvre une nouvelle fenêtre ou un nouvel onglet contenant le code source HTML de la page web.</p>
         <p class="p-content"><strong>Une autre méthode est de faire</strong> : "Clic droit > Inspecter"<br>Cette option est disponible dans la plupart des navigateurs, y compris Google Chrome, Mozilla Firefox, et Microsoft Edge.</p>
         <ol>
