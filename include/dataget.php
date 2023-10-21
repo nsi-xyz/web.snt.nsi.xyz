@@ -1,17 +1,30 @@
 <?php
 /**
- * La fonction récupère un message amusant à afficher à l'utilisateur lorsqu'il tente de rentrer un mot mystère.
- * 
- * @param type Le paramètre type est un paramètre indiquant quel type de message affiché.
- * Il existe deux types de message, les messages lorsque la réponse est juste (1), et les
- * messages lorsque la réponse est fausse (0).
+ * La fonction récupère un message à afficher à l'utilisateur lorsqu'il valide l'entrée
+ * d'un mot mystère et que ce dernier est correct.
  * 
  * @return string Le message à afficher.
  */
-function getFunnyMessage($type) {
-    $correct_anwsers = array();
-    $wrong_anwsers = array();
-    return $type == 1 ? $correct_anwsers[array_rand($correct_anwsers)] : $wrong_anwsers[array_rand($wrong_anwsers)];
+function getOkMessage() {
+    $well_done_comments = array("Bravo, cette énigme a été résolue avec brio !","Félicitations, vous avez parfaitement résolu cette énigme !","Impressionnant ! Cette énigme est désormais derrière vous !","Superbe travail ! Cette énigme est maintenant un souvenir !","Vous avez maîtrisé cette énigme avec succès !","Continuez sur cette lancée ! Cette énigme est terminée !","Vous êtes un pro du web ! Cette énigme ne vous résiste pas !","Votre connaissance est impressionnante ! Cette énigme est résolue !","Je suis épaté par vos compétences ! Cette énigme n'était rien pour vous !","Vous êtes un génie du code ! Cette énigme est maintenant un acquis !");
+    $support_comments = array("Maintenant, passez à la suivante !","Continuez à explorer les énigmes suivantes !","Ne vous arrêtez pas ici, il y a encore beaucoup à découvrir !","Vous avez du talent, poursuivez sur cette lancée !","L'aventure continue, cherchez la prochaine énigme !","N'arrêtez pas maintenant, de nouvelles énigmes vous attendent !");
+    $well_done_comment = $well_done_comments[array_rand($well_done_comments)];
+    $support_comment = $support_comments[array_rand($support_comments)];
+    return $well_done_comment." ".$support_comment;
+}
+
+/**
+ * La fonction récupère un message à afficher à l'utilisateur lorsqu'il valide l'entrée
+ * d'un mot mystère et que ce dernier est faux.
+ * 
+ * @return string Le message à afficher.
+ */
+function getKoMessage() {
+    $retry_comments = array("Ce n'est pas la réponse correcte, mais ne baissez pas les bras. La persévérance vous mènera à la solution !","Vous êtes sur la bonne voie, mais il y a encore un peu de travail à faire. Continuez à chercher la réponse !","La solution n'est pas encore tout à fait là, mais avec un peu plus d'effort, vous y parviendrez !","Ce n'est pas la bonne réponse, mais chaque tentative est une opportunité d'apprendre et de progresser.","Pas encore, mais ne perdez pas espoir. La satisfaction de la réussite sera d'autant plus grande !","Vous vous rapprochez, mais il manque encore un élément crucial. Continuez à réfléchir et à explorer !","Ce n'est pas la réponse, mais cela ne signifie pas que vous ne pouvez pas la trouver. Restez concentré et persévérez !","Vous avez fait un effort louable, mais il reste un peu de travail. Ne renoncez pas !","Ce n'est pas la réponse attendue, mais c'est un pas vers l'avant. Continuez à progresser !","Le chemin vers la solution peut sembler difficile, mais cela en vaut la peine. Vous êtes sur la bonne voie !");
+    $change_puzzle_comments = array("Si vous ne trouvez pas la réponse, envisagez de passer à une autre énigme pour changer de perspective.","L'univers des énigmes est vaste. Peut-être qu'une autre vous conviendra mieux ?","Si vous êtes bloqué, n'hésitez pas à essayer une autre énigme. Chaque énigme est une opportunité d'apprentissage !","Si cette énigme vous résiste, ne restez pas bloqué. Explorez d'autres énigmes pour continuer à apprendre !","La diversité des énigmes vous offre de nombreuses options. Pourquoi ne pas en essayer une différente ?","Changer d'énigme peut apporter de la fraîcheur à votre réflexion. Passez à une autre pour de nouvelles perspectives !","Si cette énigme semble trop difficile, ne soyez pas découragé. Essayez-en une autre et revenez plus tard !");
+    $retry_comment = $retry_comments[array_rand($retry_comments)];
+    $change_puzzle_comment = $change_puzzle_comments[array_rand($change_puzzle_comments)];
+    return $retry_comment." ".$change_puzzle_comment;
 };
 
 // Liste de balises HTML utilisée pour les énigmes 1 et 2.

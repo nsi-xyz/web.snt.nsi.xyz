@@ -23,7 +23,8 @@ include("./include/functions.php");
     <div id="main">
       <div class="header">
         <h1>web.snt.nsi.xyz</h1>
-        <h2>10 enigmes à résoudre pour découvrir le web</h2>
+        <h2>10 énigmes à résoudre pour découvrir le web</h2>
+        <?php include("./include/table.php"); ?>
         <!-- Start Debug -->
         <?php
         if (isset($_SESSION["resolvedPuzzles"])) {
@@ -46,42 +47,18 @@ include("./include/functions.php");
         <!-- End Debug -->
       </div>
       <div class="content">
-        <h2 class="content-subhead">Le web ou World Wide Web</h2>
+        <h2 class="content-subhead">web : World Wide Web</h2>
         <p class="p-content">Le web, également connu sous le nom de World Wide Web (WWW), est un système d'information en ligne qui permet de consulter et de partager des documents et des ressources sur Internet. Il est composé de milliards de pages web interconnectées qui sont accessibles via des navigateurs web tels que Chrome, Firefox, Safari, etc.</p>
-        <h2 class="content-subhead">Les technologies sur lesquelles repose le web</h2>
-        <p class="p-content">Le web repose sur le protocole HTTP (Hypertext Transfer Protocol), qui permet le transfert de données entre un serveur et un client (comme un navigateur web). Les pages web sont écrites dans des langages de balisage tels que HTML (Hypertext Markup Language), qui permet de structurer le contenu, et CSS (Cascading Style Sheets), qui permet de définir la mise en forme et le style des pages.</p>
-        <p class="p-content">Le web permet aux utilisateurs de naviguer entre les pages en suivant des liens hypertextes, qui sont des éléments cliquables permettant de passer d'une page à une autre. Les sites web peuvent contenir divers types de contenus, tels que du texte, des images, des vidéos, des fichiers audio, des formulaires interactifs, etc.</p>
-        <h2 class="content-subhead">Des sites web statiques ou dynamiques</h2>
-        <p class="p-content">En plus des sites web statiques, où le contenu reste généralement le même pour tous les visiteurs, le web permet également la création de sites web dynamiques. Ces sites utilisent des langages de programmation côté serveur tels que PHP, Python ou JavaScript pour générer des pages web personnalisées en fonction des actions de l'utilisateur ou des données stockées dans une base de données.</p>
-        <h2 class="content-subhead">Les applications du web</h2>
-        <p class="p-content">Le web a révolutionné la manière dont nous accédons à l'information, interagissons avec les services en ligne, communiquons et partageons des connaissances. Il a permis le développement de nombreuses applications et services en ligne tels que les réseaux sociaux, les moteurs de recherche, le commerce électronique, les services bancaires en ligne, etc.</p>
-        <h2 class="content-subhead">42 minutes pour résoudre 10 énigmes</h2>
-        <p class="p-content">Des informations ont été cachées sur chacune des pages de ce site, à toi de le retrouver et pour cela tu ne dispose que de 42 minutes. Les pages étant générées aléatoirement, inutile de regarder sur l'écran de ton voisin ou de chercher si les solutions ont été publiés, tout ce dont tu as besoin ce trouve quelque part, dans les fichiers de ce site web qui contient 12 pages et 10 énigmes.</p>
-        <h2 class="content-subhead">Now Let's Speak Some Latin</h2>
-        <p class="p-content">To use this layout, you can just copy paste the HTML, along with the CSS in <a href="/layouts/side-menu/styles.css" alt="Side Menu CSS">side-menu.css</a>, and the JavaScript in <a href="/js/ui.js">ui.js</a>. The JS file uses vanilla JavaScript to simply toggle an <code>active</code> class that makes the menu responsive.</p>
-        <div class="pure-g">
-          <div class="pure-u-1-4">
-            <img class="pure-img-responsive" src="http://farm3.staticflickr.com/2875/9069037713_1752f5daeb.jpg" alt="Peyto Lake">
-          </div>
-          <div class="pure-u-1-4">
-            <img class="pure-img-responsive" src="http://farm3.staticflickr.com/2813/9069585985_80da8db54f.jpg" alt="Train">
-          </div>
-          <div class="pure-u-1-4">
-            <img class="pure-img-responsive" src="http://farm6.staticflickr.com/5456/9121446012_c1640e42d0.jpg" alt="T-Shirt Store">
-          </div>
-          <div class="pure-u-1-4">
-            <img class="pure-img-responsive" src="http://farm8.staticflickr.com/7357/9086701425_fda3024927.jpg" alt="Mountain">
-          </div>
-        </div>
-        <h2 class="content-subhead">Try Resizing your Browser</h2>
-        <div class="pure-g">
-          <div class="pure-u-3-4">
-            <p class="p-content">Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
-          </div>
-          <div class="pure-u-1-4">
-            <img class="pure-img-responsive" src="http://farm8.staticflickr.com/7357/9086701425_fda3024927.jpg" alt="Mountain">
-          </div>
-        </div>
+        <h2 class="content-subhead">snt : Sciences Numériques et Technologie</h2>
+        <p class="p-content">La matière "SNT" est l'acronyme de "Sciences Numériques et Technologie". C'est une matière enseignée dans le système éducatif français au lycée. Les cours de SNT visent à sensibiliser les élèves aux enjeux liés à l'informatique, à la technologie et à la société numérique. Cette matière a été introduite dans le programme scolaire pour aider les élèves à mieux comprendre le monde numérique dans lequel nous vivons, y compris les aspects techniques, éthiques et sociaux.</p>
+        <h2 class="content-subhead">nsi : Numérique et Sciences Informatiques</h2>
+        <p class="p-content">“Numérique et Sciences Informatiques”, est une spécialité enseignée dans dans les lycées français à partir de la classe de 1ère. Elle fait partie de la réforme du baccalauréat et du programme de lycée qui a été mis en place en 2019. L'objectif de la NSI est d'initier les élèves aux concepts fondamentaux de l'informatique et de la programmation, ainsi qu'aux enjeux liés au numérique.</p>
+        <h2 class="content-subhead">xyz : extension de domaine de premier niveau (TLD)</h2>
+        <p class="p-content">Le terme ".xyz" fait référence à une extension de domaine de premier niveau (TLD) utilisée pour les adresses Internet. Les TLD sont les parties finales des noms de domaine, telles que ".com", ".org", ".net", et ainsi de suite. ".xyz" est l'un de ces TLD, et il a été introduit en 2014.</p>
+        <h2 class="content-subhead">web.snt.nsi.xyz</h2>
+        <p class="p-content">web.snt.nsi.xyz est un site web qui propose 10 petites énigmes.</p>
+        <h2 class="content-subhead">42 minutes pour résoudre 10 énigmes.</h2>
+        <p class="p-content">Des informations ont été cachées sur chacune des pages de ce site, à toi de les retrouver et pour cela tu ne dispose que de 42 minutes. Les pages étant générées aléatoirement, inutile de regarder sur l'écran de ton voisin. Pour les 9 premières énigmes, tout ce dont tu as besoin se trouve quelque part, dans les fichiers de ce site web qui contient 12 pages et 10 énigmes.</p>
       </div>
     </div>
     <?php include("./include/footer.php"); ?>

@@ -19,7 +19,7 @@ $slot = rand(0, 5);
     <title><?php echo setPageTitle(); ?></title>
     <!-- Liens vers les fichiers CSS pour la mise en page. -->
     <link rel="stylesheet" href="../css/pure-min.css">
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20,400,0,0"> <?php echo $slot == 1 ? '<!--'.$_SESSION["magic_word_1"].'-->' : '' ?>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20,400,0,0"> <?php echo $slot == 1 ? '<!--'.$_SESSION["magic_word_1"].'-->' : ''; ?>
     
     <link rel="stylesheet" href="../css/style.css">
 </head>
@@ -34,26 +34,24 @@ $slot = rand(0, 5);
         </a>
         <!-- Barre de navigation -->
         <?php include("../include/nav.php"); ?>
-        <div id="main"> <?php echo $slot == 2 ? '<!--'.$_SESSION["magic_word_1"].'-->' : '' ?>
+        <div id="main"> <?php echo $slot == 2 ? '<!--'.$_SESSION["magic_word_1"].'-->' : ''; ?>
 
             <!-- En-tête -->
-            <div class="header">
-                <!-- La balise <h1> contient le titre principal de la page, qui est généralement la première chose que les utilisateurs voient. -->
-                <h1>web.snt.nsi.xyz</h1>
-                <h2>10 enigmes à résoudre pour découvrir le web</h2>
-                <h3 class="h3-<?php echo puzzleIsResolved() ? "resolved" : "unresolved"; ?>">Énigme <?php echo getCurrentPuzzleID(); ?></h3>
-            </div>
+            <?php include("../include/header.php"); ?>
+            <?php
+            if (isset($_GET['response'])) {
+                echo '<div class="compute">';
+                if (puzzleIsResolved()) {
+                    echo '<p class="msgbox-ok">'.getOkMessage().'</p>';
+                } else {
+                    echo '<p class="msgbox-ko">'.getKoMessage().'</p>';
+                };
+                echo '</div>';
+            };
+            ?>
+            
             <!-- Corps -->
             <div class="content">
-                <?php
-                if (isset($_GET['response'])) {
-                    if (puzzleIsResolved()) {
-                        echo '<p class="msgbox-ok">'.getFunnyMessage(1).'</p>';
-                    } else {
-                        echo '<p class="msgbox-ko">'.getFunnyMessage(0).'</p>';
-                    };
-                };
-                ?>
                 <h2 class="content-subhead">Le mot mystère</h2>
                 <p class="p-content">Sur cette page, a été cachée un mot mystère. Pour résoudre cette énigme, il faut trouver le mot mystère. Ce mot mystère n'est ni "mot" ni "mystère". La légende raconte que sur une page d'un site web, on peut cacher du texte dans le code de la page HTML.</p>
                 <h2 class="content-subhead">Le web</h2> <?php echo $slot == 3 ? '<!--'.$_SESSION["magic_word_1"].'-->' : ''; ?>
@@ -64,17 +62,22 @@ $slot = rand(0, 5);
                 <h2 class="content-subhead">Le mot mystère</h2>
                 <!-- Ci-dessous se trouve un lien cliquable qui peut vous aider à résoudre l'énigme. Cliquez dessus pour obtenir un indice ! 🔍 -->
                 <p class="p-content">Sur cette page, a été cachée un mot mystère. Pour résoudre cette énigme, il faut trouver le mot mystère. Ce mot mystère n'est ni "mot" ni "mystère". Maintenant il faut trouver <a href="../help.php#Comment afficher le code source html d'une page web" class="link">comment afficher le code source source d'une page HTML</a> &#x1F642;</p>
-                <form method="GET" action="" class="pure-form">
-                    <?php
-                    if (isset($_GET['response'])) {
-                        $response = $_GET['response'];
-                        if ($response == $_SESSION["magic_word_1"]) {
-                            tickPuzzle();
-                        };
+                <?php
+                if (!puzzleIsResolved()) {
+                echo '                <form method="GET" action="" class="pure-form">';
+                if (isset($_GET['response'])) {
+                    $response = $_GET['response'];
+                    if ($response == $_SESSION["magic_word_1"]) {
+                        tickPuzzle();
                     };
-                    ?><input type="text" name="response" placeholder="Mot mystère" required>
-                    <button type="submit" class="<?php echo !puzzleIsResolved() ? "pure-button" : "pure-button pure-button-disabled"; ?>">Valider</button>
-                </form>
+                };
+                echo '                <input type="text" name="response" placeholder="Mot mystère" required>
+                <button type="submit" class="pure-button">Valider</button>
+            </form>';
+                } else {
+                    include("../include/table.php");
+                };
+                ?>
             </div>
             <script src="../js/ui.js"></script> <?php echo $slot == 4 ? '<!--'.$_SESSION["magic_word_1"].'-->' : ''; ?>
 

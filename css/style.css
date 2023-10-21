@@ -87,19 +87,19 @@ The content `<div>` is where all your content goes.
 }
 
 .msgbox-ok {
-    margin: 50px 0 20px 0;
-    font-weight: 700;
-    text-align: center;
+    font-size: 1.5em;
+    font-weight: 300;
     color: #7cb342;
-    border-bottom: 1px solid #eee;
+    padding: 0;
+    margin-top: 0;
 }
 
 .msgbox-ko {
-    margin: 50px 0 20px 0;
-    font-weight: 700;
-    text-align: center;
+    font-size: 1.5em;
+    font-weight: 300;
     color: #ff9800;
-    border-bottom: 1px solid #eee;
+    padding: 0;
+    margin-top: 0;
 }
 
 .footer {
@@ -325,4 +325,62 @@ Hides the menu at `48em`, but modify this based on your app's needs.
     display:block;
     text-decoration:none;
     white-space:nowrap
+}
+
+.table {
+    margin: auto;
+    border-collapse: collapse;
+    border-spacing: 0;
+    empty-cells: show;
+    border: 1px solid #141414;
+    color: #fff;
+    font-weight: bold;
+    width: 100%;
+}
+
+.td-resolved {
+    cursor: pointer;
+    background-color: #7cb342;
+    border-left: 1px solid #141414;
+    border-width: 0 0 0 1px;
+    font-size: inherit;
+    margin: 0;
+    overflow: visible;
+    padding : 1em 0;
+    width: 10%;
+    text-align: center;
+}
+
+.td-unresolved {
+    cursor: pointer;
+    background-color: #ff9800;
+    border-left: 1px solid #141414;
+    border-width: 0 0 0 1px;
+    font-size: inherit;
+    margin: 0;
+    overflow: visible;
+    padding : 1em 0;
+    width: 10%;
+    text-align: center;
+}
+
+.td-hidden {
+    cursor: pointer;
+    background-color: #424242;
+    border-left: 1px solid #141414;
+    border-width: 0 0 0 1px;
+    font-size: inherit;
+    margin: 0;
+    overflow: visible;
+    padding : 1em 0;
+    width: 10%;
+    text-align: center;
+}
+
+.compute {
+    margin: 0;
+    color: #333;
+    text-align: center;
+    padding: 1.5em 8em 0;
+    border-bottom: 1px solid #eee;
 }
