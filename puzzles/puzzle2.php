@@ -2,18 +2,18 @@
 session_start();
 include("../include/checksession.php");
 include("../include/functions.php");
-
-$words = array("Schwob", "Vivien", "Gracq", "Follain", "Michaux", "Perec", "Giono", "Green", "Ernaux", "Sarraute", "Michon", "Godeau", "Ramuz", "Réda", "Noël", "Ollier", "Thomas", "Calaferte", "Nourissier", "Bergounioux", "Galois", "Ramanujan", "Noether", "Kovalevskaya", "Cartan", "Jacobi", "Weierstrass", "Riemann", "Serre", "Poincaré", "Pontryagin", "Chandra", "Lyapunov", "Minkowski", "Deligne", "Ahlfors", "Perelman", "Perelman", "Chern", "Vergne");
+include("../include/dataget.php");
 if (!isset($_SESSION["magic_word_2"])) {
-    $_SESSION["magic_word_2"] = $words[array_rand($words)];
-}
+    $_SESSION["magic_word_2"] = getMysteryTag();
+};
+$slot = rand(1, 2);
 ?>
 <!DOCTYPE html>
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title><?php echo setPageTitle();?></title>
+    <title><?php echo setPageTitle(); ?></title>
     <link rel="stylesheet" href="../css/pure-min.css">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20,400,0,0">
     <link rel="stylesheet" href="../css/style.css">
@@ -25,29 +25,31 @@ if (!isset($_SESSION["magic_word_2"])) {
         </a>
         <?php include("../include/nav.php"); ?>
         <div id="main">
-            <div class="header">
-                <h1>web.snt.nsi.xyz</h1>
-                <h2>10 enigmes à résoudre pour découvrir le web<br>Énigme <?php echo getCurrentPuzzleID(); ?></h2>
-            </div>
+            <?php include("../include/header.php"); ?>
+            <?php include("../include/compute.php"); ?>
             <div class="content">
-                <h2 class="content-subhead">Lorem Ipsum</h2>
-                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed non risus.<br>Mot mystère : <span class="mystere"><?php echo $_SESSION["magic_word_2"]; ?></span></p>
-                <p>Suspendisse lectus tortor, dignissim sit amet, adipiscing nec, ultricies sed, dolor. Cras elementum ultrices diam. Maecenas ligula massa, varius a, semper congue, euismod non, mi. Proin porttitor, orci nec nonummy molestie, enim est eleifend mi, non fermentum diam nisl sit amet erat. Duis semper. Duis arcu massa, scelerisque vitae, consequat in, pretium a, enim. Pellentesque congue. Ut in risus volutpat libero pharetra tempor. Cras vestibulum bibendum augue. Praesent egestas leo in pede. Praesent blandit odio eu enim. Pellentesque sed dui ut augue blandit sodales. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Aliquam nibh. Mauris ac mauris sed pede pellentesque fermentum. Maecenas adipiscing ante non diam sodales hendrerit.</p>
-                <h2 class="content-subhead">Le mot mystère</h2>
-                <form method="GET" action="">
-                    <label for="response">Entrez le mot mystère :</label>
-                    <?php
-                    if (isset($_GET['response'])) {
-                        $response = $_GET['response'];
-                        if ($response == $_SESSION["magic_word_2"]) {
-                            echo "<p>Réponse correcte. L'énigme est validé !</p>";
-                            tickPuzzle();
-                        }
-                    }
-                    ?>
-                    <input type="text" name="response" required>
-                    <input type="submit" value="Valider">
-                </form>
+                <h2 class="content-subhead">Le mot invisible</h2>
+                <p class="p-content">Sur cette page, a été cachée un mot invisible. Pour résoudre cette énigme, il faut trouver le mot invisible. Ce mot est affiché sur cette page, il est certes également dans le code source de la page, mais en plus il est aussi affiché sur cette page, sauf que tu ne peux pas le voir. Du coup il est invisible. <?php echo $slot == 1 ? '<span class="mystere">'.$_SESSION["magic_word_2"].'</span>' : ''; ?></p>
+                <h2 class="content-subhead">Le CSS</h2>
+                <p class="p-content">Le CSS, ou Cascading Style Sheets (Feuilles de style en cascade), est un langage de programmation essentiel pour la conception de sites web. Il permet de contrôler l'apparence et la mise en page de vos pages web. Une de ses nombreuses fonctionnalités est la capacité de modifier la couleur du texte. En utilisant des règles CSS, vous pouvez spécifier la couleur du texte de manière précise. Par exemple, en définissant la propriété <q>color</q> (couleur) d'un élément HTML, vous pouvez changer la couleur du texte en fonction de vos préférences. Le CSS offre une flexibilité exceptionnelle pour personnaliser l'apparence de vos pages web, ce qui en fait un outil puissant pour changer rapidement le design d'un site web. <?php echo $slot == 2 ? '<span class="mystere">'.$_SESSION["magic_word_2"].'</span>' : ''; ?></p>
+                <h2 class="content-subhead">Le mot invisible</h2>
+                <p class="p-content">Pour résoudre l'énigme du <q>Mot invisible</q>, vous devez rechercher minutieusement dans les recoins de la page. Rappelez-vous que parfois, la vérité peut être cachée dans la clarté. Soyez attentif aux ombres et aux espaces vides. Les mots peuvent se cacher même en plein jour. Explorez, soyez curieux et observez chaque coin de la page, chaque ligne de code. La solution est là, juste sous vos yeux, mais elle attend que vous la découvriez.</p>
+                <?php
+                if (!puzzleIsResolved()) {
+                echo '                <form method="GET" action="" class="pure-form">';
+                if (isset($_GET['response'])) {
+                    $response = $_GET['response'];
+                    if ($response == $_SESSION["magic_word_2"]) {
+                        tickPuzzle();
+                    };
+                };
+                echo '                <input type="text" name="response" placeholder="Mot mystère" required>
+                <button type="submit" class="pure-button">Valider</button>
+            </form>';
+                } else {
+                    include("../include/table.php");
+                };
+                ?>
             </div>
             <script src="../js/ui.js"></script>
         </div>
