@@ -70,6 +70,9 @@ include("./include/functions.php");
             <li>Sélectionnez "Inspecter" ou "Inspecter l'élément" dans le menu.</li>
         </ol>
         <p class="p-content">Cette action ouvrira les outils de développement du navigateur, et vous verrez le code source HTML de la page dans l'onglet correspondant.</p>
+        <h2 id=reset" class="content-subhead">Effacer sa progression et recommencer les enigmes</h2>
+        <p class="p-content">En cliquant sur le bouton si dessous, vous effacez votre progression et recommencez de zéro. Cette action est irréversible. 
+          </p>
       </div>
     </div>
     <?php include("./include/footer.php"); ?>
