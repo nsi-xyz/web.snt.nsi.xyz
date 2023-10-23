@@ -1,7 +1,7 @@
 <?php
 include("../include/checksession.php");
 include("../include/functions.php");
-$cookie_name = "Cookies_au_chocolat";
+$cookie_name = "Cookie_au_chocolat";
 $cookie_value = "SW5ncsOpZGllbnRzIDoNCjIwMCBnIGRlIGNob2NvbGF0IG5vaXIgKG91IHDDqXBpdGVzIGRlIGNob2NvbGF0KQ0KMjI1IGcgZGUgZmFyaW5lIHRvdXQgdXNhZ2UNCjExNSBnIGRlIGJldXJyZSBtb3UNCjE1MCBnIGRlIHN1Y3JlIGJydW4NCjEgxZN1Zg0KMSBjdWlsbMOocmUgw6AgY2Fmw6kgZCdleHRyYWl0IGRlIHZhbmlsbGUNCjEvMiBjdWlsbMOocmUgw6AgY2Fmw6kgZGUgbGV2dXJlIGNoaW1pcXVlDQoxLzIgY3VpbGzDqHJlIMOgIGNhZsOpIGRlIGJpY2FyYm9uYXRlIGRlIHNvdWRlDQoxIHBpbmPDqWUgZGUgc2Vs";
 ?>
 <!DOCTYPE html>

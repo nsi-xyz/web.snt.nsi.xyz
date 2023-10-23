@@ -2,7 +2,7 @@
 include("../include/checksession.php");
 include("../include/functions.php");
 include("../include/dataget.php");
-$comments_in_js_file = array("Ceci est le premier commentaire de cette feuille de style CSS", "Le sélecteur \"body\" est utilisé pour appliquer des styles à l'ensemble du contenu de la page", "Ceci est un sélecteur de classe", "L'image à laquelle cette classe est appliquée ne dépassera pas de la page", "Il y aura un class=\"content\" dans le fichier html", "Pas de marge mais un alignement au centre automatique", "Pas de marge en haut et en bas mais une marge à gauche et à droite", "Même sur un écran 4k on sera limité à 800 pixels", "Une marge externe inférieure pour augmenter l'espacement du contenu", "La distance entre les lignes de texte est égale à 1,6 fois la taille de la police courante de l'élément");
+$comments_in_js_file = array("Cette fonction récupère les éléments HTML que nous utilisons fréquemment, tels que le menu et les liens, en fonction de leurs identifiants.", "Cette fonction ajoute ou supprime une classe CSS d'un élément pour basculer son état actif.", "Nous parcourons les classes existantes pour trouver la classe à ajouter ou supprimer.", "Si la classe existe, nous la supprimons.", "Si la classe n'a pas été trouvée, nous l'ajoutons.", "Nous mettons à jour la liste des classes de l'élément.", "Cette fonction bascule l'état actif de plusieurs éléments, comme le layout, le menu et le menuLink.", "Le nom de la classe CSS \"active\".", "Cette fonction gère les événements de clic sur la page.", "Si le clic se produit sur le lien du menu, nous basculons l'état actif.");
 if (!isset($_SESSION["magic_word_5"])) {
     $_SESSION["magic_word_5"] = $comments_in_js_file[array_rand($comments_in_js_file)];
 };
