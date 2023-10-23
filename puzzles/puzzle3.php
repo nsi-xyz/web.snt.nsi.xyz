@@ -1,5 +1,4 @@
 <?php
-session_start();
 include("../include/checksession.php");
 include("../include/functions.php");
 include("../include/dataget.php");
@@ -34,7 +33,7 @@ $pos = array_keys($comments_in_css_file, $_SESSION["magic_word_3"])[0] + 1
                 <h2 class="content-subhead">Une feuille de style CSS</h2>
                 <p class="p-content">Le CSS, ou Cascading Style Sheets, est un langage informatique essentiel utilisé dans le développement de sites web. Son rôle principal est de définir la présentation et l'apparence visuelle des éléments sur une page web. En d'autres termes, il permet de contrôler la façon dont les textes, images, boutons, et autres éléments sont affichés à l'écran.<br>Imaginez le CSS comme un ensemble de règles ou d'instructions qui indiquent au navigateur web comment formater et styliser chaque élément d'une page. Grâce au CSS, les concepteurs et développeurs web peuvent définir la taille, la couleur, la police de caractères, la position, les marges, et bien d'autres aspects de la mise en page. Cela permet de créer des sites web attrayants, cohérents et esthétiques.</p>
                 <h2 class="content-subhead">Un commentaire CSS</h2>
-                <p class="p-content">Un commentaire CSS est un texte explicatif inséré dans le code CSS d'une page web, mais qui n'a aucun impact sur l'apparence ou le fonctionnement du site. Il sert principalement à ajouter des notes pour les développeurs ou à désactiver temporairement certaines parties du code, permettant ainsi de rendre le code plus lisible et maintenable. Les commentaires CSS commencent par <q>/*</q> et se terminent par <q>*/</q> et sont invisibles pour les visiteurs du site, ne servant qu'à la documentation et à l'organisation du code pour les développeurs.<br>/* Ceci est un commentaire CSS */</p>
+                <p class="p-content">Un commentaire CSS est un texte explicatif inséré dans le code CSS d'une page web, mais qui n'a aucun impact sur l'apparence ou le fonctionnement du site. Il sert principalement à ajouter des notes pour les développeurs ou à désactiver temporairement certaines parties du code, permettant ainsi de rendre le code plus lisible et maintenable. Les commentaires CSS commencent par <span class="p-code">/*</span> et se terminent par <span class="p-code">*/</span> et sont invisibles pour les visiteurs du site, ne servant qu'à la documentation et à l'organisation du code pour les développeurs.<br><span class="p-code">/* Ceci est un commentaire CSS */</span></p>
                 <h2 class="content-subhead">Le commentaire dans la feuille de style</h2>
                 <p class="p-content">Dans la feuille de style de ce site, il y a des commentaires. Vous devez <a href="../help.php#Comment afficher le code source CSS d'une page web" class="link">localiser</a> la feuille de style et le <strong><?php echo $pos == 1 ? $pos."er" : $pos."ème"; ?></strong> commentaire de cette dernière.</p>
                 <?php

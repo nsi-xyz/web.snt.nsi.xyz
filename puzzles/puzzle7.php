@@ -1,5 +1,4 @@
 <?php
-session_start();
 include("../include/checksession.php");
 include("../include/functions.php");
 $cookie_name = "Cookies_au_chocolat";

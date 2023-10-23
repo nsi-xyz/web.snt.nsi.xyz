@@ -31,7 +31,8 @@ if (!isset($_SESSION["puzzle10"])) {
 $class = $p == "help.php" ? "pure-menu-item menu-item-divided pure-menu-selected-help" : "pure-menu-item-help";
 echo '            <li class="'.$class.'"><a href="'.$p_h.'/help.php" class="pure-menu-link">&#x1F537; Aide & Boite à outils</a></li>
           </ul>
-      </div>
+      </div>';
+echo '            <li class="pure-menu-item-reset"><a href="./help.php#Comment désactiver l\'exécution des scripts JS d\'une page web" class="pure-menu-link">&#x274C; Réinitialiser la session</a></li>
     </div>
 ';
 ?>

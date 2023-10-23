@@ -1,5 +1,4 @@
 <?php
-session_start();
 include("./include/checksession.php");
 include("./include/functions.php");
 ?>
@@ -44,7 +43,7 @@ include("./include/functions.php");
             <li>Sélectionnez "Inspecter" ou "Inspecter l'élément" dans le menu.</li>
         </ol>
         <p class="p-content">Cette action ouvrira les outils de développement du navigateur, et vous verrez le code source HTML de la page dans l'onglet correspondant.</p>
-        <h2 id="Comment afficher le code source JS d'une page web" class="content-subhead">Comment afficher le code source JS d'une page web</h2>
+        <h2 id="Comment afficher le code source JavaScript d'une page web" class="content-subhead">Comment afficher le code source JavaScript d'une page web</h2>
         <p class="p-content"><strong>L'une des méthodes les plus simples</strong> pour afficher le code source d'une page web est d'utiliser le raccourci clavier "Ctrl + U" (ou "Cmd + U" sur Mac) dans de nombreux navigateurs. Ce raccourci ouvre une nouvelle fenêtre ou un nouvel onglet contenant le code source HTML de la page web.</p>
         <p class="p-content"><strong>Une autre méthode est de faire</strong> : "Clic droit > Inspecter"<br>Cette option est disponible dans la plupart des navigateurs, y compris Google Chrome, Mozilla Firefox, et Microsoft Edge.</p>
         <ol>

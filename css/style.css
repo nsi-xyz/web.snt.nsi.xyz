@@ -147,6 +147,34 @@ body {
         color: #1976d2;
     }
 
+    #menu .pure-menu-item-reset a:hover,
+    #menu .pure-menu-item-reset a:focus {
+        background-color: #F8333C;
+    }
+
+    @media screen and (min-height: 570px) and (min-width: 768px) {
+        .pure-menu-item-reset {
+            list-style: none;
+            position: fixed;
+            width: 250px;
+            bottom: 0;
+        }
+     }
+
+     @media screen and (min-height: 570px) and (max-width: 768px) {
+        .pure-menu-item-reset {
+            list-style: none;
+            width: 250px;
+        }
+     }
+
+    @media screen and (max-height: 570px) {
+        .pure-menu-item-reset {
+            list-style: none;
+            width: 250px;
+        }
+     }
+
     #menu .pure-menu-selected-unresolved {
         background: #ff9800;
     }
@@ -270,6 +298,11 @@ body {
 
 .p-content {
     text-align: justify;
+}
+
+.p-code {
+    font-family: 'Courier New', Courier, monospace;
+    color: #424242;
 }
 
 .pure-menu-link-hidden {
