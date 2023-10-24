@@ -14,7 +14,7 @@ for ($i = 1; $i < 10; $i++) {
     $class = $i == $currentPuzzle ? "pure-menu-item menu-item-divided pure-menu-selected-".$resolved : "pure-menu-item-".$resolved;
     echo '            <li class="'.$class.'"><a href=".'.$p_i.'/puzzles/puzzle'.$i.'.php" class="pure-menu-link">'.$emoji.' Énigme web 0'.$i.'</a></li>
 ';
-};
+}
 $d = $i != 10 ? "0" : "";
 if (!isset($_SESSION["puzzle10"])) {
   $indicators = array("L'énigme 10 est cachée,", "le lien hypertexte qui pointe vers", "l'énigme 10 ne s'affiche", "que quand vous aurez résolu", "la 1ère partie de l'énigme 10.", "Pour commencer", "il faut déjà trouver", "comment accéder", "à l'énigme 😉");
@@ -27,12 +27,14 @@ if (!isset($_SESSION["puzzle10"])) {
   $class = $currentPuzzle == 10 ? "pure-menu-item menu-item-divided pure-menu-selected-".$resolved : "pure-menu-item-".$resolved;
   echo '            <li class="'.$class.'"><a href=".'.$p_i.'/puzzles/puzzle10.php" class="pure-menu-link">'.$emoji.' Énigme web 10</a></li>
 ';
-};
+}
 $class = $p == "help.php" ? "pure-menu-item menu-item-divided pure-menu-selected-help" : "pure-menu-item-help";
 echo '            <li class="'.$class.'"><a href="'.$p_h.'/help.php" class="pure-menu-link">&#x1F537; Aide & Boite à outils</a></li>
           </ul>
       </div>';
-echo '            <li class="pure-menu-item-reset"><a href="./help.php#Comment désactiver l\'exécution des scripts JS d\'une page web" class="pure-menu-link">&#x274C; Réinitialiser la session</a></li>
+echo '            <div class="menu-bottom"><li class="pure-menu-item-timer">Il reste <timer>'.$_SESSION["time_left"].'</timer> minutes</li>
+  ';
+echo '            <li class="pure-menu-item-reset"><a href="./help.php#reset" class="pure-menu-link">&#x274C; Effacer / Recommencer</a></li></div>
     </div>
 ';
 ?>

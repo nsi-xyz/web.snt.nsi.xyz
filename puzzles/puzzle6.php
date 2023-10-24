@@ -28,6 +28,7 @@ $magic_word = "nsi";
     <?php include("../include/footer.php"); ?>
     </div>
     <script src="../js/ui.js"></script>
+    <?php include("../include/timer.php"); ?>
     <script>
     let index = 0;
     let magic_word = "<?php echo $magic_word; ?>";

@@ -58,5 +58,7 @@ $pos = array_keys($comments_in_css_file, $_SESSION["magic_word_3"])[0] + 1
         </div>
         <?php include("../include/footer.php"); ?>
     </div>
+    <script src="../js/ui.js"></script>
+    <?php include("../include/timer.php"); ?>
 </body>
 </html>

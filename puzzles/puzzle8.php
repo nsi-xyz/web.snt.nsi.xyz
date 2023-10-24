@@ -34,5 +34,6 @@ include("../include/functions.php");
     <?php include("../include/footer.php"); ?>
     </div>
     <script src="../js/ui.js"></script>
+    <?php include("../include/timer.php"); ?>
 </body>
 </html>

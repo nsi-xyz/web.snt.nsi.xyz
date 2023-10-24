@@ -31,5 +31,6 @@ $cookie_value = "SW5ncsOpZGllbnRzIDoNCjIwMCBnIGRlIGNob2NvbGF0IG5vaXIgKG91IHDDqXB
     <?php include("../include/footer.php"); ?>
     </div>
     <script src="../js/ui.js"></script>
+    <?php include("../include/timer.php"); ?>
 </body>
 </html>

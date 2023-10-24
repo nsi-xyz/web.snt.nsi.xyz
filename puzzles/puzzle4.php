@@ -67,5 +67,7 @@ if (!isset($_SESSION["magic_word_4"])) {
         </div>
         <?php include("../include/footer.php"); ?>
     </div>
+    <script src="../js/ui.js"></script>
+    <?php include("../include/timer.php"); ?>
 </body>
 </html>

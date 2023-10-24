@@ -74,6 +74,8 @@ $slot = rand(1, 5);
         <!-- Pied de page -->
         <?php include("../include/footer.php"); ?>
     </div>
+    <script src="../js/ui.js"></script>
+    <?php include("../include/timer.php"); ?>
 </body>
 </html> <?php echo $slot == 5 ? '<!--'.$_SESSION["magic_word_1"].'-->' : ''; ?>
 
