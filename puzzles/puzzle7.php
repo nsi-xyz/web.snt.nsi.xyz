@@ -39,6 +39,9 @@ if (!isset($_COOKIE[COOKIE7["name"]])) {
                 if ($tick === TRUE) {
                     tickPuzzle();
                 }
+                if (puzzleIsResolved()) {
+                    include("../include/table.php");
+                }
                 ?>
             </div>
         </div>

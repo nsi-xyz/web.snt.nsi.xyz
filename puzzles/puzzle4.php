@@ -52,14 +52,14 @@ if (!isset($_SESSION["magic_word_4"])) {
                     $response = $_GET['response'];
                     if ($response == $_SESSION["magic_word_4"]) {
                         tickPuzzle();
-                    };
-                };
+                    }
+                }
                 echo '                <input type="text" name="response" placeholder="Mot mystère" required>
                 <button type="submit" class="pure-button">Valider</button>
             </form>';
                 } else {
                     include("../include/table.php");
-                };
+                }
                 ?>
             </div>
             <script>

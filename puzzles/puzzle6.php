@@ -39,6 +39,9 @@ if (!isset($_SESSION["magic_word_6"])) {
                 if (isset($_COOKIE["puzzle6"])) {
                     tickPuzzle();
                 }
+                if (puzzleIsResolved()) {
+                    include("../include/table.php");
+                }
                 ?>
             </div>
         </div>

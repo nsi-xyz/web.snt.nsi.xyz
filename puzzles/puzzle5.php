@@ -44,14 +44,14 @@ $pos = array_keys($comments_in_js_file, $_SESSION["magic_word_5"])[0] + 1;
                     $key_f = str_replace(' ', '', str_replace('//', '', $_SESSION["magic_word_5"]));
                     if ($response_f == $key_f) {
                         tickPuzzle();
-                    };
-                };
+                    }
+                }
                 echo '                <input type="text" name="response" placeholder="Mot mystère" required>
                 <button type="submit" class="pure-button">Valider</button>
             </form>';
                 } else {
                     include("../include/table.php");
-                };
+                }
                 ?>
             </div>
             <script>

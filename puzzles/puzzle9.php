@@ -33,6 +33,9 @@ include("../include/functions.php");
                 if (isset($_COOKIE["puzzle9"])) {
                     tickPuzzle();
                 }
+                if (puzzleIsResolved()) {
+                    include("../include/table.php");
+                }
                 ?>
             </div>
         </div>

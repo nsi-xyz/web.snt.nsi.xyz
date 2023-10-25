@@ -41,14 +41,14 @@ if (!isset($_SESSION["magic_word_10"])) {
                     $response = $_GET['response'];
                     if (strtoupper($response) == strtoupper($_SESSION["magic_word_10"]["name"])) {
                         tickPuzzle();
-                    };
-                };
+                    }
+                }
                 echo '                <input type="text" name="response" placeholder="Mot mystère" required>
                 <button type="submit" class="pure-button">Valider</button>
             </form>';
                 } else {
                     include("../include/table.php");
-                };
+                }
                 ?>
             </div>
             <script>

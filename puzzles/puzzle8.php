@@ -41,6 +41,9 @@ if (!isset($_SESSION["target_value_8"])) {
                 if (isset($_COOKIE[COOKIE8["name"]]) && $_COOKIE[COOKIE8["name"]] == $_SESSION["target_value_8"]) {
                     tickPuzzle();
                 }
+                if (puzzleIsResolved()) {
+                    include("../include/table.php");
+                }
                 ?>
             </div>
         </div>

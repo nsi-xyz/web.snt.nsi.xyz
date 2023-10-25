@@ -40,14 +40,14 @@ $slot = rand(1, 2);
                     $response = $_GET['response'];
                     if ($response == $_SESSION["magic_word_2"]) {
                         tickPuzzle();
-                    };
-                };
+                    }
+                }
                 echo '                <input type="text" name="response" placeholder="Mot mystère" required>
                 <button type="submit" class="pure-button">Valider</button>
             </form>';
                 } else {
                     include("../include/table.php");
-                };
+                }
                 ?>
             </div>
             <script>
