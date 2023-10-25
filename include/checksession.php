@@ -1,6 +1,8 @@
 <?php
 // Constantes globales.
 define("SESSDURATION", 3600);
+define("GG_MESSAGE", "<p class=\"p-gg\">Bravo, vous avez résolu les 10 énigmes de web.snt.nsi.xyz. N'hésitez pas à chercher les pages cachées sur <a class=\"link\" href=\"https://labohelp.nsi.xyz/\" target=\"_blank\">LaboHelp</a> ou à explorer <a class=\"link\" href=\"https://nsi42.net/\" target=\"_blank\">nsi42.net</a> &#x1F609;");
+define("PUZZLE_ALREADY_RESOLVED_MESSAGE", "<p class=\"p-table\">Cette énigme est déjà résolue. Voici votre progression :</p>");
 define("COOKIE7", array(
   "name" => "cookie_enigme_7",
   "value" => "Cookie_to_delete_to_solve_puzzle_7._PLEASE_NOTE_THAT_DELETING_ALL_COOKIES_RESETS_YOUR_PROGRESS."
@@ -46,6 +48,7 @@ define("COOKIEAMAZON", array(
 if (isset($_COOKIE["reset"])) {
   setcookie("reset", "", time() - SESSDURATION, "/");
   setcookie("PHPSESSID", "reset", time() + SESSDURATION, "/");
+  header('Location: ./index.php');
   echo '<script>window.location.replace(window.location.href);</script>';
 }
 if (!isset($_COOKIE["PHPSESSID"]) || $_COOKIE["PHPSESSID"] == "reset") {

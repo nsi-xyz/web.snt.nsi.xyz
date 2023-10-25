@@ -24,27 +24,6 @@ include("./include/functions.php");
         <h1>web.snt.nsi.xyz</h1>
         <h2>10 énigmes à résoudre pour découvrir le web</h2>
         <?php include("./include/table.php"); ?>
-        <!-- Start Debug -->
-        <?php
-        $id = session_id();
-        echo "SESSION ID: ".$id;
-        if (isset($_SESSION["resolvedPuzzles"])) {
-          echo "<p>DEBUG</p>";
-          echo "<pre>";
-          print_r($_SESSION["resolvedPuzzles"]);
-          echo "</pre>";
-        } else {
-          echo 'none';
-        }
-        if (isset($_POST['reset_session'])) {
-          resetSession();
-        }
-        ?>
-        <form method="POST" action="">
-          <input type="hidden" name="reset_session" value="true">
-          <input type="submit" value="[DEBUG] Reset session">
-        </form>
-        <!-- End Debug -->
       </div>
       <div class="content">
         <h2 class="content-subhead">web : World Wide Web</h2>
@@ -63,6 +42,9 @@ include("./include/functions.php");
     </div>
     <?php include("./include/footer.php"); ?>
   </div>
+  <script>
+    const currentPuzzle = null;
+  </script>
   <script src="./js/ui.js"></script>
   <?php include("./include/timer.php"); ?>
 </body>

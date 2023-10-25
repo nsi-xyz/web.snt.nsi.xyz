@@ -51,6 +51,9 @@ if (!isset($_SESSION["magic_word_10"])) {
                 };
                 ?>
             </div>
+            <script>
+            const currentPuzzle = <?php echo getCurrentPuzzleID(); ?>;
+            </script>
             <script src="../js/ui.js"></script>
         </div>
     <?php include("../include/timer.php"); ?>

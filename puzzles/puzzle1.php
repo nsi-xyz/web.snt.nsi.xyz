@@ -67,6 +67,9 @@ $slot = rand(1, 5);
                     include("../include/table.php");
                 };
                 ?>
+                  <script>
+                  const currentPuzzle = null;
+                  </script>
                 <script src="../js/ui.js"></script>
             </div> <?php echo $slot == 4 ? '<!--'.$_SESSION["magic_word_1"].'-->' : ''; ?>
 

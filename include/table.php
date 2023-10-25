@@ -1,5 +1,5 @@
 <table class="table">
-  <p class="p-table">Cette énigme est déjà résolue. Voici votre progression :</p>
+  <?php echo getCurrentPuzzleID() != NULL ? PUZZLE_ALREADY_RESOLVED_MESSAGE : "" ?>
           <tbody>
             <tr>
               <?php
@@ -21,3 +21,4 @@
               ?></tr>
           </tbody>
 </table>
+<?php echo count($_SESSION["resolvedPuzzles"]) == 10 ? GG_MESSAGE : "" ?>

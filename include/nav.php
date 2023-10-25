@@ -35,7 +35,7 @@ echo '            <li class="'.$class.'"><a href="'.$p_h.'/help.php" class="pure
 $time = isset($_SESSION["time_left"]) ? $_SESSION["time_left"] : "?";
 echo '            <div class="menu-bottom"><li class="pure-menu-item-timer">Il reste <timer>'.$time.'</timer> minutes</li>
   ';
-echo '            <li class="pure-menu-item-reset"><a href="'.$p_h.'/help.php#reset" class="pure-menu-link">&#x274C; Effacer / Recommencer</a></li></div>
+echo '            <li class="pure-menu-item-reset"><a href="'.$p_h.'/help.php#Effacer sa progression et recommencer les énigmes" class="pure-menu-link">&#x274C; Effacer / Recommencer</a></li></div>
     </div>
 ';
 ?>

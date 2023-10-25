@@ -52,7 +52,7 @@ include("./include/functions.php");
             <li>Sélectionnez "Inspecter" ou "Inspecter l'élément" dans le menu.</li>
         </ol>
         <p class="p-content">Cette action ouvrira les outils de développement du navigateur, et vous verrez le code source HTML de la page dans l'onglet correspondant.</p>
-        <h2 id="Comment désactiver l'exécution des scripts JS d'une page web" class="content-subhead">Comment désactiver l'exécution des scripts JS d'une page web</h2>
+        <h2 id="Comment désactiver l'exécution des scripts JavaScript d'une page web" class="content-subhead">Comment désactiver l'exécution des scripts JS d'une page web</h2>
         <p class="p-content"><strong>L'une des méthodes les plus simples</strong> pour afficher le code source d'une page web est d'utiliser le raccourci clavier "Ctrl + U" (ou "Cmd + U" sur Mac) dans de nombreux navigateurs. Ce raccourci ouvre une nouvelle fenêtre ou un nouvel onglet contenant le code source HTML de la page web.</p>
         <p class="p-content"><strong>Une autre méthode est de faire</strong> : "Clic droit > Inspecter"<br>Cette option est disponible dans la plupart des navigateurs, y compris Google Chrome, Mozilla Firefox, et Microsoft Edge.</p>
         <ol>
@@ -70,14 +70,31 @@ include("./include/functions.php");
             <li>Sélectionnez "Inspecter" ou "Inspecter l'élément" dans le menu.</li>
         </ol>
         <p class="p-content">Cette action ouvrira les outils de développement du navigateur, et vous verrez le code source HTML de la page dans l'onglet correspondant.</p>
-        <h2 id="reset" class="content-subhead">Effacer sa progression et recommencer les enigmes</h2>
-        <p class="p-content">En cliquant sur le bouton si dessous, vous effacez votre progression et recommencez de zéro. Cette action est irréversible. 
-          </p>
+        <h2 id="Effacer sa progression et recommencer les énigmes" class="content-subhead">Effacer sa progression et recommencer les énigmes</h2>
+        <p class="p-content">En cliquant sur le bouton si dessous, vous effacez votre progression et recommencez de zéro. Cette action est irréversible.</p>
+        <button class ="reset-button" type="button" onclick="tickPuzzle()">Réinitialiser</button>
+        <?php
+        if (isset($_COOKIE["reset-b"])) {
+          resetSession();
+        }
+        ?>
       </div>
     </div>
     <?php include("./include/footer.php"); ?>
   </div>
+  <script>
+    const currentPuzzle = null;
+  </script>
   <script src="./js/ui.js"></script>
   <?php include("./include/timer.php"); ?>
+  <script>
+    function tickPuzzle() {
+      let date = new Date();
+      date.setTime(date.getTime() + 1000);
+      let expiration = "expires=" + date.toUTCString();
+      document.cookie = "reset-b=ok;" + expiration + ";path=/";
+      window.location.replace((window.location.href).replace("#" + encodeURIComponent("Effacer sa progression et recommencer les énigmes"), ""));
+    }
+    </script>
 </body>
 </html>

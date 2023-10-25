@@ -324,6 +324,13 @@ body {
     font-weight: 600;
 }
 
+.p-gg {
+    margin-top: 42px;
+    text-align: center;
+    color: #0B5D1E;
+    font-weight: 700;
+}
+
 .pure-menu-link-hidden {
     color: #424242;
     display:block;
@@ -403,4 +410,23 @@ kbd {
     line-height: 1;
     padding: 2px 4px;
     white-space: nowrap;
-  }
+}
+
+.reset-button {
+    display: block;
+    margin: auto;
+    color: #FBF5F3;
+    background-color: #F8333C;
+    border-radius: 1px;
+    font-size: 125%;
+    border: 1px solid #3B0D11;
+    padding: 0.5em 1em;
+    text-shadow: 1px 1px 1px #141414;
+    transition: 250ms;
+    cursor: pointer;
+}
+
+.reset-button:focus,
+.reset-button:hover {
+    background-color: #3B0D11;
+}

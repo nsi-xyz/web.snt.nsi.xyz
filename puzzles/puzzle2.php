@@ -50,6 +50,9 @@ $slot = rand(1, 2);
                 };
                 ?>
             </div>
+            <script>
+            const currentPuzzle = <?php echo getCurrentPuzzleID(); ?>;
+            </script>
             <script src="../js/ui.js"></script>
         </div>
         <style>

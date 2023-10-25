@@ -28,8 +28,7 @@ include("../include/functions.php");
                 <h2 class="content-subhead">Bloquer la publicité en ligne</h2>
                 <p class="p-content">Il est souhaitable de bloquer la publicité en ligne pour plusieurs raisons. Tout d'abord, la publicité intrusive peut être agaçante pour les utilisateurs, perturbant leur expérience en ligne en envahissant leur navigation avec des annonces non pertinentes. De plus, la publicité peut collecter des données personnelles sans le consentement des utilisateurs, soulevant des préoccupations en matière de protection de la vie privée. Le suivi comportemental et la collecte de données pour le ciblage publicitaire soulèvent des questions sur l'utilisation responsable des informations personnelles. En bloquant les publicités, les utilisateurs peuvent mieux contrôler leur vie numérique, éviter les distractions inutiles et protéger leur vie privée. Cependant, il est important de noter que le blocage de la publicité peut également affecter la viabilité économique de nombreux sites web et services en ligne qui dépendent des revenus publicitaires pour leur modèle commercial.</p>
                 <h2 class="content-subhead">Installer un bloqueur de publicité</h2>
-                <p class="p-content">Vous devez installer dans ce navigateur un bloqueur de publicité.<br>Après avoir installé un tel bloqueur, il faudra rafraîchir la page.<br>Si cette énigme s'est résolue toute seule, c'est que vous utilisiez un navigateur dans lequel un bloqueur de publicité était déjà actif, probablement déjà installé par un précédent utilisateur.
-</p>
+                <p class="p-content">Vous devez installer dans ce navigateur un bloqueur de publicité.<br>Après avoir installé un tel bloqueur, il faudra rafraîchir la page.<br>Si cette énigme s'est résolue toute seule, c'est que vous utilisiez un navigateur dans lequel un bloqueur de publicité était déjà actif, probablement déjà installé par un précédent utilisateur.</p>
                 <?php
                 if (isset($_COOKIE["puzzle9"])) {
                     tickPuzzle();
@@ -39,6 +38,9 @@ include("../include/functions.php");
         </div>
     <?php include("../include/footer.php"); ?>
     </div>
+    <script>
+    const currentPuzzle = <?php echo getCurrentPuzzleID(); ?>;
+    </script>
     <script src="../js/ui.js"></script>
     <?php include("../include/timer.php"); ?>
     <?php
