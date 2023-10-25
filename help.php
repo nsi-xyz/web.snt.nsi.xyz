@@ -72,7 +72,7 @@ include("./include/functions.php");
         <p class="p-content">Cette action ouvrira les outils de développement du navigateur, et vous verrez le code source HTML de la page dans l'onglet correspondant.</p>
         <h2 id="Effacer sa progression et recommencer les énigmes" class="content-subhead">Effacer sa progression et recommencer les énigmes</h2>
         <p class="p-content">En cliquant sur le bouton si dessous, vous effacez votre progression et recommencez de zéro. Cette action est irréversible.</p>
-        <button class ="reset-button" type="button" onclick="tickPuzzle()">Réinitialiser</button>
+        <button class ="reset-button" type="button" onclick="tickPuzzle()">Effacer / Recommencer</button>
         <?php
         if (isset($_COOKIE["reset-b"])) {
           resetSession();
