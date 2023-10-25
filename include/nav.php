@@ -32,9 +32,10 @@ $class = $p == "help.php" ? "pure-menu-item menu-item-divided pure-menu-selected
 echo '            <li class="'.$class.'"><a href="'.$p_h.'/help.php" class="pure-menu-link">&#x1F537; Aide & Boite à outils</a></li>
           </ul>
       </div>';
-echo '            <div class="menu-bottom"><li class="pure-menu-item-timer">Il reste <timer>'.$_SESSION["time_left"].'</timer> minutes</li>
+$time = isset($_SESSION["time_left"]) ? $_SESSION["time_left"] : "?";
+echo '            <div class="menu-bottom"><li class="pure-menu-item-timer">Il reste <timer>'.$time.'</timer> minutes</li>
   ';
-echo '            <li class="pure-menu-item-reset"><a href="./help.php#reset" class="pure-menu-link">&#x274C; Effacer / Recommencer</a></li></div>
+echo '            <li class="pure-menu-item-reset"><a href="'.$p_h.'/help.php#reset" class="pure-menu-link">&#x274C; Effacer / Recommencer</a></li></div>
     </div>
 ';
 ?>

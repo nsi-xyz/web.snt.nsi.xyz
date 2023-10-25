@@ -1,8 +1,11 @@
 <?php
-$timer_duration = 3600;
+$timer_duration = SESSDURATION;
 $current_time = time();
 $elapsed_time = $current_time - $_SESSION['time_init'];
 $_SESSION["time_left"] = $timer_duration - $elapsed_time <= 0 ? $timer_duration : $timer_duration - $elapsed_time;
+if ($_SESSION["time_left"] <= 0) {
+    resetSession();
+}
 ?>
 
 <script>

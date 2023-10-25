@@ -26,6 +26,8 @@ include("./include/functions.php");
         <?php include("./include/table.php"); ?>
         <!-- Start Debug -->
         <?php
+        $id = session_id();
+        echo "SESSION ID: ".$id;
         if (isset($_SESSION["resolvedPuzzles"])) {
           echo "<p>DEBUG</p>";
           echo "<pre>";
@@ -35,8 +37,7 @@ include("./include/functions.php");
           echo 'none';
         }
         if (isset($_POST['reset_session'])) {
-          session_unset();
-          echo '<script>window.location.replace(window.location.href);</script>';
+          resetSession();
         }
         ?>
         <form method="POST" action="">

@@ -2,10 +2,9 @@
 include("../include/checksession.php");
 include("../include/functions.php");
 include("../include/dataget.php");
-$comments_in_css_file = array("", "", "", "", "", "", "");
 if (!isset($_SESSION["magic_word_2"])) {
-    $_SESSION["magic_word_2"] = getMysteryTag();
-};
+    $_SESSION["magic_word_2"] = getMysteryComputerScientist();
+}
 $slot = rand(1, 2);
 ?>
 <!DOCTYPE html>
@@ -60,7 +59,6 @@ $slot = rand(1, 2);
         </style>
         <?php include("../include/footer.php"); ?>
     </div>
-    <script src="../js/ui.js"></script>
     <?php include("../include/timer.php"); ?>
 </body>
 </html>

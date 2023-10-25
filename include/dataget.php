@@ -25,19 +25,33 @@ function getKoMessage() {
     $retry_comment = $retry_comments[array_rand($retry_comments)];
     $change_puzzle_comment = $change_puzzle_comments[array_rand($change_puzzle_comments)];
     return $retry_comment." ".$change_puzzle_comment;
-};
+}
 
-// Liste de balises HTML utilisée pour les énigmes 1 et 2.
-function getMysteryTag() {
-    $tags = array("span", "body", "div", "p", "h1", "h2", "h3", "a", "img", "ul", "li", "ol", "table", "tr", "td", "th", "form", "input", "button", "textarea", "section", "header", "footer", "nav", "article", "aside", "main", "figure", "figcaption", "em", "strong", "i", "b", "u", "strike", "mark", "code", "pre");
-    return $tags[array_rand($tags)];
-};
+// Liste de noms d'informaticiens pour les énigmes 1 et 2.
+function getMysteryComputerScientist() {
+    $maleComputerScientists = array("Alan Turing", "Linus Torvalds", "John von Neumann", "Donald Knuth", "Tim Berners-Lee", "Larry Page", "Sergey Brin", "John McCarthy", "Vint Cerf", "Ken Thompson", "Alan Kay", "Donna Strickland", "Shafi Goldwasser", "Brenda Milner", "Raj Reddy", "Leslie Lamport", "Susan Eggers");
+    $femaleComputerScientists = array("Ada Lovelace", "Grace Hopper", "Margaret Hamilton", "Ada Yonath", "Barbara Liskov", "Frances E. Allen", "Ruchi Sanghvi", "Radia Perlman", "Adele Goldberg", "Karen Sparck Jones", "Vera Rubin", "Cynthia Breazeal", "Dorothy Crowfoot Hodgkin", "Marian Croak", "Wendy Hall", "Jude Milhon", "Rosalind Picard");
+    $randomMale = $maleComputerScientists[array_rand($maleComputerScientists)];
+    $randomFemale = $femaleComputerScientists[array_rand($femaleComputerScientists)];
+    $flip = mt_rand(0, 1);
+    if ($flip === 0) {
+        return $randomMale;
+    } else {
+        return $randomFemale;
+    }
+}
+
 
 // Liste d'attributs CSS utilisée pour les énigmes 3 et 4.
 function getMysteryAttribute() {
     $attributes = array("color", "font-size", "background-color", "border", "margin", "padding", "text-align", "width", "height", "display", "position", "top", "left", "right", "bottom", "font-family", "line-height", "letter-spacing", "text-transform", "text-decoration", "text-shadow", "box-shadow", "box-sizing", "cursor", "z-index", "border-radius", "opacity", "transform", "transition", "border-collapse", "text-overflow", "white-space", "overflow", "float", "clear", "list-style", "word-wrap", "box-sizing", "vertical-align", "user-select", "position", "font-weight", "outline", "flex", "visibility", "content", "quotes", "counter-increment", "counter-reset", "flex-direction", "flex-wrap", "justify-content", "align-items", "align-content", "order", "flex-grow", "flex-shrink", "flex-basis", "align-self");
     return $attributes[array_rand($attributes)];
-};
+}
+
+function getMysteryLinux() {
+    $distributions = array("debian", "ubuntu", "fedora", "centos", "arch", "mint", "redhat",  "gentoo", "suse");
+    return $distributions[array_rand($distributions)];
+}
 
 // Liste de balises couleurs utilisée pour l'énigme 10.
 function getMysteryColor() {
@@ -45,5 +59,5 @@ function getMysteryColor() {
     $key = array_rand($colors);
     $value = $colors[$key];
     return array('hex' => $key, 'name' => $value);
-};
+}
 ?>

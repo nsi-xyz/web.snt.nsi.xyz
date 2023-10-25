@@ -1,8 +1,11 @@
 <?php
 include("../include/checksession.php");
 include("../include/functions.php");
-$cookie_name = "Cookie_au_chocolat";
-$cookie_value = "SW5ncsOpZGllbnRzIDoNCjIwMCBnIGRlIGNob2NvbGF0IG5vaXIgKG91IHDDqXBpdGVzIGRlIGNob2NvbGF0KQ0KMjI1IGcgZGUgZmFyaW5lIHRvdXQgdXNhZ2UNCjExNSBnIGRlIGJldXJyZSBtb3UNCjE1MCBnIGRlIHN1Y3JlIGJydW4NCjEgxZN1Zg0KMSBjdWlsbMOocmUgw6AgY2Fmw6kgZCdleHRyYWl0IGRlIHZhbmlsbGUNCjEvMiBjdWlsbMOocmUgw6AgY2Fmw6kgZGUgbGV2dXJlIGNoaW1pcXVlDQoxLzIgY3VpbGzDqHJlIMOgIGNhZsOpIGRlIGJpY2FyYm9uYXRlIGRlIHNvdWRlDQoxIHBpbmPDqWUgZGUgc2Vs";
+$tick = FALSE;
+if (!isset($_COOKIE[COOKIE7["name"]])) {
+    $tick = TRUE;
+    setcookie(COOKIE7["name"], "", time() - SESSDURATION, "/");
+}
 ?>
 <!DOCTYPE html>
 <html lang="fr">
@@ -22,11 +25,22 @@ $cookie_value = "SW5ncsOpZGllbnRzIDoNCjIwMCBnIGRlIGNob2NvbGF0IG5vaXIgKG91IHDDqXB
         <?php include("../include/nav.php"); ?>
         <div id="main">
             <?php include("../include/header.php"); ?>
-            <?php
-                if (!isset($_COOKIE[$cookie_name])) {
+            <?php include("../include/compute.php"); ?>
+            <div class="content">
+                <h2 class="content-subhead">Effacer un cookie espion</h2>
+                <p class="p-content">Pour résoudre cette énigme, il va falloir effacer un cookie. Attention, effacer tous les cookies réinitialise le jeu, tu perds les énigmes que tu as déjà résolu, donc lis attentivement les consignes.</p>
+                <h2 class="content-subhead">Un cookie ? &#x1F60B;</h2>
+                <p class="p-content">Un cookie est un petit morceau de données stocké sur l'ordinateur d'un utilisateur lorsqu'il visite un site web. Les cookies sont utilisés par les sites web pour stocker des informations temporaires, comme les préférences de l'utilisateur, les données de connexion, ou le suivi de l'activité sur le site. Ils permettent au site de se souvenir de l'utilisateur lors de visites ultérieures, ce qui peut améliorer l'expérience utilisateur en personnalisant le contenu ou en maintenant une session active. Dans le cadre de la sécurité et de la vie privée, les utilisateurs ont généralement le contrôle sur la gestion et la suppression des cookies sur leur navigateur.</p>
+                <h2 class="content-subhead">Un cookie pour les surveiller tous !</h2>
+                <p class="p-content">Les cookies, initialement conçus pour améliorer l'expérience utilisateur en permettant aux sites web de stocker des informations temporaires, ont malheureusement été détournés de leur fonction première pour le traçage des utilisateurs. Cette pratique, souvent appelée <q>traçage par cookies</q> ou <q>tracking par cookies</q>, implique l'utilisation de ces petits fichiers pour collecter des informations sur le comportement de l'utilisateur en ligne. Les annonceurs et les entreprises de suivi utilisent des cookies pour suivre les sites web que vous visitez, les produits que vous consultez, et même vos intérêts personnels. Ces données sont ensuite utilisées pour créer des profils d'utilisateurs, permettant aux annonceurs de diffuser des publicités ciblées.</p>
+                <h2 class="content-subhead">Effacer un cookie espion</h2>
+                <p class="p-content">Pour résoudre cette énigme, il va falloir effacer un cookie : <span class="p-code"><?php echo COOKIE7["name"]; ?></span>.<br>Après avoir supprimer le cookie, veillez rafraîchir la page en utilisant la touche <kbd>F5</kbd>.</p>
+                <?php
+                if ($tick === TRUE) {
                     tickPuzzle();
                 }
                 ?>
+            </div>
         </div>
     <?php include("../include/footer.php"); ?>
     </div>

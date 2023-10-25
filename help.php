@@ -26,12 +26,12 @@ include("./include/functions.php");
       </div>
       <div class="content">
         <h2 id="Comment afficher le code source HTML d'une page web" class="content-subhead">Comment afficher le code source HTML d'une page web</h2>
-        <p class="p-content"><strong>L'une des méthodes les plus simples</strong> pour afficher le code source d'une page web est d'utiliser le raccourci clavier "Ctrl + U" (ou "Cmd + U" sur Mac) dans de nombreux navigateurs. Ce raccourci ouvre une nouvelle fenêtre ou un nouvel onglet contenant le code source HTML de la page web.</p>
-        <p class="p-content"><strong>Une autre méthode est de faire</strong> : "Clic droit > Inspecter"<br>Cette option est disponible dans la plupart des navigateurs, y compris Google Chrome, Mozilla Firefox, et Microsoft Edge.</p>
+        <p class="p-content"><strong>L'une des méthodes les plus simples</strong> pour afficher le code source d'une page web est d'utiliser le raccourci clavier <kbd>Ctrl</kbd> + <kbd>U</kbd> (ou <kbd>Cmd</kbd> + <kbd>U</kbd> sur Mac) dans de nombreux navigateurs. Ce raccourci ouvre une nouvelle fenêtre ou un nouvel onglet contenant le code source HTML de la page web.</p>
+        <p class="p-content"><strong>Une autre méthode est de faire</strong> : <span class="p-code">Clic droit > Inspecter</span><br>Cette option est disponible dans la plupart des navigateurs, y compris Google Chrome, Mozilla Firefox, et Microsoft Edge.</p>
         <ol>
             <li>Allez sur la page web dont vous souhaitez afficher le code source.</li>
             <li>Cliquez avec le bouton droit de la souris sur n'importe quelle partie de la page (sauf sur des liens ou des images) pour faire apparaître un menu contextuel.</li>
-            <li>Sélectionnez "Inspecter" ou "Inspecter l'élément" dans le menu.</li>
+            <li>Sélectionnez <q>Inspecter</q> ou <q>Inspecter l'élément</q> dans le menu.</li>
         </ol>
         <p class="p-content">Cette action ouvrira les outils de développement du navigateur, et vous verrez le code source HTML de la page dans l'onglet correspondant.</p>
         <h2 id="Comment afficher le code source CSS d'une page web" class="content-subhead">Comment afficher le code source CSS d'une page web</h2>
@@ -70,7 +70,7 @@ include("./include/functions.php");
             <li>Sélectionnez "Inspecter" ou "Inspecter l'élément" dans le menu.</li>
         </ol>
         <p class="p-content">Cette action ouvrira les outils de développement du navigateur, et vous verrez le code source HTML de la page dans l'onglet correspondant.</p>
-        <h2 id=reset" class="content-subhead">Effacer sa progression et recommencer les enigmes</h2>
+        <h2 id="reset" class="content-subhead">Effacer sa progression et recommencer les enigmes</h2>
         <p class="p-content">En cliquant sur le bouton si dessous, vous effacez votre progression et recommencez de zéro. Cette action est irréversible. 
           </p>
       </div>

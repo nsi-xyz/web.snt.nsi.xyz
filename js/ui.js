@@ -1,6 +1,6 @@
 (function (window, document) {
 
-    // Cette fonction récupère les éléments HTML que nous utilisons fréquemment, tels que le menu et les liens, en fonction de leurs identifiants.
+    // This function retrieves HTML elements that we frequently use, such as the menu and links, based on their identifiers.
     function getElements() {
         return {
             layout: document.getElementById('layout'),
@@ -9,31 +9,31 @@
         };
     }
 
-    // Cette fonction ajoute ou supprime une classe CSS d'un élément pour basculer son état actif.
+    // This function adds or removes a CSS class from an element to toggle its active state.
     function toggleClass(element, className) {
         var classes = element.className.split(/\s+/);
         var length = classes.length;
         var i = 0;
 
-        // Nous parcourons les classes existantes pour trouver la classe à ajouter ou supprimer.
+        // We iterate through the existing classes to find the class to add or remove.
         for (; i < length; i++) {
             if (classes[i] === className) {
-                classes.splice(i, 1); // Si la classe existe, nous la supprimons.
+                classes.splice(i, 1); // If the class exists, we remove it.
                 break;
             }
         }
-        // Si la classe n'a pas été trouvée, nous l'ajoutons.
+        // If the class has not been found, we add it.
         if (length === classes.length) {
             classes.push(className);
         }
 
-        // Nous mettons à jour la liste des classes de l'élément.
+        // We update the list of classes for the element.
         element.className = classes.join(' ');
     }
 
-    // Cette fonction bascule l'état actif de plusieurs éléments, comme le layout, le menu et le menuLink.
+    // This function toggles the active state of multiple elements, such as the layout, menu, and menuLink.
     function toggleAll() {
-        var active = 'active'; // Le nom de la classe CSS "active".
+        var active = 'active'; // The name of the CSS class is "active".
         var elements = getElements();
 
         toggleClass(elements.layout, active);
@@ -41,7 +41,7 @@
         toggleClass(elements.menuLink, active);
     }
     
-    // Cette fonction gère les événements de clic sur la page.
+    // This function handles click events on the page.
     function handleEvent(e) {
         var elements = getElements();
         
@@ -55,5 +55,30 @@
     }
     
     document.addEventListener('click', handleEvent);
+
+    if (currentPuzzle == 6) {
+        let help = "help";
+        document.addEventListener('keypress', function (e) {
+            if (e.key == magic_word[index]) {
+                index++;
+                if (index == magic_word.length) {
+                    index = 0;
+                    let date = new Date();
+                    date.setTime(date.getTime() + 1000);
+                    let expiration = "expires=" + date.toUTCString();
+                    document.cookie = "puzzle6=ok;" + expiration + ";path=/";
+                    window.location.replace(window.location.href);
+                }
+            }
+            if (e.key == help[index]) {
+                index++;
+                if (index == help.length) {
+                    index = 0;
+                    alert("Le code source JavaScript contient le mot clé, qu'il faudra taper sur cette page, pour réussir cette énigme.");
+                }
+            }
+        });
+    }
+
 
 }(this, this.document));

@@ -5,7 +5,7 @@ include("../include/dataget.php");
 $header_attributes = array("margin", "color", "text-align", "padding", "border-bottom");
 if (!isset($_SESSION["magic_word_4"])) {
     $_SESSION["magic_word_4"] = $header_attributes[array_rand($header_attributes)];
-};
+}
 ?>
 <!DOCTYPE html>
 <html lang="fr">

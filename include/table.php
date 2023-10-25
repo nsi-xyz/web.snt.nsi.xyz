@@ -1,4 +1,5 @@
 <table class="table">
+  <p class="p-table">Cette énigme est déjà résolue. Voici votre progression :</p>
           <tbody>
             <tr>
               <?php

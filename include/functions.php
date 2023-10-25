@@ -48,16 +48,33 @@ function tickPuzzle($puzzleID = NULL) {
     }
     if (!puzzleIsResolved($puzzleID)) {
         $_SESSION["resolvedPuzzles"][] = $puzzleID;
-        include("../include/nav.php");
+        include("./include/nav.php");
         echo '<script>window.location.replace(window.location.href);</script>';
     }
 }
 
 /**
- * La fonction réinitialise la session.
+ * La fonction réinitialise la session et supprime tous les cookies.
  */
 function resetSession() {
+    $cookies = array(COOKIE7, COOKIE8, COOKIECHOCOLAT, COOKIECHOCOLATINE, COOKIEHAZLENUT, COOKIESESSION, COOKIEPUBLICITAIRE, COOKIEGOOGLE, COOKIEFACEBOOK, COOKIEAMAZON);
+    for ($i = 0; $i <= 9; $i++) {
+        $cookie = $cookies[$i];
+        if (isset($_COOKIE[$cookie["name"]])) {
+            setcookie($cookie["name"], $cookie["value"], time() - SESSDURATION, "/");
+        }
+    }
+    if (isset($_COOKIE[session_name()])) {
+        setcookie(session_name(), "", time() - SESSDURATION);
+    }
     session_unset();
+    session_destroy();
+    echo '<script>
+var date = new Date();
+date.setTime(date.getTime() + '.(SESSDURATION*1000).');
+var expiration = "expires=" + date.toUTCString();
+document.cookie = "reset=reset;" + expiration + ";path=/";
+</script>';
     echo '<script>window.location.replace(window.location.href);</script>';
 }
 ?>
