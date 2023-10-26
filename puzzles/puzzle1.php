@@ -50,7 +50,7 @@ $slot = rand(1, 5);
                 <p class="p-content">Le HTML, acronyme de <q>Hypertext Markup Language</q> (langage de balisage hypertexte), est le langage de base utilisé pour créer des pages web. Il s'agit d'un langage de balisage qui permet de structurer le contenu d'une page web en utilisant des éléments, appelés balises, pour définir la signification et la présentation du texte et des médias. Par exemple, une balise <span class="p-code">&lt;p&gt;</span> est utilisée pour définir un paragraphe de texte, tandis qu'une balise <span class="p-code">&lt;img&gt;</span> est employée pour insérer une image. Le HTML joue un rôle crucial en indiquant au navigateur web comment afficher le contenu, ce qui permet de présenter le texte, les images et d'autres éléments de manière structurée et cohérente. L'une des caractéristiques intéressantes du HTML est qu'il permet d'inclure des commentaires dans le code source des pages web. Ces commentaires, délimités par <span class="p-code">&lt;!--</span> et <span class="p-code">--&gt;</span>, sont invisibles pour les visiteurs de la page, mais ils sont visibles dans le code source. Les commentaires sont souvent utilisés par les développeurs pour ajouter des notes, des explications ou des indications sur le code, ce qui peut être très utile lors de la maintenance et de la collaboration sur un site web. Ainsi, le HTML offre la possibilité d'inclure des commentaires cachés par défaut, ce qui permet de garder une trace des détails importants concernant la structure et le fonctionnement de la page.</p>
                 <h2 class="content-subhead">Une personne ayant contribué au développement de l'informatique</h2>
                 <!-- Ci-dessous se trouve un lien cliquable qui peut vous aider à résoudre l'énigme. Cliquez dessus pour obtenir un indice ! 🔍 -->
-                <p class="p-content">Sur cette page, a été cachée le nom d'une personne ayant contribué au développement de l'informatique. Maintenant il faut trouver <a href="./help.php#Comment afficher le code source HTML d'une page web" class="link">comment afficher le code source source d'une page HTML</a>. &#x1F642;</p>
+                <p class="p-content">Sur cette page, a été cachée le nom d'une personne ayant contribué au développement de l'informatique. Maintenant il faut trouver <a href="../help.php#Comment afficher le code source HTML d'une page web" class="link">comment afficher le code source source d'une page HTML</a>. &#x1F642;</p>
                 <?php
                 if (!puzzleIsResolved()) {
                 echo '                <form method="GET" action="" class="pure-form">';
@@ -60,7 +60,7 @@ $slot = rand(1, 5);
                         tickPuzzle();
                     }
                 }
-                echo '                <input type="text" name="response" placeholder="Mot mystère" required>
+                echo '                <input type="text" name="response" placeholder="Réponse énigme '.getCurrentPuzzleID().'" required>
                 <button type="submit" class="pure-button">Valider</button>
             </form>';
                 } else {

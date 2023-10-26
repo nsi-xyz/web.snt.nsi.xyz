@@ -18,6 +18,8 @@ function updateTimer() {
     if (value > 0) {
         value--;
         timer.textContent = value.toString().padStart(2, "0");
+    } else {
+        window.location.replace(window.location.href);
     }
 }
 

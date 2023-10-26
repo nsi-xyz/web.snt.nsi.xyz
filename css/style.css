@@ -312,6 +312,11 @@ body {
     text-align: justify;
 }
 
+.p-back-message {
+    text-align: justify;
+    color: #7cb342;
+}
+
 .p-code {
     font-family: 'Courier New', Courier, monospace;
     color: #424242;

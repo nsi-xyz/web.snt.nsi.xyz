@@ -42,7 +42,7 @@ $slot = rand(1, 2);
                         tickPuzzle();
                     }
                 }
-                echo '                <input type="text" name="response" placeholder="Mot mystère" required>
+                echo '                <input type="text" name="response" placeholder="Réponse énigme '.getCurrentPuzzleID().'" required>
                 <button type="submit" class="pure-button">Valider</button>
             </form>';
                 } else {

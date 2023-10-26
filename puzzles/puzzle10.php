@@ -26,13 +26,12 @@ if (!isset($_SESSION["magic_word_10"])) {
             <?php include("../include/header.php"); ?>
             <?php include("../include/compute.php"); ?>
             <div class="content">
-                <h2 class="content-subhead">Le mot mystère</h2>
-                <p class="p-content">Sur cette page, a été cachée un mot mystère. Pour résoudre cette énigme, il faut trouver le mot mystère. Ce mot mystère n'est ni "mot" ni "mystère". La légende raconte que sur une page d'un site web, on peut cacher du texte dans le code de la page HTML.</p>
-                <h2 class="content-subhead">Le web</h2>
-                <p class="p-content">Le World Wide Web, communément appelé le web, est un vaste réseau d'informations interconnectées accessible via Internet. Il s'agit d'une toile virtuelle qui englobe des millions de sites web, de pages, de documents, d'images et de ressources diverses, le tout relié par des hyperliens. Le web est l'un des aspects les plus visibles et largement utilisés d'Internet, permettant aux utilisateurs du monde entier de naviguer, de rechercher, de partager et d'accéder à une multitude d'informations. Il repose sur des technologies telles que le HTML (Hypertext Markup Language), le CSS (Cascading Style Sheets) et le JavaScript pour la création de pages web interactives et attrayantes. Grâce à cette structure en toile d'araignée, le web offre une plateforme riche en contenus et en possibilités, transformant la manière dont nous communiquons, travaillons, apprenons et nous divertissons.</p>
-                <h2 class="content-subhead">Le HTML</h2>
-                <p class="p-content">Le HTML, acronyme de "Hypertext Markup Language" (langage de balisage hypertexte), est le langage de base utilisé pour créer des pages web. Il s'agit d'un langage de balisage qui permet de structurer le contenu d'une page web en utilisant des éléments, appelés balises, pour définir la signification et la présentation du texte et des médias. Par exemple, une balise <p> est utilisée pour définir un paragraphe de texte, tandis qu'une balise <img> est employée pour insérer une image. Le HTML joue un rôle crucial en indiquant au navigateur web comment afficher le contenu, ce qui permet de présenter le texte, les images et d'autres éléments de manière structurée et cohérente. L'une des caractéristiques intéressantes du HTML est qu'il permet d'inclure des commentaires dans le code source des pages web. Ces commentaires, délimités par <!-- et -->, sont invisibles pour les visiteurs de la page, mais ils sont visibles dans le code source. Les commentaires sont souvent utilisés par les développeurs pour ajouter des notes, des explications ou des indications sur le code, ce qui peut être très utile lors de la maintenance et de la collaboration sur un site web. Ainsi, le HTML offre la possibilité d'inclure des commentaires cachés par défaut, ce qui permet de garder une trace des détails importants concernant la structure et le fonctionnement de la page.</p>
-                <h2 class="content-subhead">Le mot mystère</h2>
+                <h2 class="content-subhead">Partie 1 : La modification manuelle de l'URL</h2>
+                <p class="p-content">Pour accéder à cette page, vous avez dû modifier manuellement l'adresse web. En effet, l'énigme 10 n'est pas reliée initialement aux autres énigmes par un lien hypertexte, le menu ayant été désactivé.</p>
+                <p class="p-back-message">Vous avez résolu la première partie de cette énigme, elle apparaît désormais dans le menu.</p>
+                <h2 class="content-subhead">Tout n'est que codage / décodage / encodage</h2>
+                <p class="p-content">Faire une page web, c'est encoder une information dans un langage de balisage appelé HTML. Améliorer la charte graphique de ce site, consiste à coder des choix de couleurs, de marges (...) dans un fichier de style <span class="p-code">.css</span>.<br>Les couleurs sont elles même codées, elles peuvent être au format décimale (R,G,B) ou au format hexadécimal, ainsi on s'affranchit de la barrière de de langue et on parle tous une même langue.<br>Pour accéder à cette page <q>cachée</q>, vous avez dû analyser l'URL des autres pages, comprendre la structure du site, et vous avez tenté votre chance avec succès.</p>
+                <h2 class="content-subhead">Partie 2 :</h2>
                 <p class="p-content">La réponse à l'énigme est <strong><?php echo $_SESSION["magic_word_10"]["hex"]; ?></strong>.</p>
                 <?php
                 if (!puzzleIsResolved()) {
@@ -43,7 +42,7 @@ if (!isset($_SESSION["magic_word_10"])) {
                         tickPuzzle();
                     }
                 }
-                echo '                <input type="text" name="response" placeholder="Mot mystère" required>
+                echo '                <input type="text" name="response" placeholder="Réponse énigme '.getCurrentPuzzleID().'" required>
                 <button type="submit" class="pure-button">Valider</button>
             </form>';
                 } else {
@@ -51,6 +50,7 @@ if (!isset($_SESSION["magic_word_10"])) {
                 }
                 ?>
             </div>
+            <?php include("../include/footer.php"); ?>
             <script>
             const currentPuzzle = <?php echo getCurrentPuzzleID(); ?>;
             </script>

@@ -34,7 +34,7 @@ if (!isset($_SESSION["magic_word_6"])) {
                 <h2 class="content-subhead">Un script JavaScript peut vous espionner</h2>
                 <p class="p-content">Des scripts JavaScript malveillants, souvent intégrés dans des sites web compromis ou dans des extensions de navigateur douteuses, peuvent potentiellement enregistrer les actions des utilisateurs, y compris les frappes au clavier, les interactions de la souris et d'autres données personnelles.</p>
                 <h2 class="content-subhead">Tapez un mot au clavier</h2>
-                <p class="p-content">Le code source JavaScript contient le mot clé, qu'il faudra taper sur cette page, pour réussir cette énigme.</p>
+                <p class="p-content">Le code source JavaScript <a href="../help.php#Inclusion des scripts JavaScript" class="link">intégré directement à la page</a> contient le mot clé, qu'il faudra taper sur cette page, pour réussir cette énigme.</p>
                 <?php
                 if (isset($_COOKIE["puzzle6"])) {
                     tickPuzzle();

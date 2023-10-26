@@ -34,7 +34,7 @@ if (!isset($_COOKIE[COOKIE7["name"]])) {
                 <h2 class="content-subhead">Un cookie pour les surveiller tous !</h2>
                 <p class="p-content">Les cookies, initialement conçus pour améliorer l'expérience utilisateur en permettant aux sites web de stocker des informations temporaires, ont malheureusement été détournés de leur fonction première pour le traçage des utilisateurs. Cette pratique, souvent appelée <q>traçage par cookies</q> ou <q>tracking par cookies</q>, implique l'utilisation de ces petits fichiers pour collecter des informations sur le comportement de l'utilisateur en ligne. Les annonceurs et les entreprises de suivi utilisent des cookies pour suivre les sites web que vous visitez, les produits que vous consultez, et même vos intérêts personnels. Ces données sont ensuite utilisées pour créer des profils d'utilisateurs, permettant aux annonceurs de diffuser des publicités ciblées.</p>
                 <h2 class="content-subhead">Effacer un cookie espion</h2>
-                <p class="p-content">Pour résoudre cette énigme, il va falloir effacer un cookie : <span class="p-code"><?php echo COOKIE7["name"]; ?></span>.<br>Après avoir supprimer le cookie, veillez rafraîchir la page en utilisant la touche <kbd>F5</kbd>.</p>
+                <p class="p-content">Pour résoudre cette énigme, il va falloir <a href="../help.php#Modifier / supprimer un cookie" class="link">effacer un cookie</a> : <span class="p-code"><?php echo COOKIE7["name"]; ?></span>.<br>Après avoir supprimer le cookie, pensez à <a href="../help.php#Comment rafraîchir / actualiser une page web" class="link">rafraîchir la page</a>.</p>
                 <?php
                 if ($tick === TRUE) {
                     tickPuzzle();
