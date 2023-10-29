@@ -45,7 +45,7 @@
     function handleEvent(e) {
         var elements = getElements();
         
-        // Si le clic se produit sur le lien du menu, nous basculons l'état actif.
+        // If the click occurs on the menu link, we toggle the active state.
         if (e.target.id === elements.menuLink.id) {
             toggleAll();
             e.preventDefault();
