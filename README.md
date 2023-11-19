@@ -1,4 +1,4 @@
-# web.snt.nsi.xyz
+# web.snt.nsi.xyz v1.1
 
 Dépot github du projet web.snt.nsi.xyz
 
