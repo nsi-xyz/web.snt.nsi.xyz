@@ -40,8 +40,8 @@ $pos = array_keys($comments_in_css_file, $_SESSION["magic_word_3"])[0] + 1;
                 if (!puzzleIsResolved()) {
                 echo '                <form method="GET" action="" class="pure-form">';
                 if (isset($_GET['response'])) {
-                    $response_f = str_replace(' ', '', str_replace('/*', '', str_replace('*/', '', $_GET["response"])));
-                    $key_f = str_replace(' ', '', str_replace('/*', '', str_replace('*/', '', $_SESSION["magic_word_3"])));
+                    $response_f = str_replace(' ', '', str_replace('/*', '', str_replace('*/', '', strtolower($_GET["response"]))));
+                    $key_f = str_replace(' ', '', str_replace('/*', '', str_replace('*/', '', strtolower($_SESSION["magic_word_3"]))));
                     if ($response_f == $key_f) {
                         tickPuzzle();
                     }
