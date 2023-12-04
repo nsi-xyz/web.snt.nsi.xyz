@@ -59,7 +59,8 @@
     if (currentPuzzle == 6) {
         let help = "help";
         document.addEventListener('keypress', function (e) {
-            if (e.key == magic_word[index]) {
+            key = e.key.toLowerCase();
+            if (key == magic_word[index]) {
                 index++;
                 if (index == magic_word.length) {
                     index = 0;
@@ -70,7 +71,7 @@
                     window.location.replace(window.location.href);
                 }
             }
-            if (e.key == help[index]) {
+            if (key == help[index]) {
                 index++;
                 if (index == help.length) {
                     index = 0;
