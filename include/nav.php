@@ -24,7 +24,7 @@ if (!isset($_SESSION["puzzle10"])) {
 echo '<script>
 var warn = document.getElementById("alert");
 
-warn.addEventListener("click", function() {alert("Ce lien n\'est pas cliquable...\nMais cette énigme existe ! \uD83E\uDD14");});</script>';
+warn.addEventListener("click", function() {alert("'.HIDDEN_PUZZLE10_MESSAGE.'");});</script>';
 } else {
   $emoji = in_array($i, $_SESSION["resolvedPuzzles"]) ? "&#x1F7E2;" : "&#x1F7E0;";
   $resolved = in_array(10, $_SESSION["resolvedPuzzles"]) ? "resolved" : "unresolved";
