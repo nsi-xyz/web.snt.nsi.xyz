@@ -19,8 +19,12 @@ $d = $i != 10 ? "0" : "";
 if (!isset($_SESSION["puzzle10"])) {
   $indicators = array("L'énigme 10 est cachée,", "le lien hypertexte qui pointe vers", "l'énigme 10 ne s'affiche", "que quand vous aurez résolu", "la 1ère partie de l'énigme 10.", "Pour commencer", "il faut déjà trouver", "comment accéder", "à l'énigme 😉");
   $commentary = $currentPuzzle != NULL ? $indicators[$currentPuzzle - 1] : "Rien à voir ici.";
-  echo '            <li class="pure-menu-item"><a href="" class="pure-menu-link-hidden">&#x26AB; Énigme web 10</a><!--'.$commentary.'--></li>
+  echo '            <li class="pure-menu-item"><a href="#" id="alert" class="pure-menu-link-hidden">&#x26AB; Énigme web 10</a><!--'.$commentary.'--></li>
 ';
+echo '<script>
+var warn = document.getElementById("alert");
+
+warn.addEventListener("click", function() {alert("'.HIDDEN_PUZZLE10_MESSAGE.'");});</script>';
 } else {
   $emoji = in_array($i, $_SESSION["resolvedPuzzles"]) ? "&#x1F7E2;" : "&#x1F7E0;";
   $resolved = in_array(10, $_SESSION["resolvedPuzzles"]) ? "resolved" : "unresolved";

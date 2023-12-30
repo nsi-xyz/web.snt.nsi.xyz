@@ -55,8 +55,10 @@ $slot = rand(1, 5);
                 if (!puzzleIsResolved()) {
                 echo '                <form method="GET" action="" class="pure-form">';
                 if (isset($_GET['response'])) {
+                    $response_f = str_replace(' ', '', strtolower($_GET["response"]));
+                    $key_f = str_replace(' ', '', strtolower($_SESSION["magic_word_1"]));
                     $response = $_GET['response'];
-                    if ($response == $_SESSION["magic_word_1"]) {
+                    if ($response_f == $key_f) {
                         tickPuzzle();
                     }
                 }

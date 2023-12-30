@@ -35,13 +35,13 @@ $pos = array_keys($comments_in_js_file, $_SESSION["magic_word_5"])[0] + 1;
                 <h2 class="content-subhead">Un commentaire JavaScript</h2>
                 <p class="p-content">Un commentaire JavaScript est un texte explicatif inséré dans le code source JavaScript d'une page web. Ces commentaires ne sont pas pris en compte par le navigateur web lors de l'exécution du code, mais ils servent à fournir des explications aux développeurs ou à documenter le code. Les commentaires JavaScript sont encadrés par les symboles <span class="p-code">/*</span> pour commencer et <span class="p-code">*/</span> pour terminer, ou par <span class="p-code">//</span> pour des commentaires sur une seule ligne. Ils aident les développeurs à comprendre le fonctionnement du code, à ajouter des notes, à désactiver temporairement des parties du code, ou à collaborer plus efficacement sur un projet en partageant des informations importantes.<br><span class="p-code">// Ceci est un commentaire JavaScript</span></p>
                 <h2 class="content-subhead">Le commentaire dans le script JavaScript</h2>
-                <p class="p-content">Dans le script JavaScript, il y a des commentaires. Vous devez <a href="../help.php#Liens vers des fichiers externes" class="link">localiser</a> le script JavaScript et le <strong><?php echo $pos == 1 ? $pos."er" : $pos."ème"; ?></strong> commentaire de ce dernier.</p>
+                <p class="p-content">Dans le script JavaScript, il y a des commentaires. Vous devez <a href="../help.php#Localiser des fichiers externes" class="link">localiser</a> le script JavaScript et le <strong><?php echo $pos == 1 ? $pos."er" : $pos."ème"; ?></strong> commentaire de ce dernier.</p>
                 <?php
                 if (!puzzleIsResolved()) {
                 echo '                <form method="GET" action="" class="pure-form">';
                 if (isset($_GET['response'])) {
-                    $response_f = str_replace(' ', '', str_replace('//', '', $_GET["response"]));
-                    $key_f = str_replace(' ', '', str_replace('//', '', $_SESSION["magic_word_5"]));
+                    $response_f = str_replace(' ', '', str_replace('//', '', strtolower($_GET["response"])));
+                    $key_f = str_replace(' ', '', str_replace('//', '', strtolower($_SESSION["magic_word_5"])));
                     if ($response_f == $key_f) {
                         tickPuzzle();
                     }

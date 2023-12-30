@@ -44,13 +44,14 @@ if (!isset($_SESSION["magic_word_4"])) {
 }</code></pre>
                 <p class="p-content">La classe css <span class="p-code">.content</span> définie ci-dessus déclare 5 propriétés auxquelles elle attribue des valeurs selon le schéma suivant :<br><span class="p-code">.content { propriété: valeur; }</span></p>
                 <h2 class="content-subhead">Trouver une propriété associé à une classe dans une feuille de style</h2>
-                <p class="p-content">Dans la feuille de style de ce site, il y a des classes CSS qui définissent des propriétés. Vous devez <a href="../help.php#Liens vers des fichiers externes" class="link">localiser</a> la feuille de style, lire son contenu, trouver la classe CSS <span class="p-code">.header</span> et une propriété CSS qu'elle définit. Vous disposez bien évidemment, comme pour chaque énigme, d'un nombre de tentatives non limité.</p>
+                <p class="p-content">Dans la feuille de style de ce site, il y a des classes CSS qui définissent des propriétés. Vous devez <a href="../help.php#Localiser des fichiers externes" class="link">localiser</a> la feuille de style, lire son contenu, trouver la classe CSS <span class="p-code">.header</span> et une propriété CSS qu'elle définit. Vous disposez bien évidemment, comme pour chaque énigme, d'un nombre de tentatives non limité. Si l'attribut ne fonctionne pas, testez-en un autre. &#x1F609;</p>
                 <?php
                 if (!puzzleIsResolved()) {
                 echo '                <form method="GET" action="" class="pure-form">';
                 if (isset($_GET['response'])) {
-                    $response = $_GET['response'];
-                    if ($response == $_SESSION["magic_word_4"]) {
+                    $response_f = str_replace(' ', '', strtolower($_GET["response"]));
+                    $key_f = str_replace(' ', '', strtolower($_SESSION["magic_word_4"]));
+                    if ($response_f == $key_f) {
                         tickPuzzle();
                     }
                 }

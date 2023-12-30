@@ -37,8 +37,9 @@ if (!isset($_SESSION["magic_word_10"])) {
                 if (!puzzleIsResolved()) {
                 echo '                <form method="GET" action="" class="pure-form">';
                 if (isset($_GET['response'])) {
-                    $response = $_GET['response'];
-                    if (strtoupper($response) == strtoupper($_SESSION["magic_word_10"]["name"])) {
+                    $response_f = str_replace(' ', '', strtolower($_GET["response"]));
+                    $key_f = str_replace(' ', '', strtolower($_SESSION["magic_word_10"]["name"]));
+                    if ($response_f == $key_f) {
                         tickPuzzle();
                     }
                 }
