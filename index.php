@@ -40,6 +40,11 @@ include("./include/functions.php");
         <p class="p-content">Des informations ont été cachées sur chacune des pages de ce site, à toi de les retrouver et pour cela tu ne dispose que de 42 minutes. Les pages étant générées aléatoirement, inutile de regarder sur l'écran de ton voisin. Pour les 9 premières énigmes, tout ce dont tu as besoin se trouve quelque part, dans les fichiers de ce site web qui contient 12 pages et 10 énigmes.</p>
       </div>
     </div>
+    <?php
+    if (!isset($_SESSION["USER"])) {
+      include("./admin/login.php");
+    }
+    ?>
     <?php include("./include/footer.php"); ?>
   </div>
   <script>
