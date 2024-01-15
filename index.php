@@ -35,7 +35,7 @@ include("./include/functions.php");
         <h2 class="content-subhead">xyz : extension de domaine de premier niveau (TLD)</h2>
         <p class="p-content">Le terme <q>.xyz</q> fait référence à une extension de domaine de premier niveau (TLD) utilisée pour les adresses Internet. Les TLD sont les parties finales des noms de domaine, telles que <q>.com</q>, <q>.org</q>, <q>.net</q>, et ainsi de suite. <q>.xyz</q> est l'un de ces TLD, et il a été introduit en 2014.</p>
         <h2 class="content-subhead">web.snt.nsi.xyz</h2>
-        <p class="p-content">web.snt.nsi.xyz est un site web qui propose 10 petites énigmes. Le site est en version <span class="p-code">1.1</span>.</p>
+        <p class="p-content">web.snt.nsi.xyz est un site web qui propose 10 petites énigmes. Le site est en version <span class="p-code">1.1.1</span>.</p>
         <h2 class="content-subhead">42 minutes pour résoudre 10 énigmes.</h2>
         <p class="p-content">Des informations ont été cachées sur chacune des pages de ce site, à toi de les retrouver et pour cela tu ne dispose que de 42 minutes. Les pages étant générées aléatoirement, inutile de regarder sur l'écran de ton voisin. Pour les 9 premières énigmes, tout ce dont tu as besoin se trouve quelque part, dans les fichiers de ce site web qui contient 12 pages et 10 énigmes.</p>
       </div>
