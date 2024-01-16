@@ -37,7 +37,8 @@ echo '            <li class="'.$class.'"><a href="'.$p_h.'/help.php" class="pure
           </ul>
       </div>';
 $time = isset($_SESSION["time_left"]) ? $_SESSION["time_left"] : "?";
-$plural = intval($time) <= 1 ? "" : "s";
+$plural = intval($time) >= 2 || $time == "?" ? "s" : "";
+
 echo '            <div class="menu-bottom"><li class="pure-menu-item-timer">Il reste <timer>'.$time.'</timer> minute'.$plural.'</li>
   ';
 echo '            <li class="pure-menu-item-reset"><a href="'.$p_h.'/help.php#Effacer sa progression et recommencer les énigmes" class="pure-menu-link">&#x274C; Effacer / Recommencer</a></li></div>
