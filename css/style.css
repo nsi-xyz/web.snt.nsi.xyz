@@ -459,3 +459,24 @@ kbd {
     font-size: 20px;
     cursor: pointer;
 }
+
+.forms {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.form {
+    display: flex;
+    flex-direction: column;
+    width: max-content;
+    padding: 1%;
+    border: #000 solid 2px;
+    border-radius: 2px;
+    margin: 4%;
+}
+
+.pure-button-primary-join {
+    background-color: #9471DE;
+    color: #fff;
+}
