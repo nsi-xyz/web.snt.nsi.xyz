@@ -466,14 +466,18 @@ kbd {
     justify-content: center;
 }
 
+.form-guest {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
 .form {
     display: flex;
     flex-direction: column;
     width: max-content;
     padding: 1%;
-    border: #000 solid 2px;
-    border-radius: 2px;
-    margin: 4%;
+    margin: 3%;
 }
 
 .pure-button-primary-join {

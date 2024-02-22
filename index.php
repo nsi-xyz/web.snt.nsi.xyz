@@ -1,6 +1,7 @@
 <?php
 include("./include/checksession.php");
 include("./include/functions.php");
+include("./panel/include/db.php");
 ?>
 <!DOCTYPE html>
 <html lang="fr">
@@ -25,7 +26,7 @@ include("./include/functions.php");
       <div class="form">
         <form class="pure-form pure-form-stacked">
           <fieldset>
-            <legend>Je suis élève</legend>
+            <legend>Rejoindre une session</legend>
             <label for="aligned-foo">Nom d'utilisateur</label>
             <input type="text" id="aligned-foo" placeholder="Nom d'utilisateur"/><br>
             <label for="aligned-foo">Code de la session</label>
@@ -35,18 +36,42 @@ include("./include/functions.php");
         </form>
       </div>
       <div class="form">
+      <form method="POST" action="" class="pure-form pure-form-stacked">
+          <fieldset>
+            <legend>Créer une session</legend>
+            <label for="stacked-email">Adresse e-mail</label>
+            <input type="email" id="stacked-email" name="email" placeholder="Adresse e-mail"/><br>
+            <label for="stacked-password">Mot de passe</label>
+            <input type="password" id="stacked-password" name="password" placeholder="Mot de passe"/><br>
+            <button type="submit" class="pure-button pure-button-primary-join">Valider</button>
+          </fieldset>
+      </form>
+      <?php
+      if (isset($_POST["email"]) && isset($_POST["password"])) {
+        $email = strtolower($_POST["email"]);
+        $request_email = $db->prepare("SELECT email FROM users WHERE email = :email");
+        $request_email->bindParam(':email', $email, PDO::PARAM_STR);
+        $request_email->execute();
+        if ($request_email->rowCount() > 0) {
+          $request_password = $db->prepare("SELECT password FROM users WHERE email = :email");
+          $request_password->bindParam(':email', $email, PDO::PARAM_STR);
+        } else {
+          echo "Ce compte n'existe pas.";
+      }
+      }
+      ?>
+      </div>
+      </section>
+      <section class="form-guest">
+      <div class="form">
       <form class="pure-form pure-form-stacked">
           <fieldset>
-            <legend>Je suis enseignant</legend>
-            <label for="stacked-email">Adresse e-mail</label>
-            <input type="email" id="stacked-email" placeholder="Adresse e-mail"/><br>
-            <label for="stacked-password">Mot de passe</label>
-            <input type="password" id="stacked-password" placeholder="Mot de passe"/><br>
-            <button type="submit" class="pure-button pure-button-primary-join">Valider</button>
+            <legend>Continuer en tant qu'invité</legend>
+            <button type="submit" class="pure-button pure-button-primary-join" formaction="./home.php">Accéder aux énigmes</button>
           </fieldset>
         </form>
       </div>
-    </section>
+      </section>
   </div>
   <?php include("./include/footer.php"); ?>
 </body>
