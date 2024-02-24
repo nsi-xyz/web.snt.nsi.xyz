@@ -39,24 +39,21 @@ include("./panel/include/db.php");
       <form method="POST" action="" class="pure-form pure-form-stacked">
           <fieldset>
             <legend>Créer une session</legend>
-            <label for="stacked-email">Adresse e-mail</label>
-            <input type="email" id="stacked-email" name="email" placeholder="Adresse e-mail"/><br>
+            <label for="aligned-foo">Nom d'utilisateur</label>
+            <input type="text" id="aligned-foo" name="username" placeholder="Nom d'utilisateur"/><br>
             <label for="stacked-password">Mot de passe</label>
             <input type="password" id="stacked-password" name="password" placeholder="Mot de passe"/><br>
             <button type="submit" class="pure-button pure-button-primary-join">Valider</button>
           </fieldset>
       </form>
       <?php
-      if (isset($_POST["email"]) && isset($_POST["password"])) {
-        $email = strtolower($_POST["email"]);
-        $request_email = $db->prepare("SELECT email FROM users WHERE email = :email");
-        $request_email->bindParam(':email', $email, PDO::PARAM_STR);
-        $request_email->execute();
-        if ($request_email->rowCount() > 0) {
-          $request_password = $db->prepare("SELECT password FROM users WHERE email = :email");
-          $request_password->bindParam(':email', $email, PDO::PARAM_STR);
+      if (isset($_POST["username"]) && isset($_POST["password"])) {
+        $user_username = strtolower($_POST["username"]);
+        $user_password = hash("sha256", $_POST["password"]);
+        if (login_success($user_username, $user_password, $db)) {
+          echo "Connexion réussi";
         } else {
-          echo "Ce compte n'existe pas.";
+          echo "Identifiant ou mot de passe incorrect.";
       }
       }
       ?>
