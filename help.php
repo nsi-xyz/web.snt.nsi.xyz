@@ -94,10 +94,10 @@ include("./include/functions.php");
         </table>
         <h2 id="Effacer sa progression et recommencer les énigmes" class="content-subhead">Effacer sa progression et recommencer les énigmes</h2>
         <p class="p-content">En cliquant sur le bouton si dessous, vous effacez votre progression et recommencez de zéro. Cette action est irréversible.</p>
-        <button class ="reset-button" type="button" onclick="tickPuzzle()">Effacer / Recommencer</button>
+        <button class ="reset-button" type="button" onclick="reset()">Effacer / Recommencer</button>
         <?php
-        if (isset($_COOKIE["reset-b"])) {
-          resetSession();
+        if (isset($_COOKIE["reset-js"])) {
+          resetSession("./index.php");
         }
         ?>
       </div>
@@ -110,11 +110,11 @@ include("./include/functions.php");
   <script src="./js/ui.js"></script>
   <?php include("./include/timer.php"); ?>
   <script>
-    function tickPuzzle() {
+    function reset() {
       let date = new Date();
       date.setTime(date.getTime() + 1000);
       let expiration = "expires=" + date.toUTCString();
-      document.cookie = "reset-b=ok;" + expiration + ";path=/";
+      document.cookie = "reset-js=ok;" + expiration + ";path=/";
       window.location.replace((window.location.href).replace("#" + encodeURIComponent("Effacer sa progression et recommencer les énigmes"), ""));
     }
     </script>

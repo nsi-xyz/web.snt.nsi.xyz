@@ -56,7 +56,7 @@ function tickPuzzle($puzzleID = null) {
 /**
  * La fonction réinitialise la session et supprime tous les cookies.
  */
-function resetSession() {
+function resetSession($redir) {
     $cookies = array(COOKIE7, COOKIE8, COOKIECHOCOLAT, COOKIECHOCOLATINE, COOKIEHAZLENUT, COOKIESESSION, COOKIEPUBLICITAIRE, COOKIEGOOGLE, COOKIEFACEBOOK, COOKIEAMAZON);
     for ($i = 0; $i <= 9; $i++) {
         $cookie = $cookies[$i];
@@ -73,7 +73,7 @@ function resetSession() {
 var date = new Date();
 date.setTime(date.getTime() + '.(SESSDURATION*1000).');
 var expiration = "expires=" + date.toUTCString();
-document.cookie = "reset=reset;" + expiration + ";path=/";
+document.cookie = "reset='.$redir.';" + expiration + ";path=/";
 </script>';
     echo '<script>window.location.replace(window.location.href);</script>';
 }

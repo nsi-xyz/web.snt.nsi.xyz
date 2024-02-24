@@ -47,9 +47,10 @@ define("COOKIEAMAZON", array(
 ));
 // Vérifications.
 if (isset($_COOKIE["reset"])) {
+  $redir = $_COOKIE["reset"];
   setcookie("reset", "", time() - SESSDURATION, "/");
   setcookie("PHPSESSID", "reset", time() + SESSDURATION, "/");
-  header('Location: ./index.php');
+  header("Location: $redir");
   echo '<script>window.location.replace(window.location.href);</script>';
 }
 if (!isset($_COOKIE["PHPSESSID"]) || $_COOKIE["PHPSESSID"] == "reset") {
@@ -68,6 +69,9 @@ if (!isset($_COOKIE["PHPSESSID"]) || $_COOKIE["PHPSESSID"] == "reset") {
 if (!isset($_SERVER["HTTPS"]) && $_SERVER["HTTP_HOST"] != "localhost") {
   header('Location: https://web.snt.nsi.xyz'.$_SERVER['PHP_SELF']);
   exit;
+}
+if (!isset($_SESSION["user_logged_in"])) {
+  $_SESSION["user_logged_in"] = "invité";
 }
 if (!isset($_SESSION["time_init"])) {
   $_SESSION["time_init"] = time();

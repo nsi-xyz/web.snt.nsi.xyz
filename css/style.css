@@ -336,11 +336,16 @@ body {
     font-weight: 700;
 }
 
+.pure-menu-link {
+    cursor: pointer;
+}
+
 .pure-menu-link-hidden {
     color: #424242;
     display:block;
     text-decoration:none;
-    white-space:nowrap
+    white-space:nowrap;
+    cursor: not-allowed;
 }
 
 .table {
