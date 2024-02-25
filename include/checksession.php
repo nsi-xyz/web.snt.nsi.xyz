@@ -1,6 +1,7 @@
 <?php
 // Constantes globales.
 define("SESSDURATION", 3600);
+define("COOKIEAUTHDURATION", 604800);
 define("GG_MESSAGE", "<p class=\"p-gg\">Bravo, vous avez résolu les 10 énigmes de web.snt.nsi.xyz. N'hésitez pas à chercher les pages cachées sur <a class=\"link\" href=\"https://labohelp.nsi.xyz/\" target=\"_blank\">LaboHelp</a> ou à explorer <a class=\"link\" href=\"https://nsi42.net/\" target=\"_blank\">nsi42.net</a> &#x1F609;");
 define("HIDDEN_PUZZLE10_MESSAGE", "Ce lien n\'est pas cliquable...\\nMais cette énigme existe ! \uD83E\uDD14");
 define("PUZZLE_ALREADY_RESOLVED_MESSAGE", "<p class=\"p-table\">Cette énigme est déjà résolue. Voici votre progression :</p>");
@@ -70,8 +71,20 @@ if (!isset($_SERVER["HTTPS"]) && $_SERVER["HTTP_HOST"] != "localhost") {
   header('Location: https://web.snt.nsi.xyz'.$_SERVER['PHP_SELF']);
   exit;
 }
-if (!isset($_SESSION["user_logged_in"])) {
+if (!isset($_SESSION["user_logged_in"]) && !isset($_COOKIE["LOGGEDIN"])) {
   $_SESSION["user_logged_in"]["username"] = "invité";
+}
+if (isset($_SESSION["user_logged_in"]["username"]) && $_SESSION["user_logged_in"]["username"] != "invité") {
+  if (!isset($_COOKIE["LOGGEDIN"])) {
+    setcookie("LOGGEDIN", $_SESSION["user_logged_in"]["username"]."_".$_SESSION["user_logged_in"]["password"], time() + COOKIEAUTHDURATION, "/");
+  }
+}
+if (isset($_COOKIE["LOGGEDIN"])) {
+  $cookie_username = explode("_", $_COOKIE["LOGGEDIN"])[0];
+  $cookie_password = explode("_", $_COOKIE["LOGGEDIN"])[1];
+  if (login_success($cookie_username, $cookie_password, $db)) {
+    $_SESSION["user_logged_in"] = getRows($db, "users", "*", "username = \"$cookie_username\"");
+  }
 }
 if (!isset($_SESSION["time_init"])) {
   $_SESSION["time_init"] = time();

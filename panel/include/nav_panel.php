@@ -18,7 +18,7 @@
 </div>
 <?php
 if (isset($_COOKIE["reset-js"])) {
-  resetSession("../index.php");
+  resetSession("../index.php", 1);
 }
 ?>
 <script>

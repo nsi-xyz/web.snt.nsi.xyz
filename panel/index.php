@@ -1,7 +1,7 @@
 <?php
-include("../include/checksession.php");
-include("../include/functions.php");
 include("./include/db.php");
+include("../include/functions.php");
+include("../include/checksession.php");
 ?>
 <!DOCTYPE html>
 <html lang="fr">

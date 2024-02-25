@@ -1,8 +1,8 @@
 <?php
-include("./include/checksession.php");
-include("./include/functions.php");
 include("./panel/include/db.php");
-if ($_SESSION["user_logged_in"]["username"] != "invité") {
+include("./include/functions.php");
+include("./include/checksession.php");
+if (isset($_SESSION["user_logged_in"]) && $_SESSION["user_logged_in"]["username"] != "invité") {
   header('Location: ./panel/');
 }
 ?>
