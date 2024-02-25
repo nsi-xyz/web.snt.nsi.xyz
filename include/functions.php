@@ -136,4 +136,8 @@ function sessionInProgress($database, $user_id) {
     }
     return false;
 }
+
+function createSession() {
+    //todo
+}
 ?>
