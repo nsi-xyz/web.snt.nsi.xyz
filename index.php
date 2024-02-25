@@ -53,7 +53,6 @@ if ($_SESSION["user_logged_in"]["username"] != "invité") {
       if (isset($_POST["username"]) && isset($_POST["password"])) {
         $user_username = strtolower($_POST["username"]);
         $user_password = hash("sha256", $_POST["password"]);
-        print_r(getRows($db, "users", "*", "username = \"$user_username\""));
         if (login_success($user_username, $user_password, $db)) {
           $_SESSION["user_logged_in"] = getRows($db, "users", "*", "username = \"$user_username\"");
           echo "Connexion réussi";
