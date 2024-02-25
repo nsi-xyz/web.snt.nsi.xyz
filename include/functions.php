@@ -78,7 +78,6 @@ document.cookie = "reset='.$redir.';" + expiration + ";path=/";
     echo '<script>window.location.replace(window.location.href);</script>';
 }
 
-
 /**
  * La fonction récupère une ligne spécifique d'une table de base de données sur la base d'une requête donnée.
  * 
@@ -90,12 +89,11 @@ document.cookie = "reset='.$redir.';" + expiration + ";path=/";
  * de données.
  * @return array
  */
-function getRow($database, $relation, $attribut, $query) {
+function getRows($database, $relation, $attribut, $query, $force_multiples_rows = 0) {
     $sql = "SELECT $attribut FROM $relation WHERE $query";
     $stmp = $database->prepare($sql);
     $stmp->execute();
-    $result = $stmp->fetch(PDO::FETCH_ASSOC);
-    return $result;
+    return rowsCount($database, $relation, $query) > 1 || $force_multiples_rows == 1 ? $stmp->fetchAll() : $stmp->fetch(PDO::FETCH_ASSOC);
 }
 
 /**
@@ -106,17 +104,12 @@ function getRow($database, $relation, $attribut, $query) {
  * @param $query Ce paramètre représente la condition pour chercher précisemment si la donnée existe.
  * @return bool
  */
-function rowExists($database, $relation, $query) {
+function rowsCount($database, $relation, $query) {
     $sql = "SELECT * FROM $relation WHERE $query";
     $stmp = $database->prepare($sql);
     $stmp->execute();
-    if ($stmp->rowCount() > 0) {
-        return true;
-    }
-    return false;
+    return $stmp->rowCount();
 }
-
-
 
 /**
  * La fonction vérifie si un utilisateur avec le nom d'utilisateur et le mot de passe
@@ -131,6 +124,16 @@ function rowExists($database, $relation, $query) {
  * @return bool
  */
 function login_success($username, $password, $database) {
-    return (rowExists($database, "users", "username = \"$username\"") && getRow($database, "users", "*", "username = \"$username\"")["password"] == $password);
+    return (rowsCount($database, "users", "username = \"$username\"") > 0 && getRows($database, "users", "*", "username = \"$username\"")["password"] == $password);
+}
+
+function sessionInProgress($database, $user_id) {
+    $sessions = getRows($database, "sessions", "status", "id_owner = $user_id", 1);
+    foreach ($sessions as $value) {
+        if (in_array(1, $value)) {
+            return true;
+        }
+    }
+    return false;
 }
 ?>

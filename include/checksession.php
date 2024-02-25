@@ -71,7 +71,7 @@ if (!isset($_SERVER["HTTPS"]) && $_SERVER["HTTP_HOST"] != "localhost") {
   exit;
 }
 if (!isset($_SESSION["user_logged_in"])) {
-  $_SESSION["user_logged_in"] = "invité";
+  $_SESSION["user_logged_in"]["username"] = "invité";
 }
 if (!isset($_SESSION["time_init"])) {
   $_SESSION["time_init"] = time();

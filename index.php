@@ -2,7 +2,7 @@
 include("./include/checksession.php");
 include("./include/functions.php");
 include("./panel/include/db.php");
-if ($_SESSION["user_logged_in"] != "invité") {
+if ($_SESSION["user_logged_in"]["username"] != "invité") {
   header('Location: ./panel/');
 }
 ?>
@@ -53,8 +53,9 @@ if ($_SESSION["user_logged_in"] != "invité") {
       if (isset($_POST["username"]) && isset($_POST["password"])) {
         $user_username = strtolower($_POST["username"]);
         $user_password = hash("sha256", $_POST["password"]);
+        print_r(getRows($db, "users", "*", "username = \"$user_username\""));
         if (login_success($user_username, $user_password, $db)) {
-          $_SESSION["user_logged_in"] = $user_username;
+          $_SESSION["user_logged_in"] = getRows($db, "users", "*", "username = \"$user_username\"");
           echo "Connexion réussi";
           echo '<script>window.location.replace(window.location.href);</script>';
         } else {
