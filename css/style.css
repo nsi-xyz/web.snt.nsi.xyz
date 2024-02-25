@@ -342,10 +342,17 @@ body {
 
 .pure-menu-link-hidden {
     color: #424242;
-    display:block;
-    text-decoration:none;
-    white-space:nowrap;
+    display: block;
+    text-decoration: none;
+    white-space: nowrap;
     cursor: not-allowed;
+}
+
+.pure-menu-link-footer {
+    color: #424242;
+    display: block;
+    text-decoration: none;
+    white-space: nowrap;
 }
 
 .table {
@@ -439,6 +446,25 @@ kbd {
 .reset-button:focus,
 .reset-button:hover {
     background-color: #3B0D11;
+}
+
+.create-session-button {
+    display: block;
+    margin: auto;
+    color: #FBF5F3;
+    background-color: #9471DE;
+    border-radius: 1px;
+    font-size: 125%;
+    border: 1px solid #391980;
+    padding: 0.5em 1em;
+    text-shadow: 1px 1px 1px #141414;
+    transition: 250ms;
+    cursor: pointer;
+}
+
+.create-session-button:focus,
+.create-session-button:hover {
+    background-color: #391980;
 }
 
 .popup {
