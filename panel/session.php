@@ -27,7 +27,8 @@ include("../include/checksession.php");
       </div>
       <div class="content">
         <?php
-        if (sessionInProgress($db, $_SESSION["user_logged_in"]["id"])) {
+        $id_user = $_SESSION["user_logged_in"]["id"];
+        if (sessionInProgress($db, $id_user)) {
             include("./include/session_widgets.php");
         } else {
             include("./include/session_create.php");
