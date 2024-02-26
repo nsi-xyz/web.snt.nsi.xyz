@@ -27,26 +27,42 @@ if (isset($_SESSION["user_logged_in"]) && $_SESSION["user_logged_in"]["username"
     </div>
     <section class="forms">
       <div class="form">
-        <form class="pure-form pure-form-stacked">
+        <form method="GET" action="" class="pure-form pure-form-stacked">
           <fieldset>
             <legend>Rejoindre une session</legend>
-            <label for="aligned-foo">Nom d'utilisateur</label>
-            <input type="text" id="aligned-foo" placeholder="Nom d'utilisateur"/><br>
+            <label for="aligned-foo">Pseudo</label>
+            <input type="text" id="aligned-foo" name="pseudo" placeholder="Pseudo"/><br>
             <label for="aligned-foo">Code de la session</label>
-            <input type="text" id="aligned-foo" placeholder="Code de la session"/><br>
-            <button type="submit" class="pure-button pure-button-primary-join">Rejoindre</button>
+            <input type="text" id="aligned-foo" name="code" placeholder="Code de la session"/><br>
+            <button type="submit" class="pure-button pure-button-primary-join">Rejoindre la session</button>
           </fieldset>
         </form>
+        <?php
+        if (isset($_GET["pseudo"]) && isset($_GET["code"])) {
+          $pseudo = $_GET["pseudo"];
+          $code = strtoupper($_GET["code"]);
+          if (rowsCount($db, "sessions", "code = \"$code\"") == 1) {
+            $id = getRows($db, "sessions", "*", "code = \"$code\"")["id"];
+            if (canJoinSession($pseudo, $id, $db)) {
+              echo "call joinSession()";
+            } else {
+              echo "Impossible de rejoindre la session.";
+            }
+          } else {
+            echo "Cette session n'existe pas.";
+          }
+        }
+        ?>
       </div>
       <div class="form">
       <form method="POST" action="" class="pure-form pure-form-stacked">
           <fieldset>
-            <legend>Créer une session</legend>
+            <legend>S'identifier</legend>
             <label for="aligned-foo">Nom d'utilisateur</label>
             <input type="text" id="aligned-foo" name="username" placeholder="Nom d'utilisateur"/><br>
             <label for="stacked-password">Mot de passe</label>
             <input type="password" id="stacked-password" name="password" placeholder="Mot de passe"/><br>
-            <button type="submit" class="pure-button pure-button-primary-join">Valider</button>
+            <button type="submit" class="pure-button pure-button-primary-join">Se connecter</button>
           </fieldset>
       </form>
       <?php
@@ -55,7 +71,6 @@ if (isset($_SESSION["user_logged_in"]) && $_SESSION["user_logged_in"]["username"
         $user_password = hash("sha256", $_POST["password"]);
         if (login_success($user_username, $user_password, $db)) {
           $_SESSION["user_logged_in"] = getRows($db, "users", "*", "username = \"$user_username\"");
-          echo "Connexion réussi";
           echo '<script>window.location.replace(window.location.href);</script>';
         } else {
           echo "Identifiant ou mot de passe incorrect.";

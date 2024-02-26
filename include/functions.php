@@ -143,4 +143,11 @@ function sessionInProgress($database, $user_id) {
 function createSession() {
     //todo
 }
+
+function canJoinSession($pseudo, $id_session, $database) {
+    $status = getRows($database, "sessions", "*", "id = $id_session")["status"];
+    $sessionIsOpen = $status == 1 ? true : false;
+    $pseudoAlreadyUsed = rowsCount($database, "users_session", "id_session = $id_session AND pseudo = \"$pseudo\"") == 0 ? false : true;
+    return $sessionIsOpen && !$pseudoAlreadyUsed;
+}
 ?>
