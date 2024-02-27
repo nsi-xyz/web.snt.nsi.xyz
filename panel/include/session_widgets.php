@@ -5,7 +5,7 @@ $users_session_users_list = getRows($db, "users_session", "pseudo", "id_session 
 
 <section class="widgets">
     <div class="widget-session-viewer">
-        <ul>
+        <ul id="users_list">
             <?php
             foreach ($users_session_users_list as $name) {
                 echo "<li>$name</li>";
