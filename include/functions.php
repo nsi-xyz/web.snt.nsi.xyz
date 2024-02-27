@@ -150,4 +150,22 @@ function canJoinSession($pseudo, $id_session, $database) {
     $pseudoAlreadyUsed = rowsCount($database, "users_session", "id_session = $id_session AND pseudo = \"$pseudo\"") == 0 ? false : true;
     return $sessionIsOpen && !$pseudoAlreadyUsed;
 }
+
+/**
+ * La fonction génère un code aléatoire utilisé pour identifier une session selon certaines conditions.
+ * 
+ * @param $lenght (Facultatif) Indique la longueur souhaitée pour le code.
+ * 
+ * @return string
+ */
+function generateSessionCode($lenght = 8) {
+    // Liste des lettres et des chiffres pouvant consituer le code de session
+    $charForCode = ["ACDEFGHJKMNPQRTUVWYZ","1234679"];
+    $codeResult = "";
+    for ($i = 0; $i < $lenght; $i++) {
+        $listTypeChar = $charForCode[random_int(0,1)];
+        $codeResult = $codeResult.$listTypeChar[rand(0,strlen($listTypeChar) - 1)]; // Récupère un élément de la liste de charactères indiquée dans $listTypeChar
+    }
+    return $codeResult;
+}
 ?>
