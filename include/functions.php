@@ -114,6 +114,44 @@ function rowsCount($database, $relation, $query) {
     return $stmp->rowCount();
 }
 
+function getRowsInJSON($database, $relation, $attribut, $query) {
+    $sql = "SELECT $attribut FROM $relation WHERE $query";
+    $stmp = $database->prepare($sql);
+    $stmp->execute();
+    return json_encode($stmp->fetchAll());
+}
+
+function addRow($database, $relation, $values) {
+    $attributs = getAttributs($database, $relation, 0);
+    $attributs_query = "(".implode(", ", array_map(function($value) {
+        return $value;
+    }, $attributs)).")";
+    $values_query = "(".implode(", ", array_map(function($value) {
+        return "\"".$value."\"";
+    }, $values)).")";
+    $sql = "INSERT INTO $relation $attributs_query VALUES $values_query";
+    $stmp = $database->prepare($sql);
+    $stmp->execute();
+}
+
+function getAttributs($database, $relation, $withID = 1) {
+    $sql = "SHOW COLUMNS FROM $relation";
+    $stmp = $database->query($sql);
+    $results = $stmp->fetchAll();
+    $attributs = array();
+    foreach ($results as $row) {
+        $field = $row["Field"];
+        if ($field != "id" || ($field == "id" && $withID == 1)) {
+            $attributs[] = $field;
+        }
+    }
+    return $attributs;
+}
+
+function updateLocalDB($json, $path) {
+    file_put_contents($path, $json);
+}
+
 /**
  * La fonction vérifie si un utilisateur avec le nom d'utilisateur et le mot de passe
  * fournis existe dans la base de données.
@@ -151,10 +189,15 @@ function canJoinSession($pseudo, $id_session, $database) {
     return $sessionIsOpen && !$pseudoAlreadyUsed;
 }
 
+function joinSession($pseudo, $id_session, $database, $local_path) {
+    addRow($database, "users_session", array($pseudo, $id_session));
+    updateLocalDB(getRowsInJSON($database, "users_session", "*", "1"), $local_path);
+}
+
 /**
  * La fonction génère un code aléatoire selon certaines conditions.
  *
- * @param $lenght (Facultatif) Indique la longueur souhaitée pour le code.
+ * @param $lenght Indique la longueur souhaitée pour le code.
  *
  * @return string
  */

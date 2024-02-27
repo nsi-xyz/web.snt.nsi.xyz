@@ -44,6 +44,7 @@ if (isset($_SESSION["user_logged_in"]) && $_SESSION["user_logged_in"]["username"
           if (rowsCount($db, "sessions", "code = \"$code\"") == 1) {
             $id = getRows($db, "sessions", "*", "code = \"$code\"")["id"];
             if (canJoinSession($pseudo, $id, $db)) {
+              joinSession($pseudo, $id, $db, "./js/db.json");
               echo "call joinSession()";
             } else {
               echo "Impossible de rejoindre la session.";
