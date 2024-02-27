@@ -1,7 +1,7 @@
 <?php
 /**
  * La fonction récupère l'ID de l'énigme actuel à partir de l'URL.
- * 
+ *
  * @return int L'ID de l'énigme actuel.
  */
 function getCurrentPuzzleID() {
@@ -11,11 +11,11 @@ function getCurrentPuzzleID() {
 /**
  * La fonction vérifie si une énigme est résolue en vérifiant si son ID se trouve dans le tableau des
  * énigmes résolues stockées dans la session.
- * 
+ *
  * @param $puzzleID Ce paramètre est un paramètre facultatif qui représente l'ID de l'énigme. Si
  * aucun puzzleID n'est fourni, il prendra par défaut la valeur renvoyée par la fonction
  * getCurrentPuzzleID().
- * 
+ *
  * @return bool
  */
 function puzzleIsResolved($puzzleID = null) {
@@ -27,7 +27,7 @@ function puzzleIsResolved($puzzleID = null) {
 
 /**
  * La fonction renvoie une chaîne qui inclut l'ID de l'énigme actuel dans un titre de site web.
- * 
+ *
  * @return string Une chaîne qui inclut l'ID de l'énigme actuel dans le titre du site web.
  */
 function setPageTitle() {
@@ -37,7 +37,7 @@ function setPageTitle() {
 /**
  * La fonction vérifie si unz énigme est résolue et si ce n'est pas le cas, ajoute l'ID de
  * l'énigme à la liste des énigmes résolues dans la session et actualise la page après 3 secondes.
- * 
+ *
  * @param $puzzleID Ce paramètre est facultatif et représente l'ID de l'énigme qui doit être
  * validée. Si aucun puzzleID n'est fourni, la fonction utilisera la fonction getCurrentPuzzleID() pour
  * obtenir l'ID de l'énigme actuel.
@@ -83,7 +83,7 @@ document.cookie = "reset='.$redir.';" + expiration + ";path=/";
 
 /**
  * La fonction récupère une ligne spécifique d'une table de base de données sur la base d'une requête donnée.
- * 
+ *
  * @param $database Ce paramètre est une instance d'une classe PDO indiquant dans quelle base de données agir.
  * @param $relation Ce paramètre représente le nom de la table de données où agir.
  * @param $attribut Ce paramètre représente le ou les attributs dans le ou lesquels les données doivent être
@@ -100,8 +100,8 @@ function getRows($database, $relation, $attribut, $query, $force_multiples_rows 
 }
 
 /**
- * La fonction vérifie si une donnée existe dans une table de base de données donnée.
- * 
+ * La fonction renvoie le nombre d'enregistrement (de ligne) dans une table de base de données indiquée en paramètre.
+ *
  * @param $database Ce paramètre est une instance d'une classe PDO indiquant dans quelle base de données vérifier.
  * @param $relation Ce paramètre représente le nom de la table de données où effectuer la vérification.
  * @param $query Ce paramètre représente la condition pour chercher précisemment si la donnée existe.
@@ -117,13 +117,13 @@ function rowsCount($database, $relation, $query) {
 /**
  * La fonction vérifie si un utilisateur avec le nom d'utilisateur et le mot de passe
  * fournis existe dans la base de données.
- * 
+ *
  * @param $username Ce paramètre est le nom d'utilisateur saisi par l'utilisateur lors de la tentative de
  * connexion.
  * @param $password Ce paramètre est le mot de passe saisi par l'utilisateur lors de la tentative de
  * connexion.
  * @param $database Ce paramètre est une instance d'une classe PDO indiquant dans quelle base de données vérifier.
- * 
+ *
  * @return bool
  */
 function login_success($username, $password, $database) {
@@ -152,13 +152,13 @@ function canJoinSession($pseudo, $id_session, $database) {
 }
 
 /**
- * La fonction génère un code aléatoire utilisé pour identifier une session selon certaines conditions.
- * 
+ * La fonction génère un code aléatoire selon certaines conditions.
+ *
  * @param $lenght (Facultatif) Indique la longueur souhaitée pour le code.
- * 
+ *
  * @return string
  */
-function generateSessionCode($lenght = 8) {
+function generateRandomCode($lenght = 8) {
     // Liste des lettres et des chiffres pouvant consituer le code de session
     $charForCode = ["ACDEFGHJKMNPQRTUVWYZ","1234679"];
     $codeResult = "";
@@ -167,5 +167,28 @@ function generateSessionCode($lenght = 8) {
         $codeResult = $codeResult.$listTypeChar[rand(0,strlen($listTypeChar) - 1)]; // Récupère un élément de la liste de charactères indiquée dans $listTypeChar
     }
     return $codeResult;
+}
+/**
+ * La fonction génère un code de session aléatoire et vérifie si ce code n'existe pas déjà.
+ *
+ * @param $database Ce paramètre est une instance d'une classe PDO indiquant dans quelle base de données agir.
+ *
+ * @return string
+ */
+function checkAndGenerateSessionCode($database) {
+    $sessionCode = generateRandomCode(); // Génére un code aléatoire de 8 caractères
+    $listeCodesSessions = getRows($database,"sessions","code","1"); //Récupère la liste de tous les caractères
+    if ($listeCodesSessions){
+        // Parcours de la liste des codes présents dans la BDD et comparaison avec l'actuel code session généré
+        for ($i = 0; $i < count($listeCodesSessions); $i++){
+            // Si code identique, nouvelle génération du code
+            if ($listeCodesSessions[$i]["code"] === $sessionCode) {
+                $sessionCode = generateRandomCode();
+                $i = -1;
+            }
+        }
+        return $sessionCode;
+    }
+    return $sessionCode;
 }
 ?>
