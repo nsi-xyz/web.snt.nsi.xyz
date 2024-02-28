@@ -515,3 +515,24 @@ kbd {
     background-color: #9471DE;
     color: #fff;
 }
+
+.widgets {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    margin: 0;
+}
+
+.widget-session-viewer {
+    display: flex;
+    flex-direction: column;
+    width: max-content;
+    padding: 1%;
+    margin: 3%;
+}
+
+.pure-table td, .pure-table th {
+    padding: .8em .8em;
+    text-align: center;
+    border-top: 1px solid #cbcbcb;
+}
