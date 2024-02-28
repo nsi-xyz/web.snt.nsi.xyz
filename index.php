@@ -2,8 +2,19 @@
 include("./panel/include/db.php");
 include("./include/functions.php");
 include("./include/checksession.php");
+
 if (isset($_SESSION["user_logged_in"]) && $_SESSION["user_logged_in"]["username"] != "invité") {
-  header('Location: ./panel/');
+  $verifiedUser = false;
+  foreach (getRows($db, "users", "username", "1") as $row) {
+    if (in_array($_SESSION["user_logged_in"]["username"], $row)) {
+      $verifiedUser = true;
+    }
+  }
+  if ($verifiedUser) {
+    header('Location: ./panel/');
+  } else {
+    header('Location: ./home.php');
+  }
 }
 ?>
 <!DOCTYPE html>
@@ -45,7 +56,8 @@ if (isset($_SESSION["user_logged_in"]) && $_SESSION["user_logged_in"]["username"
             $id = getRows($db, "sessions", "*", "code = \"$code\"")["id"];
             if (canJoinSession($pseudo, $id, $db)) {
               joinSession($pseudo, $id, $db, "./js/db.json");
-              echo "call joinSession()";
+              $_SESSION["user_logged_in"]["username"] = $pseudo;
+              echo '<script>window.location.replace(window.location.href);</script>';
             } else {
               echo "Impossible de rejoindre la session.";
             }

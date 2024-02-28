@@ -48,6 +48,9 @@ function tickPuzzle($puzzleID = null) {
     }
     if (!puzzleIsResolved($puzzleID)) {
         $_SESSION["resolvedPuzzles"][] = $puzzleID;
+        if (currentUserInSession()) {
+            // mettre à jour la bdd
+        }
         include("./include/nav.php");
         echo '<script>window.location.replace(window.location.href);</script>';
     }
@@ -208,12 +211,22 @@ function canJoinSession($pseudo, $id_session, $database) {
     $status = getRows($database, "sessions", "*", "id = $id_session")["status"];
     $sessionIsOpen = $status == 1 ? true : false;
     $pseudoAlreadyUsed = rowsCount($database, "users_session", "id_session = $id_session AND pseudo = \"$pseudo\"") == 0 ? false : true;
-    return $sessionIsOpen && !$pseudoAlreadyUsed;
+    $pseudoIsVerifiedUser = false; // On ne peut pas rejoindre une session avec le pseudo d'un utilisateur ayant un compte
+    foreach (getRows($database, "users", "username", "1") as $row) {
+        if (in_array($pseudo, $row)) {
+            $pseudoIsVerifiedUser = true;
+        }
+    }
+    return $sessionIsOpen && !$pseudoAlreadyUsed && !$pseudoIsVerifiedUser;
 }
 
 function joinSession($pseudo, $id_session, $database, $local_path) {
     addRow($database, "users_session", array($pseudo, $id_session));
     updateLocalDB(getRowsInJSON($database, "users_session", "*", "1"), $local_path);
+}
+
+function currentUserInSession() {
+    return $_SESSION["user_logged_in"]["username"] != "invité";
 }
 
 /**

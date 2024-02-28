@@ -25,7 +25,7 @@ include("../include/checksession.php");
         <h1>web.snt.nsi.xyz</h1>
         <h2>10 énigmes à résoudre pour découvrir le web</h2>
       </div>
-      <div class="content">
+      <!--<div class="content">-->
         <?php
         $id_user = $_SESSION["user_logged_in"]["id"];
         if (sessionInProgress($db, $id_user)) {
@@ -34,7 +34,7 @@ include("../include/checksession.php");
             include("./include/session_create.php");
         }
         ?>
-      </div>
+      <!--</div>-->
     </div>
     <?php include("../include/footer.php"); ?>
   </div>
