@@ -190,10 +190,18 @@ function sessionInProgress($database, $user_id) {
     }
     return false;
 }
-
-function createSession($database) {
-    $codeSession = generateSessionCode();
-    // addRow($database,"sessions",array(""));
+/**
+ * La fonction créé une session et l'enregistre dans la relation/table "sessions".
+ *
+ * @param $database Ce paramètre est une instance d'une classe PDO indiquant dans quelle base de données agir.
+ * 
+ * @param $id_owner L'ID du propriétaire de la session.
+ *
+ * @return None
+ */
+function createSession($database,$id_owner) {
+    $codeSession = generateSessionCode($database);
+    addRow($database,"sessions",array($codeSession, $id_owner, date('Y-m-d H:i:s',time()), 1));
 }
 
 function canJoinSession($pseudo, $id_session, $database) {
