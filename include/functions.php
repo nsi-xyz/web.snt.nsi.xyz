@@ -121,6 +121,19 @@ function getRowsInJSON($database, $relation, $attribut, $query) {
     return json_encode($stmp->fetchAll());
 }
 
+
+/**
+ * La fonction ajoute un enregistrement/ligne à une table d'une base de données indiquée.
+ *
+ * @param $database Ce paramètre est une instance d'une classe PDO indiquant dans quelle base de données agir.
+ *
+ * @param $relation Ce paramètre indique la table de la $database dans laquelle on va ajouter un enregistrement.
+ * 
+ * @param $values Ce paramètre indique les valeurs des attributs de la table ($relation).
+ * Ils doivent être écrits sous la forme suivante : array(att_1,att_2,...,att_n) / Il ne faut pas indiquer la clé primaire.
+ *
+ * @return None
+ */
 function addRow($database, $relation, $values) {
     $attributs = getAttributs($database, $relation, 0);
     $attributs_query = "(".implode(", ", array_map(function($value) {
@@ -178,8 +191,9 @@ function sessionInProgress($database, $user_id) {
     return false;
 }
 
-function createSession() {
-    //todo
+function createSession($database) {
+    $codeSession = generateSessionCode();
+    // addRow($database,"sessions",array(""));
 }
 
 function canJoinSession($pseudo, $id_session, $database) {
@@ -218,14 +232,14 @@ function generateRandomCode($lenght = 8) {
  *
  * @return string
  */
-function checkAndGenerateSessionCode($database) {
+function generateSessionCode($database) {
     $sessionCode = generateRandomCode(); // Génére un code aléatoire de 8 caractères
     $listeCodesSessions = getRows($database,"sessions","code","1"); //Récupère la liste de tous les caractères
     if ($listeCodesSessions){
         // Parcours de la liste des codes présents dans la BDD et comparaison avec l'actuel code session généré
         for ($i = 0; $i < count($listeCodesSessions); $i++){
             // Si code identique, nouvelle génération du code
-            if ($listeCodesSessions[$i]["code"] === $sessionCode) {
+            if (in_array($sessionCode,$listeCodesSessions[$i])) {
                 $sessionCode = generateRandomCode();
                 $i = -1;
             }
