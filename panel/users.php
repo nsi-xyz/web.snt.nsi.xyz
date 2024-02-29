@@ -26,25 +26,42 @@ include("../include/checksession.php");
         <h2>10 énigmes à résoudre pour découvrir le web</h2>
       </div>
 
-      <div class="content">
-
-
-          <div>
+          <div style="margin: 0 auto;">
 
             <p class="p-table">Créer un utilisateur</p>
 
-            <form class="pure-form">
-              <fieldset>
-                <input type="text" placeholder="Nom*" required=""/>
-                <input type="text" placeholder="Prénom*" required=""/>
-                <input type="text" placeholder="Pseudonyme*" required=""/>
-                <input type="password" placeholder="Password*" required=""/>
-                <button type="submit" class="pure-button pure-button-primary">Sign in</button>
-                <p>* Champ obligatoire</p>
-              </fieldset>
-            </form>
+            <?php
+            
+              echo '
 
-            <!-- PHP à intégrer -->
+
+              <form class="pure-form" method="post">
+                <fieldset>
+                  <input type="text" name="name" placeholder="Nom*" required="" pattern="^[^\s\xA0]{0,255}$" title="Espaces interdits"/>
+                  <input type="text" name="surname" placeholder="Prénom*" required="" pattern="^[^\s\xA0]{0,255}$" title="Espaces interdits"/>
+                  <input type="text" name="username" placeholder="Pseudonyme*" required="" pattern="^[^\s\xA0]{0,255}$" title="Espaces interdits"/>
+                  <input type="password" name="password" placeholder="Password*" required="" pattern="^[^\s\xA0]{0,255}$" title="Espaces interdits"/>
+                  <input type="checkbox" name="id_group" id="checkbox-radio-option-one" value="" /> Administrateur
+                  <button type="submit" class="pure-button pure-button-primary">Sign in</button>
+                  <p>* Champ obligatoire</p>
+                </fieldset>
+              </form>';
+
+              if (isset($_POST["name"],$_POST["surname"],$_POST["username"],$_POST["password"])){
+                if (isset($_POST["id_group"])){
+                  sleep(1);
+                  $resultCreateUser = createUser($db,$_POST["name"],$_POST["surname"],$_POST["username"],$_POST["password"],1);
+                } else {
+                  sleep(1);
+                  $resultCreateUser = createUser($db,$_POST["name"],$_POST["surname"],$_POST["username"],$_POST["password"],0);
+                }
+                if ($resultCreateUser){
+                  echo '<p style="color: green; font-weight: bolder;">Utilisateur créé</p>';
+                } else {
+                  echo '<p style="color: red; font-weight: bolder;">Nom d\'utilisateur déjà existant !</p>';
+                }
+              }
+            ?>
 
           </div>
 
@@ -69,8 +86,6 @@ include("../include/checksession.php");
             </table>
 
           </div>
-
-      </div>
 
     </div>
     <?php include("../include/footer.php"); ?>

@@ -81,7 +81,7 @@ if (isset($_SESSION["user_logged_in"]) && $_SESSION["user_logged_in"]["username"
       <?php
       if (isset($_POST["username"]) && isset($_POST["password"])) {
         $user_username = strtolower($_POST["username"]);
-        $user_password = hash("sha256", $_POST["password"]);
+        $user_password = $_POST["password"];
         if (login_success($user_username, $user_password, $db)) {
           $_SESSION["user_logged_in"] = getRows($db, "users", "*", "username = \"$user_username\"");
           echo '<script>window.location.replace(window.location.href);</script>';

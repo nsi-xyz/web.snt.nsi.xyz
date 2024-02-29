@@ -168,20 +168,33 @@ function updateLocalDB($json, $path) {
     file_put_contents($path, $json);
 }
 
+function createUser($database,$name,$surname,$username,$password,$id_group){
+    $listeUsernameUsers = getRows($database,"users","username","1");
+    for ($i=0; $i < count($listeUsernameUsers); $i++){
+        if (in_array($username, $listeUsernameUsers[$i])){
+            return False;        
+        }
+    }
+    addRow($database,"users",array($name,$surname,$username,password_hash($password, PASSWORD_DEFAULT),$id_group));
+    return True;
+}
+
 /**
  * La fonction vérifie si un utilisateur avec le nom d'utilisateur et le mot de passe
  * fournis existe dans la base de données.
  *
  * @param $username Ce paramètre est le nom d'utilisateur saisi par l'utilisateur lors de la tentative de
  * connexion.
+ * 
  * @param $password Ce paramètre est le mot de passe saisi par l'utilisateur lors de la tentative de
- * connexion.
+ * connexion. Le $password doit être sous la forme du mdp brut.
+ * 
  * @param $database Ce paramètre est une instance d'une classe PDO indiquant dans quelle base de données vérifier.
  *
  * @return bool
  */
 function login_success($username, $password, $database) {
-    return (rowsCount($database, "users", "username = \"$username\"") > 0 && getRows($database, "users", "*", "username = \"$username\"")["password"] == $password);
+    return (rowsCount($database, "users", "username = \"$username\"") == 1 && password_verify($password, getRows($database, "users", "*", "username = \"$username\"")["password"]));
 }
 
 function sessionInProgress($database, $user_id) {
