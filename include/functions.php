@@ -179,6 +179,12 @@ function createUser($database,$name,$surname,$username,$password,$id_group){
     return True;
 }
 
+function deleteUser($database,$id){
+    $sql = "DELETE FROM `users` WHERE id=$id";
+    $stmp = $database->prepare($sql);
+    $stmp->execute();
+}
+
 /**
  * La fonction vérifie si un utilisateur avec le nom d'utilisateur et le mot de passe
  * fournis existe dans la base de données.
