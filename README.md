@@ -1,8 +1,8 @@
-# web.snt.nsi.xyz v1.1
+# web.snt.nsi.xyz v2.0
 
 Dépot github du projet web.snt.nsi.xyz
 
-En ligne sur https://labohelp.nsi.xyz/
+En ligne sur https://web.snt.nsi.xyz/
 
 ## 10 Énigmes à résoudre sur le web
 
@@ -78,6 +78,7 @@ Notions : Analyse, recherche
 
 La dixième énigme ?
 
-## Contributeurs initiaux :
+## Contributeurs :
 - Vincent ROBERT
 - Ilyas RAHMOUN
+- Thomas SANCHEZ
