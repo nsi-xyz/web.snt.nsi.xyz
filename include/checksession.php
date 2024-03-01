@@ -103,4 +103,3 @@ if (!in_array(8, $_SESSION["resolvedPuzzles"]) && !isset($_COOKIE[COOKIE8["name"
   $expires = isset($_SESSION["time_left"]) ? $_SESSION["time_left"] : SESSDURATION;
   setcookie(COOKIE8["name"], COOKIE8["value"], time() + $expires, "/");
 }
-?>

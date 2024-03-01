@@ -10,4 +10,3 @@ try {
     echo "La connexion à la base de données $db_name a échoué.<br>Erreur : <b>".$error->getMessage()."</b>";
     exit();
 }
-?>

@@ -44,4 +44,3 @@ echo '            <div class="menu-bottom"><li class="pure-menu-item-timer">Il r
 echo '            <li class="pure-menu-item-reset"><a href="'.$p_h.'/help.php#Effacer sa progression et recommencer les énigmes" class="pure-menu-link">&#x274C; Effacer / Recommencer</a></li></div>
     </div>
 ';
-?>
