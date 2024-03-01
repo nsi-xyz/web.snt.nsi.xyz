@@ -1,6 +1,6 @@
 <?php
 $id_session = getRows($db, "sessions", "*", "id_owner = $id_user AND status = 1")["id"];
-$users_session_users_list = getRows($db, "users_session", "pseudo", "id_session = $id_session");
+$users_session_users_list = getRows($db, "users_session", "pseudo, joined_at, puzzles", "id_session = $id_session");
 ?>
 
 <section class="widgets">
@@ -23,62 +23,19 @@ $users_session_users_list = getRows($db, "users_session", "pseudo", "id_session 
                     <th>Actions</th>
                 </tr>
             </thead>
-            <tbody>
-                <tr>
-                    <td>Ilyas R</td>
-                    <td>&#x1F7E2;</td>
-                    <td>&#x1F7E0;</td>
-                    <td>&#x1F7E0;</td>
-                    <td>&#x1F7E0;</td>
-                    <td>&#x1F7E2;</td>
-                    <td>&#x1F7E0;</td>
-                    <td>&#x1F7E0;</td>
-                    <td>&#x1F7E2;</td>
-                    <td>&#x1F7E2;</td>
-                    <td>&#x1F7E0;</td>
-                    <td>12:00:00</td>
-                    <td><i>Prochainement</i></td>
-                </tr>
-                <tr>
-                    <td>Pseudo</td>
-                    <td>&#x1F7E0;</td>
-                    <td>&#x1F7E0;</td>
-                    <td>&#x1F7E2;</td>
-                    <td>&#x1F7E0;</td>
-                    <td>&#x1F7E2;</td>
-                    <td>&#x1F7E0;</td>
-                    <td>&#x1F7E0;</td>
-                    <td>&#x1F7E0;</td>
-                    <td>&#x1F7E2;</td>
-                    <td>&#x1F7E2;</td>
-                    <td>12:00:00</td>
-                    <td><i>Prochainement</i></td>
-                </tr>
+            <tbody id="users-session-list">
             </tbody>
         </table>
     </div>
 </section>
-<?php
-if (isset($_COOKIE["new-user"])) {
-   //todo
-}
-?>
 
 
 <script>
-    function create() {
-        let date = new Date();
-        date.setTime(date.getTime() + 1000);
-        let expiration = "expires=" + date.toUTCString();
-        document.cookie = "create-session-js=ok;" + expiration + ";path=/";
-        window.location.replace(window.location.href);
-    }
-
     function updateUsersList(id_session, path) {
-        let users_list_ul = document.getElementById("users_list").getElementsByTagName("li");
+        let users_list_tbody = document.getElementById("users-session-list").getElementsByTagName("tr");
         let users_in_page = [];
-        for (let i = 0; i < users_list_ul.length; i++) {
-            users_in_page.push(users_list_ul[i].textContent);
+        for (let i = 0; i < users_list_tbody.length; i++) {
+            users_in_page.push(users_list_tbody[i].querySelector("#user-pseudo").textContent);
         }
         fetch(path)
             .then(response => response.json())
@@ -86,14 +43,34 @@ if (isset($_COOKIE["new-user"])) {
                 json.forEach((element) => {
                     let element_id_session = element["id_session"];
                     let element_pseudo = element["pseudo"];
+                    let element_joined_at = element["joined_at"];
+                    let element_puzzle_progression = element["puzzles"].split("");
                     if (element_id_session == id_session && !users_in_page.includes(element_pseudo)) {
-                        let newLi = document.createElement("li");
-                        newLi.textContent = element_pseudo;
-                        document.getElementById("users_list").appendChild(newLi);
+                        let new_tr = document.createElement("tr");
+                        let new_td_pseudo = document.createElement("td");
+                        new_td_pseudo.setAttribute("id", "user-pseudo");
+                        let new_all_td_puzzle = [];
+                        for (let i = 0; i < 10; i++) {
+                            let new_td_puzzle = document.createElement("td");
+                            new_td_puzzle.textContent = element_puzzle_progression[i] == "1" ? "\u{1F7E2}" : "\u{1F7E0}";
+                            new_all_td_puzzle.push(new_td_puzzle);
+                        }
+                        let new_td_joined_at = document.createElement("td");
+                        new_td_pseudo.textContent = element_pseudo;
+                        let date_joined_at = new Date(element_joined_at)
+                        new_td_joined_at.textContent = date_joined_at.getHours().toString().padStart(2, "0") + ":" + date_joined_at.getMinutes().toString().padStart(2, "0") + ":" + date_joined_at.getSeconds().toString().padStart(2, "0");
+                        new_tr.appendChild(new_td_pseudo);
+                        for (let i = 0; i < 10; i++) {
+                            new_tr.appendChild(new_all_td_puzzle[i]);
+                        }
+                        new_tr.appendChild(new_td_joined_at);
+                        document.getElementById("users-session-list").appendChild(new_tr);
                     }
                 });
             })
-            .catch(error => {});
+            .catch(error => {
+                console.error(error);
+            });
     }
     updateUsersList(<?php echo $id_session; ?>, "../js/db.json");
     setInterval(() => {

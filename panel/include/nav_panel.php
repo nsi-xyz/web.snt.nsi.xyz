@@ -1,6 +1,6 @@
 <div id="menu">
   <div class="pure-menu">
-    <a class="pure-menu-heading" href="./index.php">Panneau d'administration</a>
+    <a class="pure-menu-heading" href="./index.php">Panel Admin</a>
     <ul>
       <li>Utilisateur : <?php echo $_SESSION["user_logged_in"]["username"]; ?></li>
     </ul>

@@ -135,7 +135,7 @@ function getRowsInJSON($database, $relation, $attribut, $query) {
  * @param $values Ce paramètre indique les valeurs des attributs de la table ($relation).
  * Ils doivent être écrits sous la forme suivante : array(att_1,att_2,...,att_n) / Il ne faut pas indiquer la clé primaire.
  *
- * @return None
+ * @return null
  */
 function addRow($database, $relation, $values) {
     $attributs = getAttributs($database, $relation, 0);
@@ -146,6 +146,12 @@ function addRow($database, $relation, $values) {
         return "\"".$value."\"";
     }, $values)).")";
     $sql = "INSERT INTO $relation $attributs_query VALUES $values_query";
+    $stmp = $database->prepare($sql);
+    $stmp->execute();
+}
+
+function delRow($database, $relation, $query) {
+    $sql = "DELETE FROM $relation WHERE $query";
     $stmp = $database->prepare($sql);
     $stmp->execute();
 }
@@ -179,10 +185,8 @@ function createUser($database,$name,$surname,$username,$password,$id_group){
     return True;
 }
 
-function deleteUser($database,$id){
-    $sql = "DELETE FROM `users` WHERE id=$id";
-    $stmp = $database->prepare($sql);
-    $stmp->execute();
+function deleteUser($database, $id){
+    delRow($database, "users", "id = $id");
 }
 
 /**
@@ -219,7 +223,7 @@ function sessionInProgress($database, $user_id) {
  * 
  * @param $id_owner L'ID du propriétaire de la session.
  *
- * @return None
+ * @return null
  */
 function createSession($database,$id_owner) {
     $codeSession = generateSessionCode($database);
@@ -240,7 +244,7 @@ function canJoinSession($pseudo, $id_session, $database) {
 }
 
 function joinSession($pseudo, $id_session, $database, $local_path) {
-    addRow($database, "users_session", array($pseudo, $id_session));
+    addRow($database, "users_session", array($pseudo, $id_session, date('Y-m-d H:i:s'), "0000000000"));
     updateLocalDB(getRowsInJSON($database, "users_session", "*", "1"), $local_path);
 }
 
