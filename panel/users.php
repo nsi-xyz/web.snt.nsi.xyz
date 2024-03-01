@@ -69,29 +69,78 @@ include("../include/checksession.php");
                 }
               }
             } else {
-              $infosUsers = json_decode($_COOKIE["infosUsers"],true);
+              $infosUser = $_SESSION["infosUser"];
               echo '
               <p class="p-table">Modifier un utilisateur</p>
 
               <form class="pure-form" method="post">
                 <fieldset>
-                  <input type="text" name="name" placeholder="Nom" pattern="^[^\x22]{0,255}$" title="Guillemets interdits" value='.$infosUsers["name"].'/>
-                  <input type="text" name="surname" placeholder="Prénom" pattern="^[^\x22]{0,255}$" title="Guillemets interdits" value='.$infosUsers["surname"].'/>
-                  <input type="text" name="username" placeholder="Nom d\'utilisateur" pattern="^[^\s\xA0\x22]{0,255}$" title="Espaces et guillemets interdits" value='.$infosUsers["username"].'/>
+                  <input type="text" name="name" placeholder="Nom" pattern="^[^\x22]{0,255}$" title="Guillemets interdits" value="'.$infosUser["name"].'"/>
+                  <input type="text" name="surname" placeholder="Prénom" pattern="^[^\x22]{0,255}$" title="Guillemets interdits" value="'.$infosUser["surname"].'"/>
+                  <input type="text" name="username" placeholder="Nom d\'utilisateur" pattern="^[^\s\xA0\x22]{0,255}$" title="Espaces et guillemets interdits" value="'.$infosUser["username"].'"/>
                   <input type="password" name="password" placeholder="Mot de passe" pattern="^[^\s\xA0\x22]{0,255}$" title="Espaces et guillemets interdits"/>
                   ';
-                  if ($infosUsers["id_group"] == 1){
+                  if ($infosUser["id_group"] == 1){
                     echo '<input type="checkbox" name="id_group" id="checkbox-radio-option-one" value="" checked /> Administrateur';
                   } else {
                     echo '<input type="checkbox" name="id_group" id="checkbox-radio-option-one" value="" /> Administrateur';
                   }
                   echo '
-                  <button type="submit" class="button-validate-modification pure-button">Modifier des informations de cet utilisateur</button>
+                  <button type="submit" name="validate" class="button-validate-modification pure-button">Valider</button>
+                  <button type="submit" name="cancel" class="button-delete pure-button">Annuler</button>
                   <p>* Champ obligatoire</p>
                 </fieldset>
               </form>';
 
-              
+              if (isset($_POST["validate"])){
+                $newInfosUser = array("id" => $infosUser["id"]);
+                $attributs = ["name", "surname", "username"];
+                foreach ($attributs as $attribut) {
+                    if ($_POST[$attribut] === "" || $_POST[$attribut] === $infosUser[$attribut]) {
+                        $newInfosUser[$attribut] = $infosUser[$attribut];
+                    } else {
+                        $newInfosUser[$attribut] = $_POST[$attribut];
+                    }
+                }
+                // if ($_POST["name"] === "" || $_POST["name"] === $infosUser["name"]){
+                //   $newInfosUser["name"] = $infosUser["name"];  
+                // } else {
+                //   $newInfosUser["name"] = $_POST["name"];
+                // }
+                // if ($_POST["surname"] === "" || $_POST["surname"] === $infosUser["surname"]){
+                //   $newInfosUser["surname"] = $infosUser["surname"];  
+                // } else {
+                //   $newInfosUser["surname"] = $_POST["surname"];
+                // }
+                // if ($_POST["username"] === "" || $_POST["username"] === $infosUser["username"]){
+                //   $newInfosUser["username"] = $infosUser["username"];  
+                // } else {
+                //   $newInfosUser["username"] = $_POST["username"];
+                // }
+                if (! empty($_POST["password"])){
+                  $newInfosUser["password"] = $_POST["password"];
+                }
+                if (isset($_POST["id_group"])){
+                  $newInfosUser["id_group"] = 1;
+                } else {
+                  $newInfosUser["id_group"] = 0;
+                }
+
+                sleep(1);
+                $resultUpdate = updateUser($db,$newInfosUser,$infosUser["username"]);
+                
+                if ($resultUpdate){
+                  echo '<p style="color: green; font-weight: bolder;">Utilisateur modifié</p>';
+                  $_SESSION["modeEditOrCreateUser"] = 0;
+                  echo '<script>setTimeout(function() { window.location.replace(window.location.href); }, 1000);</script>';
+                } else {
+                  echo '<p style="color: red; font-weight: bolder;">Nom d\'utilisateur déjà existant !</p>';
+                }
+
+              } elseif (isset($_POST["cancel"])){
+                $_SESSION["modeEditOrCreateUser"] = 0;
+                echo "<script>window.location.replace(window.location.href);</script>";
+              }
             }
           ?>
 
@@ -108,6 +157,7 @@ include("../include/checksession.php");
               <th>Nom</th>
               <th>Prénom</th>
               <th>Pseudonyme</th>
+              <th>Administrateur</th>
               <th>Actions</th>
             </thead>
             <tbody>
@@ -121,10 +171,17 @@ include("../include/checksession.php");
                       <td>'.$listeUsers[$i]["name"].'</td>
                       <td>'.$listeUsers[$i]["surname"].'</td>
                       <td>'.$listeUsers[$i]["username"].'</td>
+                      <td>';
+                      if ($listeUsers[$i]["id_group"] === 1){
+                        echo "✅";
+                      } else {
+                        echo "❌";
+                      }
+                      echo '</td>
                       <td>
                         <div>
-                          <button class="button-change-infos pure-button" onclick="updateInfosUser([\''.urlencode($listeUsers[$i]["name"]).'\',\''.urlencode($listeUsers[$i]["surname"]).'\',\''.urlencode($listeUsers[$i]["username"]).'\','.$listeUsers[$i]["id_group"].'])">Modifier info</button>
-                          <button class="button-delete pure-button" onclick="deleteUser('.$listeUsers[$i]["id"].')">Supprimer le compte</button>
+                          <button class="button-change-infos pure-button" onclick="updateInfosUser(['.urlencode($listeUsers[$i]["id"]).',\''.urlencode($listeUsers[$i]["name"]).'\',\''.urlencode($listeUsers[$i]["surname"]).'\',\''.urlencode($listeUsers[$i]["username"]).'\','.$listeUsers[$i]["id_group"].'])">Modifier info</button>
+                          <button class="button-delete pure-button" onclick="deleteUser('.$listeUsers[$i]["id"].','.$_SESSION["user_logged_in"]["id"].')">Supprimer le compte</button>
                         </div>
                       </td>
                     </tr>
@@ -133,7 +190,6 @@ include("../include/checksession.php");
 
                 echo '<script>
                 function updateInfosUser(infosUserToModificate){
-                  alert("modifier")
                   jQuery.ajax({
                     type: "POST",
                     url: "users.php",
@@ -144,30 +200,32 @@ include("../include/checksession.php");
                   });
                 }
 
-                function deleteUser(idUser){
-                  if (confirm("Etes-vous sûr de vouloir supprimer cet utilisateur ?")) {
-                    jQuery.ajax({
-                      type: "POST",
-                      url: "users.php",
-                      data: {idUserToDelete: idUser},
-                      success: function(response) {
-                        window.location.replace(window.location.href);
-                      }
-                    }); 
+                function deleteUser(idUser,idLoggedUser){
+                  if (idUser == idLoggedUser){
+                    alert("Vous ne pouvez pas supprimer votre propre compte.")
+                  } else{
+                    if (confirm("Etes-vous sûr de vouloir supprimer cet utilisateur ?")) {
+                      jQuery.ajax({
+                        type: "POST",
+                        url: "users.php",
+                        data: {idUserToDelete: idUser},
+                        success: function(response) {
+                          window.location.replace(window.location.href);
+                        }
+                      }); 
+                    }
                   }
                 }                
               </script>';
             
               if (isset($_POST["infosUserModificate"])){
-                print_r($_POST["infosUserModificate"]);
-                $infosUsers = array(
-                "name" => urldecode($_POST["infosUserModificate"][0]),
-                "surname" => urldecode($_POST["infosUserModificate"][1]),
-                "username" => urldecode($_POST["infosUserModificate"][2]),
-                "id_group" => $_POST["infosUserModificate"][3]
+                $_SESSION["infosUser"] = array(
+                "id" => urldecode($_POST["infosUserModificate"][0]),
+                "name" => urldecode($_POST["infosUserModificate"][1]),
+                "surname" => urldecode($_POST["infosUserModificate"][2]),
+                "username" => urldecode($_POST["infosUserModificate"][3]),
+                "id_group" => $_POST["infosUserModificate"][4]
                 );
-                
-                setcookie("infosUsers", "test", time() + 3600);
 
                 $_SESSION["modeEditOrCreateUser"] = 1;
               }

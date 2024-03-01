@@ -156,6 +156,36 @@ function delRow($database, $relation, $query) {
     $stmp->execute();
 }
 
+/**
+ * La fonction modifie un enregistrement/ligne déjà existant d'une table d'une base de données indiquée.
+ *
+ * @param $database Ce paramètre est une instance d'une classe PDO indiquant dans quelle base de données agir.
+ *
+ * @param $relation Ce paramètre indique la table de la $database dans laquelle on va ajouter un enregistrement.
+ * 
+ * @param $attributs Ce paramètre indique les attributs à modifier. Ce doit être une liste des attributs.
+ * 
+ * @param $values Ce paramètre indique les valeurs a modifier lié aux attributs. Ce doit être une liste et
+ * les valeur doivent avoir le même indice que leur attribut respectif.
+ *
+ * @param $query Le filtrage à indiquer (ce qui se situe après le WHERE d'une requête SQL).
+ * 
+ * @return null
+ */
+
+ // Il faudra recoder cette fonction en utilisant le principe de clé=>valeur ;
+ // De même, il faudra modifier les fonctions qui utilisent updateRow() : updateUser()
+function updateRow($database,$relation,$attributs,$values,$query){
+    $setCommand = "";
+    for ($i=0;$i < count($attributs)-1;$i++){
+        $setCommand = $setCommand.$attributs[$i]." = \"".$values[$attributs[$i]]."\", ";
+    }
+    $setCommand = $setCommand.$attributs[count($attributs)-1]." = \"".$values[$attributs[count($attributs)-1]]."\"";
+    $sql = "UPDATE $relation SET $setCommand WHERE $query";
+    $stmp = $database->prepare($sql);
+    $stmp->execute();
+}
+
 function getAttributs($database, $relation, $withID = 1) {
     $sql = "SHOW COLUMNS FROM $relation";
     $stmp = $database->query($sql);
@@ -178,10 +208,31 @@ function createUser($database,$name,$surname,$username,$password,$id_group){
     $listeUsernameUsers = getRows($database,"users","username","1");
     for ($i=0; $i < count($listeUsernameUsers); $i++){
         if (in_array($username, $listeUsernameUsers[$i])){
-            return False;        
+            return False;
         }
     }
     addRow($database,"users",array($name,$surname,$username,password_hash($password, PASSWORD_DEFAULT),$id_group));
+    return True;
+}
+
+function updateUser($database,$infosUser,$originalUsername){
+    $listeUsernameUsers = getRows($database,"users","username","1");
+    for ($i=0; $i < count($listeUsernameUsers); $i++){
+        if (in_array($infosUser["username"], $listeUsernameUsers[$i]) && $originalUsername !== $listeUsernameUsers[$i]["username"]){
+            return False;        
+        }
+    }
+
+    $attributs = (array_key_exists("password",$infosUser)) ? ["name","surname","username","password","id_group"] : ["name","surname","username","id_group"];
+    $values = [];
+    for ($i = 0; $i < count($attributs); $i++){
+        if ($attributs[$i] === "password"){
+            $values[$attributs[$i]] = password_hash($infosUser[$attributs[$i]], PASSWORD_DEFAULT);
+        } else {
+            $values[$attributs[$i]] = $infosUser[$attributs[$i]];
+        }
+    }
+    updateRow($database,"users",$attributs,$values,"id={$infosUser["id"]}");
     return True;
 }
 
