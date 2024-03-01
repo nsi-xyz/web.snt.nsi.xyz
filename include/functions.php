@@ -292,4 +292,3 @@ function generateSessionCode($database) {
     }
     return $sessionCode;
 }
-?>
