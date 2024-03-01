@@ -188,5 +188,6 @@ include("../include/checksession.php");
     <?php include("../include/footer.php"); ?>
   
   </div>
+  <script src="../js/ui.js"></script>
 </body>
 </html>

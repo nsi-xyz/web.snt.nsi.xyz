@@ -28,9 +28,6 @@ if (isset($_SESSION["user_logged_in"]) && $_SESSION["user_logged_in"]["username"
   <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
-  <a href="#menu" id="menuLink" class="menu-link">
-    <span></span>
-  </a>
   <div id="main">
     <div class="header">
       <h1>web.snt.nsi.xyz</h1>
