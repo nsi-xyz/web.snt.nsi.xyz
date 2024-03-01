@@ -11,7 +11,7 @@
   </div>
   <div class="menu-bottom">
     <li class="pure-menu-item"><a href="./sessions.php" class="pure-menu-link">&#x1F5C2;&#xFE0F; Parcourir les sessions</a></li>
-    <li class="pure-menu-item"><a href="./users.php" class="pure-menu-link-hidden">&#x2699;&#xFE0F; Gestion des comptes</a></li>
+    <li class="pure-menu-item"><a href="./users.php" id="account-manager" class="pure-menu-link-hidden">&#x2699;&#xFE0F; Gestion des comptes</a></li>
     <li class="pure-menu-item"><a href="./trads.php" class="pure-menu-link-hidden">&#x1F5C3;&#xFE0F; Gestion des traductions</a></li>
     <li class="pure-menu-item-reset"><a class="pure-menu-link" id="logout">&#x1F6AA; Se déconnecter</a></li>
   </div>
@@ -29,4 +29,9 @@ if (isset($_COOKIE["reset-js"])) {
     document.cookie = "reset-js=ok;" + expiration + ";path=/";
     window.location.replace((window.location.href).replace(/panel.*/, ""));
   });
+
+  function isAllowed(idUser){
+    // document.getElementById("account-manager").classList.
+    // A FAIRE
+  } 
 </script>
