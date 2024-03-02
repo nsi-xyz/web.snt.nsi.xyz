@@ -300,7 +300,7 @@ function joinSession($pseudo, $id_session, $database, $local_path) {
 }
 
 function currentUserInSession() {
-    return $_SESSION["user_logged_in"]["username"] != "invité";
+    return isset($_SESSION["user_logged_in"]) && $_SESSION["user_logged_in"]["username"] != "invité";
 }
 
 /**
