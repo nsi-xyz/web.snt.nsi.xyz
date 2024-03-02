@@ -1,6 +1,7 @@
 <?php
-include("../include/checksession.php");
+include("../panel/include/db.php");
 include("../include/functions.php");
+include("../include/checksession.php");
 include("../include/dataget.php");
 if (!isset($_SESSION["magic_word_6"])) {
     $_SESSION["magic_word_6"] = getMysteryLinux();

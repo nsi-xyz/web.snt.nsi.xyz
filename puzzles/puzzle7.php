@@ -1,6 +1,7 @@
 <?php
-include("../include/checksession.php");
+include("../panel/include/db.php");
 include("../include/functions.php");
+include("../include/checksession.php");
 $tick = FALSE;
 if (!isset($_COOKIE[COOKIE7["name"]])) {
     $tick = TRUE;

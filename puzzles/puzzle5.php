@@ -1,6 +1,7 @@
 <?php
-include("../include/checksession.php");
+include("../panel/include/db.php");
 include("../include/functions.php");
+include("../include/checksession.php");
 include("../include/dataget.php");
 $comments_in_js_file = array("This function retrieves HTML elements that we frequently use, such as the menu and links, based on their identifiers.", "This function adds or removes a CSS class from an element to toggle its active state.", "We iterate through the existing classes to find the class to add or remove.", "If the class exists, we remove it.", "If the class has not been found, we add it.", "We update the list of classes for the element.", "This function toggles the active state of multiple elements, such as the layout, menu, and menuLink.", "The name of the CSS class is \"active\".", "This function handles click events on the page.", "If the click occurs on the menu link, we toggle the active state.");
 if (!isset($_SESSION["magic_word_5"])) {

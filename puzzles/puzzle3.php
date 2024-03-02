@@ -1,6 +1,7 @@
 <?php
-include("../include/checksession.php");
+include("../panel/include/db.php");
 include("../include/functions.php");
+include("../include/checksession.php");
 include("../include/dataget.php");
 $comments_in_css_file = array("Ceci est le premier commentaire de cette feuille de style CSS", "Le sélecteur \"body\" est utilisé pour appliquer des styles à l'ensemble du contenu de la page", "Ceci est un sélecteur de classe", "L'image à laquelle cette classe est appliquée ne dépassera pas de la page", "Il y aura un class=\"content\" dans le fichier html", "Pas de marge mais un alignement au centre automatique", "Pas de marge en haut et en bas mais une marge à gauche et à droite", "Même sur un écran 4k on sera limité à 800 pixels", "Une marge externe inférieure pour augmenter l'espacement du contenu", "La distance entre les lignes de texte est égale à 1,6 fois la taille de la police courante de l'élément");
 if (!isset($_SESSION["magic_word_3"])) {

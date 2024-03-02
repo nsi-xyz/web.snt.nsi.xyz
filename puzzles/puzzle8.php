@@ -1,6 +1,7 @@
 <?php
-include("../include/checksession.php");
+include("../panel/include/db.php");
 include("../include/functions.php");
+include("../include/checksession.php");
 if (!isset($_SESSION["target_value_8"])) {
     $puzzle8_target_seed = str_pad(rand(0, 99999999), 8, "0", STR_PAD_LEFT);
     $_SESSION["target_value_8"] = $puzzle8_target_seed."42";
