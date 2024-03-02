@@ -1,13 +1,15 @@
 <?php
 $p = basename($_SERVER['PHP_SELF']);
-$currentPuzzle = ($p == "index.php" || $p == "help.php") ? NULL : filter_var(basename($_SERVER['PHP_SELF']), FILTER_SANITIZE_NUMBER_INT);
+$currentPuzzle = ($p == "index.php" || $p == "help.php") ? null : filter_var(basename($_SERVER['PHP_SELF']), FILTER_SANITIZE_NUMBER_INT);
 $p_i = ($p == "index.php" || $p == "help.php") ? "" : ".";
 $p_h = ($p == "index.php" || $p == "help.php") ? "." : "..";
-echo '<div id="menu">
-      <div class="pure-menu">
-        <a class="pure-menu-heading" href=".'.$p_i.'/index.php">10 Énigmes à résoudre</a>
-          <ul class="pure-menu-list">
-';
+?>
+<div id="menu">
+  <div class="pure-menu">
+    <a class="pure-menu-heading" href=".<?php echo $p_i; ?>/index.php">10 Énigmes à résoudre</a>
+    <ul class="pure-menu-list">
+      <li class="pure-menu-item menu-item-divided pure-menu-item-login"><a class="pure-menu-link" href=".<?php echo $p_i; ?>/login.php">&#x1F464; S'identifier</a></li>
+<?php           
 for ($i = 1; $i < 10; $i++) {
     $emoji = in_array($i, $_SESSION["resolvedPuzzles"]) ? "&#x1F7E2;" : "&#x1F7E0;";
     $resolved = in_array($i, $_SESSION["resolvedPuzzles"]) ? "resolved" : "unresolved";

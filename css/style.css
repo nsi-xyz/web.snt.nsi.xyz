@@ -132,6 +132,21 @@ body {
         background: transparent;
     }
 
+    #menu .pure-menu-item-login a:hover,
+    #menu .pure-menu-item-login a:focus {
+        color: #9471DE;
+    }
+
+    #menu .pure-menu-item-unselected a:hover,
+    #menu .pure-menu-item-unselected a:focus {
+        color: #aaaaaa;
+    }
+
+    #menu .pure-menu-item-panel a:hover,
+    #menu .pure-menu-item-panel a:focus {
+        color: #8566c7;
+    }
+
     #menu .pure-menu-item-unresolved a:hover,
     #menu .pure-menu-item-unresolved a:focus {
         color: #ff9800;
@@ -197,6 +212,10 @@ body {
 
     #menu .pure-menu-selected-help {
         background: #1976d2;
+    }
+
+    #menu .pure-menu-selected-panel {
+        background: #aaaaaa;
     }
 
     #menu .pure-menu-heading {
