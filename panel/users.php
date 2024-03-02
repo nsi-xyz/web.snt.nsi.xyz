@@ -172,7 +172,7 @@ include("../include/checksession.php");
                       <td>'.$listeUsers[$i]["surname"].'</td>
                       <td>'.$listeUsers[$i]["username"].'</td>
                       <td>';
-                      if ($listeUsers[$i]["id_group"] === 1){
+                      if ($listeUsers[$i]["id_group"] == 1){
                         echo "✅";
                       } else {
                         echo "❌";
