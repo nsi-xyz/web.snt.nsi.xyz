@@ -76,13 +76,14 @@ if (!isset($_SESSION["user_logged_in"]) && !isset($_COOKIE["LOGGEDIN"])) {
 }
 if (isset($_SESSION["user_logged_in"]["username"]) && $_SESSION["user_logged_in"]["username"] != "invité") {
   if (!isset($_COOKIE["LOGGEDIN"])) {
-    setcookie("LOGGEDIN", $_SESSION["user_logged_in"]["username"]."_".$_SESSION["user_logged_in"]["password"], time() + COOKIEAUTHDURATION, "/");
+
+    setcookie("LOGGEDIN", $_SESSION["user_logged_in"]["username"]."_".urlencode($_SESSION["user_logged_in"]["password"]), time() + COOKIEAUTHDURATION, "/");
   }
 }
 if (isset($_COOKIE["LOGGEDIN"])) {
   $cookie_username = explode("_", $_COOKIE["LOGGEDIN"])[0];
   $cookie_password = explode("_", $_COOKIE["LOGGEDIN"])[1];
-  if (login_success($cookie_username, $cookie_password, $db)) {
+  if (login_success($cookie_username, urldecode($cookie_password), $db)) {
     $_SESSION["user_logged_in"] = getRows($db, "users", "*", "username = \"$cookie_username\"");
   }
 }
