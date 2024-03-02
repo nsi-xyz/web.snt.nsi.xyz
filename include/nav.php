@@ -10,7 +10,7 @@ $p_h = (in_array($p, array("index.php", "help.php", "login.php"))) ? "." : "..";
     <ul class="pure-menu-list">
       <?php
       if (!currentUserInSession()) {
-        echo '<li class="pure-menu-item menu-item-divided pure-menu-item-login"><a class="pure-menu-link" href=".<?php echo $p_i; ?>/login.php">&#x1F464; S\'identifier</a></li>';
+        echo '<li class="pure-menu-item menu-item-divided pure-menu-item-login"><a class="pure-menu-link" href=".'.$p_i.'/login.php">&#x1F464; S\'identifier</a></li>';
       } else {
         //todo
       }
