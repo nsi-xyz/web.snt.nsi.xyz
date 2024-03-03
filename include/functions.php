@@ -331,12 +331,16 @@ function generateSessionCode($database) {
     $sessionCode = generateRandomCode(); // Génére un code aléatoire de 8 caractères
     $listeCodesSessions = getRows($database, "sessions", "code", "1"); //Récupère la liste de tous les caractères
     if ($listeCodesSessions){
-        // Parcours de la liste des codes présents dans la BDD et comparaison avec l'actuel code session généré
-        for ($i = 0; $i < count($listeCodesSessions); $i++){
-            // Si code identique, nouvelle génération du code
-            if (in_array($sessionCode, $listeCodesSessions[$i])) {
-                $sessionCode = generateRandomCode();
-                $i = -1;
+        if (count($listeCodesSessions) == 1) {
+            return $sessionCode;
+        } else {
+            // Parcours de la liste des codes présents dans la BDD et comparaison avec l'actuel code session généré
+            for ($i = 0; $i < count($listeCodesSessions); $i++){
+                // Si code identique, nouvelle génération du code
+                if (in_array($sessionCode, $listeCodesSessions[$i])) {
+                    $sessionCode = generateRandomCode();
+                    $i = -1;
+                }
             }
         }
         return $sessionCode;
