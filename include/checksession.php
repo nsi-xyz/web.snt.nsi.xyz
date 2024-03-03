@@ -82,7 +82,7 @@ if (isset($_SESSION["user_logged_in"]["username"]) && $_SESSION["user_logged_in"
 if (isset($_COOKIE["LOGGEDIN"])) {
   $cookie_username = explode("_", $_COOKIE["LOGGEDIN"])[0];
   $cookie_password = explode("_", $_COOKIE["LOGGEDIN"])[1];
-  if (login_success($cookie_username, urldecode($cookie_password), $db)) {
+  if (rowsCount($db, "users", "username = \"$cookie_username\"") == 1 && getRows($db, "users", "*", "username = \"$cookie_username\"")["password"] == urldecode($cookie_password)) {
     $_SESSION["user_logged_in"] = getRows($db, "users", "*", "username = \"$cookie_username\"");
   }
 }
