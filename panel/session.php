@@ -2,6 +2,8 @@
 include("./include/db.php");
 include("../include/functions.php");
 include("../include/checksession.php");
+$id_user = $_SESSION["user_logged_in"]["id"];
+$session_in_progress = sessionInProgress($db, $id_user);
 ?>
 <!DOCTYPE html>
 <html lang="fr">
@@ -26,16 +28,15 @@ include("../include/checksession.php");
         <h1>web.snt.nsi.xyz</h1>
         <h2>10 énigmes à résoudre pour découvrir le web</h2>
       </div>
-      <!--<div class="content">-->
-        <?php
-        $id_user = $_SESSION["user_logged_in"]["id"];
-        if (sessionInProgress($db, $id_user)) {
-            include("./include/session_widgets.php");
-        } else {
-            include("./include/session_create.php");
-        }
-        ?>
-      <!--</div>-->
+      <?php
+      if ($session_in_progress) {
+        include("./include/session_widgets.php");
+      } else {
+        echo '<div class="content">';
+        include("./include/session_create.php");
+        echo '</div>';
+      }
+      ?>
     </div>
     <?php include("../include/footer.php"); ?>
   </div>

@@ -276,9 +276,9 @@ function sessionInProgress($database, $user_id) {
  *
  * @return null
  */
-function createSession($database,$id_owner) {
+function createSession($database, $id_owner) {
     $codeSession = generateSessionCode($database);
-    addRow($database,"sessions",array($codeSession, $id_owner, date('Y-m-d H:i:s',time()), 1));
+    addRow($database, "sessions", array($codeSession, $id_owner, date('Y-m-d H:i:s', time()), 1));
 }
 
 function canJoinSession($pseudo, $id_session, $database) {
@@ -329,12 +329,12 @@ function generateRandomCode($lenght = 8) {
  */
 function generateSessionCode($database) {
     $sessionCode = generateRandomCode(); // Génére un code aléatoire de 8 caractères
-    $listeCodesSessions = getRows($database,"sessions","code","1"); //Récupère la liste de tous les caractères
+    $listeCodesSessions = getRows($database, "sessions", "code", "1"); //Récupère la liste de tous les caractères
     if ($listeCodesSessions){
         // Parcours de la liste des codes présents dans la BDD et comparaison avec l'actuel code session généré
         for ($i = 0; $i < count($listeCodesSessions); $i++){
             // Si code identique, nouvelle génération du code
-            if (in_array($sessionCode,$listeCodesSessions[$i])) {
+            if (in_array($sessionCode, $listeCodesSessions[$i])) {
                 $sessionCode = generateRandomCode();
                 $i = -1;
             }

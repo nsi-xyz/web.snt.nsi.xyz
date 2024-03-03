@@ -30,7 +30,7 @@
 </div>
 <?php
 if (isset($_COOKIE["reset-js"])) {
-  resetSession("../index.php", 1);
+  resetSession("../login.php", 1);
 }
 ?>
 <script>
@@ -39,7 +39,7 @@ if (isset($_COOKIE["reset-js"])) {
     date.setTime(date.getTime() + 1000);
     let expiration = "expires=" + date.toUTCString();
     document.cookie = "reset-js=ok;" + expiration + ";path=/";
-    window.location.replace((window.location.href).replace(/panel.*/, ""));
+    window.location.replace(window.location.href);
   });
 
   function isAllowed(idUser){
