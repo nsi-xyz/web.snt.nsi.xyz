@@ -15,7 +15,7 @@ if (isset($_GET["sort-by"])) {
 ?>
 
 <section class="widgets">
-    <div class="widget-session-viewer">
+    <div class="widget">
         <form method="GET" action="" class="pure-form">
             <fieldset>
                 <label for="sorting-type">Trier par</label>
@@ -193,5 +193,5 @@ if (isset($_GET["sort-by"])) {
     updateUsersList(<?php echo $id_session; ?>, "../js/db.json");
     setInterval(() => {
         updateUsersList(<?php echo $id_session; ?>, "../js/db.json");
-    }, 5000)
+    }, 10000)
 </script>

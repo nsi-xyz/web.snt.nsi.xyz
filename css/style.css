@@ -542,12 +542,12 @@ kbd {
     margin: 0;
 }
 
-.widget-session-viewer {
+.widget {
     display: flex;
     flex-direction: column;
     width: max-content;
-    padding: 1%;
-    margin: 3%;
+    padding: 0;
+    margin: 2%;
 }
 
 .pure-table td, .pure-table th {

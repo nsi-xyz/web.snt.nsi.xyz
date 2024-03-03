@@ -2,6 +2,9 @@
 include("./include/db.php");
 include("../include/functions.php");
 include("../include/checksession.php");
+if (!isset($_SESSION["modeEditOrCreateUser"])){
+  $_SESSION["modeEditOrCreateUser"] = 0; // Mode création
+}
 ?>
 <!DOCTYPE html>
 <html lang="fr">
@@ -26,82 +29,68 @@ include("../include/checksession.php");
         <h1>web.snt.nsi.xyz</h1>
         <h2>10 énigmes à résoudre pour découvrir le web</h2>
       </div>
-
-      <div>
-
-        <?php
-          if (! isset($_SESSION["modeEditOrCreateUser"])){
-            $_SESSION["modeEditOrCreateUser"] = 0; //Mode création utilisateur
-          }
-        ?>
-
-        <div>
-
+      <section class="widgets">
+        <div class="widget">
           <?php
-          
-            if ($_SESSION["modeEditOrCreateUser"] === 0){
-              echo '
-              <p class="p-table">Créer un utilisateur</p>
-              <form class="pure-form" method="post">
-                <fieldset>
-                  <input type="text" name="name" placeholder="Nom*" required="" pattern="^[^\x22]{0,255}$" title="Guillemets interdits"/>
-                  <input type="text" name="surname" placeholder="Prénom*" required="" pattern="^[^\x22]{0,255}$" title="Guillemets interdits"/>
-                  <input type="text" name="username" placeholder="Nom d\'utilisateur*" required="" pattern="^[^\s\xA0\x22]{0,255}$" title="Espaces et guillemets interdits"/>
-                  <input type="password" name="password" placeholder="Mot de passe*" required="" pattern="^[^\s\xA0\x22]{0,255}$" title="Espaces et guillemets interdits"/>
-                  <input type="checkbox" name="id_group" id="checkbox-radio-option-one" value="" /> Administrateur
-                  <button type="submit" class="pure-button pure-button-primary">Créer l\'utilisateur</button>
-                  <p>* Champ obligatoire</p>
+          if ($_SESSION["modeEditOrCreateUser"] == 0) {
+            echo '
+            <p class="p-table">Créer un utilisateur</p>
+            <form class="pure-form" method="post">
+              <fieldset>
+                <input type="text" name="name" placeholder="NOM*" required="" pattern="^[^\x22]{0,255}$" title="Guillemets interdits"/>
+                <input type="text" name="surname" placeholder="Prénom*" required="" pattern="^[^\x22]{0,255}$" title="Guillemets interdits"/>
+                <input type="text" name="username" placeholder="Nom d\'utilisateur*" required="" pattern="^[^\s\xA0\x22]{0,255}$" title="Espaces et guillemets interdits"/>
+                <input type="password" name="password" placeholder="Mot de passe*" required="" pattern="^[^\s\xA0\x22]{0,255}$" title="Espaces et guillemets interdits"/>
+                <input type="checkbox" name="id_group" id="checkbox-radio-option-one" value="" /> Administrateur
+                <button type="submit" class="pure-button pure-button-primary">Créer l\'utilisateur</button>
+                <p>* Champ obligatoire</p>
                 </fieldset>
-              </form>';
-
-              if (isset($_POST["name"],$_POST["surname"],$_POST["username"],$_POST["password"])){
-                if (isset($_POST["id_group"])){
-                  sleep(1);
-                  $resultCreateUser = createUser($db,$_POST["name"],$_POST["surname"],$_POST["username"],$_POST["password"],1);
+            </form>';
+            if (isset($_POST["name"], $_POST["surname"], $_POST["username"], $_POST["password"])) {
+              if (isset($_POST["id_group"])){
+                sleep(1);
+                $resultCreateUser = createUser($db, strtoupper($_POST["name"]), $_POST["surname"], $_POST["username"], $_POST["password"], 1);
+              } else {
+                sleep(1);
+                $resultCreateUser = createUser($db, strtoupper($_POST["name"]), $_POST["surname"], $_POST["username"], $_POST["password"], 0);
+              }
+              if ($resultCreateUser){
+                echo '<p style="color: green; font-weight: bolder;">Utilisateur créé</p>';
+              } else {
+                echo '<p style="color: red; font-weight: bolder;">Nom d\'utilisateur déjà existant !</p>';
+              }
+            }
+          } else {
+            $infosUser = $_SESSION["infosUser"];
+            echo '
+            <p class="p-table">Modifier un utilisateur</p>
+            <form class="pure-form" method="post">
+              <fieldset>
+                <input type="text" name="name" placeholder="Nom" pattern="^[^\x22]{0,255}$" title="Guillemets interdits" value="'.$infosUser["name"].'"/>
+                <input type="text" name="surname" placeholder="Prénom" pattern="^[^\x22]{0,255}$" title="Guillemets interdits" value="'.$infosUser["surname"].'"/>
+                <input type="text" name="username" placeholder="Nom d\'utilisateur" pattern="^[^\s\xA0\x22]{0,255}$" title="Espaces et guillemets interdits" value="'.$infosUser["username"].'"/>
+                <input type="password" name="password" placeholder="Mot de passe" pattern="^[^\s\xA0\x22]{0,255}$" title="Espaces et guillemets interdits"/>';
+            if ($infosUser["id_group"] == 1) {
+              echo '<input type="checkbox" name="id_group" id="checkbox-radio-option-one" value="" checked /> Administrateur';
+            } else {
+              echo '<input type="checkbox" name="id_group" id="checkbox-radio-option-one" value="" /> Administrateur';
+            }
+            echo '
+                <button type="submit" name="validate" class="button-validate-modification pure-button">Valider</button>
+                <button type="submit" name="cancel" class="button-delete pure-button">Annuler</button>
+                <p>* Champ obligatoire</p>
+              </fieldset>
+            </form>';
+            if (isset($_POST["validate"])) {
+              $newInfosUser = array("id" => $infosUser["id"]);
+              $attributs = ["name", "surname", "username"];
+              foreach ($attributs as $attribut) {
+                if ($_POST[$attribut] === "" || $_POST[$attribut] === $infosUser[$attribut]) {
+                  $newInfosUser[$attribut] = $infosUser[$attribut];
                 } else {
-                  sleep(1);
-                  $resultCreateUser = createUser($db,$_POST["name"],$_POST["surname"],$_POST["username"],$_POST["password"],0);
-                }
-                if ($resultCreateUser){
-                  echo '<p style="color: green; font-weight: bolder;">Utilisateur créé</p>';
-                } else {
-                  echo '<p style="color: red; font-weight: bolder;">Nom d\'utilisateur déjà existant !</p>';
+                  $newInfosUser[$attribut] = $_POST[$attribut];
                 }
               }
-            } else {
-              $infosUser = $_SESSION["infosUser"];
-              echo '
-              <p class="p-table">Modifier un utilisateur</p>
-
-              <form class="pure-form" method="post">
-                <fieldset>
-                  <input type="text" name="name" placeholder="Nom" pattern="^[^\x22]{0,255}$" title="Guillemets interdits" value="'.$infosUser["name"].'"/>
-                  <input type="text" name="surname" placeholder="Prénom" pattern="^[^\x22]{0,255}$" title="Guillemets interdits" value="'.$infosUser["surname"].'"/>
-                  <input type="text" name="username" placeholder="Nom d\'utilisateur" pattern="^[^\s\xA0\x22]{0,255}$" title="Espaces et guillemets interdits" value="'.$infosUser["username"].'"/>
-                  <input type="password" name="password" placeholder="Mot de passe" pattern="^[^\s\xA0\x22]{0,255}$" title="Espaces et guillemets interdits"/>
-                  ';
-                  if ($infosUser["id_group"] == 1){
-                    echo '<input type="checkbox" name="id_group" id="checkbox-radio-option-one" value="" checked /> Administrateur';
-                  } else {
-                    echo '<input type="checkbox" name="id_group" id="checkbox-radio-option-one" value="" /> Administrateur';
-                  }
-                  echo '
-                  <button type="submit" name="validate" class="button-validate-modification pure-button">Valider</button>
-                  <button type="submit" name="cancel" class="button-delete pure-button">Annuler</button>
-                  <p>* Champ obligatoire</p>
-                </fieldset>
-              </form>';
-
-              if (isset($_POST["validate"])){
-                $newInfosUser = array("id" => $infosUser["id"]);
-                $attributs = ["name", "surname", "username"];
-                foreach ($attributs as $attribut) {
-                    if ($_POST[$attribut] === "" || $_POST[$attribut] === $infosUser[$attribut]) {
-                        $newInfosUser[$attribut] = $infosUser[$attribut];
-                    } else {
-                        $newInfosUser[$attribut] = $_POST[$attribut];
-                    }
-                }
                 // if ($_POST["name"] === "" || $_POST["name"] === $infosUser["name"]){
                 //   $newInfosUser["name"] = $infosUser["name"];  
                 // } else {
@@ -143,20 +132,15 @@ include("../include/checksession.php");
               }
             }
           ?>
-
         </div>
-
-
-        <div>
-
+        <div class="widget">
           <p class="p-table">Liste des utilisateurs</p>
-
           <table class="pure-table">
             <thead>
               <th>#</th>
-              <th>Nom</th>
+              <th>NOM</th>
               <th>Prénom</th>
-              <th>Pseudonyme</th>
+              <th>Nom d'utilisateur</th>
               <th>Administrateur</th>
               <th>Actions</th>
             </thead>
@@ -180,7 +164,7 @@ include("../include/checksession.php");
                       echo '</td>
                       <td>
                         <div>
-                          <button class="button-change-infos pure-button" onclick="updateInfosUser(['.urlencode($listeUsers[$i]["id"]).',\''.urlencode($listeUsers[$i]["name"]).'\',\''.urlencode($listeUsers[$i]["surname"]).'\',\''.urlencode($listeUsers[$i]["username"]).'\','.$listeUsers[$i]["id_group"].'])">Modifier info</button>
+                          <button class="button-change-infos pure-button" onclick="updateInfosUser(['.urlencode($listeUsers[$i]["id"]).',\''.urlencode($listeUsers[$i]["name"]).'\',\''.urlencode($listeUsers[$i]["surname"]).'\',\''.urlencode($listeUsers[$i]["username"]).'\','.$listeUsers[$i]["id_group"].'])">Modifier</button>
                           <button class="button-delete pure-button" onclick="deleteUser('.$listeUsers[$i]["id"].','.$_SESSION["user_logged_in"]["id"].')">Supprimer le compte</button>
                         </div>
                       </td>
@@ -239,9 +223,7 @@ include("../include/checksession.php");
           </table>
 
         </div>
-
-      </div>
-    
+      </section>
     </div>
     <?php include("../include/footer.php"); ?>
   
