@@ -40,7 +40,7 @@ if (!isset($_SESSION["target_value_8"])) {
                 <p class="p-content">Pour résoudre cette énigme, il va falloir <a href="../help.php#Modifier / supprimer un cookie" class="link">modifier un cookie</a>. Ce cookie contient pour l'instant un nombre finissant par <span class="p-code">404</span>. Vous devez effacer le nombre finissant par <span class="p-code">404</span> et le remplacer par <span class="p-code"><?php echo $_SESSION["target_value_8"]; ?></span> (mais il ne faut pas effacer le cookie). Attention, il ne faut en aucun cas modifier le cookie de session.<br>Après avoir modifier le cookie, pensez à <a href="../help.php#Comment rafraîchir / actualiser une page web" class="link">rafraîchir la page</a>.</p>
                 <?php
                 if (isset($_COOKIE[COOKIE8["name"]]) && $_COOKIE[COOKIE8["name"]] == $_SESSION["target_value_8"]) {
-                    tickPuzzle(null, $db);
+                    tickPuzzle($db);
                 }
                 if (puzzleIsResolved()) {
                     include("../include/table.php");

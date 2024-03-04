@@ -53,7 +53,7 @@ if (!isset($_SESSION["magic_word_4"])) {
                     $response_f = str_replace(' ', '', strtolower($_GET["response"]));
                     $key_f = str_replace(' ', '', strtolower($_SESSION["magic_word_4"]));
                     if ($response_f == $key_f) {
-                        tickPuzzle(null, $db);
+                        tickPuzzle($db);
                     }
                 }
                 echo '                <input type="text" name="response" placeholder="Réponse énigme '.getCurrentPuzzleID().'" required>

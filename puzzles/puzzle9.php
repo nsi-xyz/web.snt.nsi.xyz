@@ -32,7 +32,7 @@ include("../include/checksession.php");
                 <p class="p-content">Vous devez <a href="../help.php#Bloquer les publicités" class="link">installer dans ce navigateur un bloqueur de publicité</a>.<br>Après avoir installé un tel bloqueur, il faudra <a href="../help.php#Comment rafraîchir / actualiser une page web" class="link">rafraîchir la page</a>.<br>Si cette énigme s'est résolue toute seule, c'est que vous utilisiez un navigateur dans lequel un bloqueur de publicité était déjà actif, probablement déjà installé par un précédent utilisateur.</p>
                 <?php
                 if (isset($_COOKIE["puzzle9"])) {
-                    tickPuzzle(null, $db);
+                    tickPuzzle($db);
                 }
                 if (puzzleIsResolved()) {
                     include("../include/table.php");

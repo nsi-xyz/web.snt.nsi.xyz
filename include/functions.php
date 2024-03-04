@@ -42,7 +42,7 @@ function setPageTitle() {
  * validée. Si aucun puzzleID n'est fourni, la fonction utilisera la fonction getCurrentPuzzleID() pour
  * obtenir l'ID de l'énigme actuel.
  */
-function tickPuzzle($puzzleID = null, $database) {
+function tickPuzzle($database, $puzzleID = null) {
     if ($puzzleID == null) {
         $puzzleID = getCurrentPuzzleID();
     }

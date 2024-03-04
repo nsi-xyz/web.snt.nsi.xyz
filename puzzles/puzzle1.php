@@ -60,7 +60,7 @@ $slot = rand(1, 5);
                     $key_f = str_replace(' ', '', strtolower($_SESSION["magic_word_1"]));
                     $response = $_GET['response'];
                     if ($response_f == $key_f) {
-                        tickPuzzle(null, $db);
+                        tickPuzzle($db);
                     }
                 }
                 echo '                <input type="text" name="response" placeholder="Réponse énigme '.getCurrentPuzzleID().'" required>

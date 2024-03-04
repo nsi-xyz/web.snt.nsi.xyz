@@ -38,7 +38,7 @@ if (!isset($_COOKIE[COOKIE7["name"]])) {
                 <p class="p-content">Pour résoudre cette énigme, il va falloir <a href="../help.php#Modifier / supprimer un cookie" class="link">effacer un cookie</a> : <span class="p-code"><?php echo COOKIE7["name"]; ?></span>.<br>Après avoir supprimer le cookie, pensez à <a href="../help.php#Comment rafraîchir / actualiser une page web" class="link">rafraîchir la page</a>.</p>
                 <?php
                 if ($tick === true) {
-                    tickPuzzle(null, $db);
+                    tickPuzzle($db);
                 }
                 if (puzzleIsResolved()) {
                     include("../include/table.php");
