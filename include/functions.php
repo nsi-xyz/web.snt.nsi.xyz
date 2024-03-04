@@ -54,7 +54,8 @@ function tickPuzzle($database, $puzzleID = null) {
             for ($i = 1; $i <= 10; $i++) {
                 $arraypuzzlesformat[] = in_array($i, $_SESSION["resolvedPuzzles"]) ? "1" : "0";
             }
-            updateRow($database, "users_session", array("puzzles"), array(implode($arraypuzzlesformat)), "id_session = $session_id"); // TODO
+            // updateRow($database, "users_session", array("puzzles"), array(implode($arraypuzzlesformat)), "id_session = $session_id"); // TODO
+            updateRow($database, "users_session", array("puzzles" => implode($arraypuzzlesformat)), "id_session = $session_id"); // TODO
             updateLocalDB(getRowsInJSON($database, "users_session", "*", "1"), "../js/db-$session_id.json");
         }
         include("./include/nav.php");
@@ -169,24 +170,19 @@ function delRow($database, $relation, $query) {
  *
  * @param $relation Ce paramètre indique la table de la $database dans laquelle on va ajouter un enregistrement.
  * 
- * @param $attributs Ce paramètre indique les attributs à modifier. Ce doit être une liste des attributs.
- * 
- * @param $values Ce paramètre indique les valeurs a modifier lié aux attributs. Ce doit être une liste et
- * les valeur doivent avoir le même indice que leur attribut respectif.
+ * @param $attributs_values Ce paramètre est un tableau qui lie un attribut (clé) à une valeur (valeur).
  *
  * @param $query Le filtrage à indiquer (ce qui se situe après le WHERE d'une requête SQL).
  * 
  * @return null
  */
-
- // Il faudra recoder cette fonction en utilisant le principe de clé=>valeur ;
- // De même, il faudra modifier les fonctions qui utilisent updateRow() : updateUser()
-function updateRow($database, $relation, $attributs, $values, $query){
+function updateRow($database, $relation, $attributs_values, $query){
     $setCommand = "";
+    $attributs = array_keys($attributs_values);
     for ($i = 0; $i < count($attributs) - 1; $i++){
-        $setCommand = $setCommand.$attributs[$i]." = \"".$values[$attributs[$i]]."\", ";
+        $setCommand = $setCommand.$attributs[$i]." = \"".$attributs_values[$attributs[$i]]."\", ";
     }
-    $setCommand = $setCommand.$attributs[count($attributs) - 1]." = \"".$values[$attributs[count($attributs) - 1]]."\"";
+    $setCommand = $setCommand.$attributs[count($attributs) - 1]." = \"".$attributs_values[$attributs[count($attributs) - 1]]."\"";
     $sql = "UPDATE $relation SET $setCommand WHERE $query";
     $stmp = $database->prepare($sql);
     $stmp->execute();
@@ -212,10 +208,16 @@ function updateLocalDB($json, $path) {
 
 function createUser($database, $name, $surname, $username, $password, $id_group){
     $listeUsernameUsers = getRows($database,"users","username","1");
-    for ($i=0; $i < count($listeUsernameUsers); $i++){
-        if (in_array($username, $listeUsernameUsers[$i])){
+    if (count($listeUsernameUsers) == 1){
+        if (in_array($username, $listeUsernameUsers)){
             return false;
         }
+    } else {
+            for ($i=0; $i < count($listeUsernameUsers); $i++){
+                if (in_array($username, $listeUsernameUsers[$i])){
+                    return false;
+                }
+            }
     }
     addRow($database,"users",array($name,$surname,$username,password_hash($password, PASSWORD_DEFAULT),$id_group));
     return true;
@@ -223,9 +225,15 @@ function createUser($database, $name, $surname, $username, $password, $id_group)
 
 function updateUser($database,$infosUser,$originalUsername){
     $listeUsernameUsers = getRows($database,"users","username","1");
-    for ($i=0; $i < count($listeUsernameUsers); $i++){
-        if (in_array($infosUser["username"], $listeUsernameUsers[$i]) && $originalUsername !== $listeUsernameUsers[$i]["username"]){
-            return false;        
+    if (count($listeUsernameUsers) == 1){
+        if (in_array($infosUser["username"], $listeUsernameUsers) && $originalUsername !== $listeUsernameUsers["username"]){
+            return false;
+        }
+    } else { 
+        for ($i=0; $i < count($listeUsernameUsers); $i++){
+            if (in_array($infosUser["username"], $listeUsernameUsers[$i]) && $originalUsername !== $listeUsernameUsers[$i]["username"]){
+                return false;        
+            }
         }
     }
     $attributs = (array_key_exists("password", $infosUser)) ? ["name","surname","username","password","id_group"] : ["name","surname","username","id_group"];
@@ -237,7 +245,7 @@ function updateUser($database,$infosUser,$originalUsername){
             $values[$attributs[$i]] = $infosUser[$attributs[$i]];
         }
     }
-    updateRow($database, "users", $attributs, $values, "id={$infosUser["id"]}");
+    updateRow($database, "users", $values, "id={$infosUser["id"]}");
     return true;
 }
 

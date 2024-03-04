@@ -9,7 +9,8 @@ if (isset($_POST["kick_user"])) {
 }
 if (isset($_POST["stop_session"])) {
     $stop_session_id = $_POST["stop_session"];
-    updateRow($db, "sessions", array("status"), array(0), "id = $stop_session_id"); // TODO
+    // updateRow($db, "sessions", array("status"), array(0), "id = $stop_session_id"); // TODO
+    updateRow($db, "sessions", array("status" => 0), "id = $stop_session_id");
     unlink("../js/db-$id_session.json");
 }
 if (!isset($_SESSION["sort-by"])) {

@@ -147,16 +147,16 @@ if (!isset($_SESSION["modeEditOrCreateUser"])){
             <tbody>
               <?php
                 $listeUsers = getRows($db,"users","id,name,surname,username,id_group","1");
-
-                for ($i = 0; $i < count($listeUsers); $i++) {
+                
+                if (count(getRows($db,"users","id","1")) == 1){
                   echo
                     '<tr>
-                      <td>'.$listeUsers[$i]["id"].'</td>
-                      <td>'.$listeUsers[$i]["name"].'</td>
-                      <td>'.$listeUsers[$i]["surname"].'</td>
-                      <td>'.$listeUsers[$i]["username"].'</td>
+                      <td>'.$listeUsers["id"].'</td>
+                      <td>'.$listeUsers["name"].'</td>
+                      <td>'.$listeUsers["surname"].'</td>
+                      <td>'.$listeUsers["username"].'</td>
                       <td>';
-                      if ($listeUsers[$i]["id_group"] == 1){
+                      if ($listeUsers["id_group"] == 1){
                         echo "✅";
                       } else {
                         echo "❌";
@@ -164,12 +164,36 @@ if (!isset($_SESSION["modeEditOrCreateUser"])){
                       echo '</td>
                       <td>
                         <div>
-                          <button class="button-change-infos pure-button" onclick="updateInfosUser(['.urlencode($listeUsers[$i]["id"]).',\''.urlencode($listeUsers[$i]["name"]).'\',\''.urlencode($listeUsers[$i]["surname"]).'\',\''.urlencode($listeUsers[$i]["username"]).'\','.$listeUsers[$i]["id_group"].'])">Modifier</button>
-                          <button class="button-delete pure-button" onclick="deleteUser('.$listeUsers[$i]["id"].','.$_SESSION["user_logged_in"]["id"].')">Supprimer le compte</button>
+                          <button class="button-change-infos pure-button" onclick="updateInfosUser(['.urlencode($listeUsers["id"]).',\''.urlencode($listeUsers["name"]).'\',\''.urlencode($listeUsers["surname"]).'\',\''.urlencode($listeUsers["username"]).'\','.$listeUsers["id_group"].'])">Modifier</button>
+                          <button class="button-delete pure-button" onclick="deleteUser('.$listeUsers["id"].','.$_SESSION["user_logged_in"]["id"].')">Supprimer le compte</button>
                         </div>
                       </td>
                     </tr>
                   ';
+                } else {
+                  for ($i = 0; $i < count($listeUsers); $i++) {
+                    echo
+                      '<tr>
+                        <td>'.$listeUsers[$i]["id"].'</td>
+                        <td>'.$listeUsers[$i]["name"].'</td>
+                        <td>'.$listeUsers[$i]["surname"].'</td>
+                        <td>'.$listeUsers[$i]["username"].'</td>
+                        <td>';
+                        if ($listeUsers[$i]["id_group"] == 1){
+                          echo "✅";
+                        } else {
+                          echo "❌";
+                        }
+                        echo '</td>
+                        <td>
+                          <div>
+                            <button class="button-change-infos pure-button" onclick="updateInfosUser(['.urlencode($listeUsers[$i]["id"]).',\''.urlencode($listeUsers[$i]["name"]).'\',\''.urlencode($listeUsers[$i]["surname"]).'\',\''.urlencode($listeUsers[$i]["username"]).'\','.$listeUsers[$i]["id_group"].'])">Modifier</button>
+                            <button class="button-delete pure-button" onclick="deleteUser('.$listeUsers[$i]["id"].','.$_SESSION["user_logged_in"]["id"].')">Supprimer le compte</button>
+                          </div>
+                        </td>
+                      </tr>
+                    ';
+                  }
                 }
 
                 echo '<script>
