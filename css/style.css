@@ -448,6 +448,7 @@ kbd {
     white-space: nowrap;
 }
 
+.stop-button,
 .reset-button {
     display: block;
     margin: auto;
@@ -462,6 +463,8 @@ kbd {
     cursor: pointer;
 }
 
+.stop-button:focus,
+.stop-button:hover,
 .reset-button:focus,
 .reset-button:hover {
     background-color: #3B0D11;
@@ -538,6 +541,8 @@ kbd {
 .widgets {
     display: flex;
     flex-wrap: wrap;
+    align-items: center;
+    flex-direction: column;
     justify-content: center;
     margin: 0;
 }

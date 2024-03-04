@@ -11,5 +11,6 @@
 <?php
 if (isset($_POST["session_duration"])) {
     createSession($db, $id_user);
+    echo '<script>window.location.replace(window.location.href);</script>';
 }
 ?>

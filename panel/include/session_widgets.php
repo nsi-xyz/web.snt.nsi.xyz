@@ -4,7 +4,13 @@ $users_session_users_list = getRows($db, "users_session", "pseudo, joined_at, pu
 if (isset($_POST["kick_user"])) {
     $user_session_id = $_POST["kick_user"];
     delRow($db, "users_session", "id = $user_session_id");
-    updateLocalDB(getRowsInJSON($db, "users_session", "*", "1"), "../js/db.json");
+    updateLocalDB(getRowsInJSON($db, "users_session", "*", "1"), "../js/db-$id_session.json");
+    echo '<script>window.location.replace(window.location.href);</script>';
+}
+if (isset($_POST["stop_session"])) {
+    $stop_session_id = $_POST["stop_session"];
+    updateRow($db, "sessions", array("status"), array(0), "id = $stop_session_id"); // TODO
+    unlink("../js/db-$id_session.json");
 }
 if (!isset($_SESSION["sort-by"])) {
     $_SESSION["sort-by"] = "Date";
@@ -49,6 +55,8 @@ if (isset($_GET["sort-by"])) {
             </tbody>
         </table>
     </div>
+    <div class="widget">
+        <button class ="stop-button" type="button" onclick="stop(<?php echo $id_session; ?>)">Stopper la session</button>
 </section>
 
 
@@ -148,7 +156,7 @@ if (isset($_GET["sort-by"])) {
                 url: "session.php",
                 data: {kick_user: id},
                 success: function(response) {
-                    location.reload(true);
+                    window.location.replace(window.location.href);;
                 }
             });
         }
@@ -190,8 +198,19 @@ if (isset($_GET["sort-by"])) {
         });
     }
 
-    updateUsersList(<?php echo $id_session; ?>, "../js/db.json");
+    function stop(id) {
+        jQuery.ajax({
+            type: "POST",
+            url: "session.php",
+            data: {stop_session: id},
+            success: function(response) {
+                window.location.replace(window.location.href);
+                }
+            });
+    }
+
+    updateUsersList(<?php echo $id_session; ?>, "../js/db-<?php echo $id_session; ?>.json");
     setInterval(() => {
-        updateUsersList(<?php echo $id_session; ?>, "../js/db.json");
+        updateUsersList(<?php echo $id_session; ?>, "../js/db-<?php echo $id_session; ?>.json");
     }, 10000)
 </script>
