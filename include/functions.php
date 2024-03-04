@@ -42,14 +42,20 @@ function setPageTitle() {
  * validée. Si aucun puzzleID n'est fourni, la fonction utilisera la fonction getCurrentPuzzleID() pour
  * obtenir l'ID de l'énigme actuel.
  */
-function tickPuzzle($puzzleID = null) {
+function tickPuzzle($puzzleID = null, $database) {
     if ($puzzleID == null) {
         $puzzleID = getCurrentPuzzleID();
     }
     if (!puzzleIsResolved($puzzleID)) {
         $_SESSION["resolvedPuzzles"][] = $puzzleID;
         if (currentUserInSession()) {
-            // mettre à jour la bdd
+            $session_id = getUserSession()["id_session"];
+            $arraypuzzlesformat = array();
+            for ($i = 1; $i <= 10; $i++) {
+                $arraypuzzlesformat[] = in_array($i, $_SESSION["resolvedPuzzles"]) ? "1" : "0";
+            }
+            updateRow($database, "users_session", array("puzzles"), array(implode($arraypuzzlesformat)), "id_session = $session_id"); // TODO
+            updateLocalDB(getRowsInJSON($database, "users_session", "*", "1"), "../js/db-$session_id.json");
         }
         include("./include/nav.php");
         echo '<script>window.location.replace(window.location.href);</script>';
@@ -175,12 +181,12 @@ function delRow($database, $relation, $query) {
 
  // Il faudra recoder cette fonction en utilisant le principe de clé=>valeur ;
  // De même, il faudra modifier les fonctions qui utilisent updateRow() : updateUser()
-function updateRow($database,$relation,$attributs,$values,$query){
+function updateRow($database, $relation, $attributs, $values, $query){
     $setCommand = "";
-    for ($i=0;$i < count($attributs)-1;$i++){
+    for ($i = 0; $i < count($attributs) - 1; $i++){
         $setCommand = $setCommand.$attributs[$i]." = \"".$values[$attributs[$i]]."\", ";
     }
-    $setCommand = $setCommand.$attributs[count($attributs)-1]." = \"".$values[$attributs[count($attributs)-1]]."\"";
+    $setCommand = $setCommand.$attributs[count($attributs) - 1]." = \"".$values[$attributs[count($attributs) - 1]]."\"";
     $sql = "UPDATE $relation SET $setCommand WHERE $query";
     $stmp = $database->prepare($sql);
     $stmp->execute();
@@ -204,26 +210,25 @@ function updateLocalDB($json, $path) {
     file_put_contents($path, $json);
 }
 
-function createUser($database,$name,$surname,$username,$password,$id_group){
+function createUser($database, $name, $surname, $username, $password, $id_group){
     $listeUsernameUsers = getRows($database,"users","username","1");
     for ($i=0; $i < count($listeUsernameUsers); $i++){
         if (in_array($username, $listeUsernameUsers[$i])){
-            return False;
+            return false;
         }
     }
     addRow($database,"users",array($name,$surname,$username,password_hash($password, PASSWORD_DEFAULT),$id_group));
-    return True;
+    return true;
 }
 
 function updateUser($database,$infosUser,$originalUsername){
     $listeUsernameUsers = getRows($database,"users","username","1");
     for ($i=0; $i < count($listeUsernameUsers); $i++){
         if (in_array($infosUser["username"], $listeUsernameUsers[$i]) && $originalUsername !== $listeUsernameUsers[$i]["username"]){
-            return False;        
+            return false;        
         }
     }
-
-    $attributs = (array_key_exists("password",$infosUser)) ? ["name","surname","username","password","id_group"] : ["name","surname","username","id_group"];
+    $attributs = (array_key_exists("password", $infosUser)) ? ["name","surname","username","password","id_group"] : ["name","surname","username","id_group"];
     $values = [];
     for ($i = 0; $i < count($attributs); $i++){
         if ($attributs[$i] === "password"){
@@ -232,8 +237,8 @@ function updateUser($database,$infosUser,$originalUsername){
             $values[$attributs[$i]] = $infosUser[$attributs[$i]];
         }
     }
-    updateRow($database,"users",$attributs,$values,"id={$infosUser["id"]}");
-    return True;
+    updateRow($database, "users", $attributs, $values, "id={$infosUser["id"]}");
+    return true;
 }
 
 function deleteUser($database, $id){
@@ -279,6 +284,8 @@ function sessionInProgress($database, $user_id) {
 function createSession($database, $id_owner) {
     $codeSession = generateSessionCode($database);
     addRow($database, "sessions", array($codeSession, $id_owner, date('Y-m-d H:i:s', time()), 1));
+    $id_session_created = getRows($database, "sessions", "*", "id_owner = $id_owner AND status = 1")["id"];
+    updateLocalDB("[]", "../js/db-$id_session_created.json");
 }
 
 function canJoinSession($pseudo, $id_session, $database) {
@@ -296,11 +303,18 @@ function canJoinSession($pseudo, $id_session, $database) {
 
 function joinSession($pseudo, $id_session, $database, $local_path) {
     addRow($database, "users_session", array($pseudo, $id_session, date('Y-m-d H:i:s'), "0000000000"));
-    updateLocalDB(getRowsInJSON($database, "users_session", "*", "1"), $local_path);
+    updateLocalDB(getRowsInJSON($database, "users_session", "*", "id_session = $id_session"), $local_path);
 }
 
 function currentUserInSession() {
     return isset($_SESSION["user_logged_in"]) && $_SESSION["user_logged_in"]["username"] != "invité";
+}
+
+function getUserSession() {
+    if (currentUserInSession()) {
+        return $_SESSION["user_logged_in"];
+    }
+    return -1;
 }
 
 /**

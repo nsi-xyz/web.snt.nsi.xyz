@@ -61,7 +61,7 @@ if (isset($_SESSION["user_logged_in"]) && $_SESSION["user_logged_in"]["username"
               if (rowsCount($db, "sessions", "code = \"$code\"") == 1) {
                 $id = getRows($db, "sessions", "*", "code = \"$code\"")["id"];
                 if (canJoinSession($pseudo, $id, $db)) {
-                  joinSession($pseudo, $id, $db, "./js/db.json");
+                  joinSession($pseudo, $id, $db, "./js/db-$id.json");
                   $_SESSION["user_logged_in"]["username"] = $pseudo;
                   echo '<script>window.location.replace(window.location.href);</script>';
                 } else {

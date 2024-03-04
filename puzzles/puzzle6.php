@@ -38,7 +38,7 @@ if (!isset($_SESSION["magic_word_6"])) {
                 <p class="p-content">Le code source JavaScript <a href="../help.php#Inclusion des scripts JavaScript" class="link">intégré directement dans le code HTML de cette page</a> contient le mot clé, qu'il faudra taper sur cette page, pour réussir cette énigme.</p>
                 <?php
                 if (isset($_COOKIE["puzzle6"])) {
-                    tickPuzzle();
+                    tickPuzzle(null, $db);
                 }
                 if (puzzleIsResolved()) {
                     include("../include/table.php");

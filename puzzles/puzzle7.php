@@ -2,9 +2,9 @@
 include("../panel/include/db.php");
 include("../include/functions.php");
 include("../include/checksession.php");
-$tick = FALSE;
+$tick = false;
 if (!isset($_COOKIE[COOKIE7["name"]])) {
-    $tick = TRUE;
+    $tick = true;
     setcookie(COOKIE7["name"], "", time() - SESSDURATION, "/");
 }
 ?>
@@ -37,8 +37,8 @@ if (!isset($_COOKIE[COOKIE7["name"]])) {
                 <h2 class="content-subhead">Effacer un cookie espion</h2>
                 <p class="p-content">Pour résoudre cette énigme, il va falloir <a href="../help.php#Modifier / supprimer un cookie" class="link">effacer un cookie</a> : <span class="p-code"><?php echo COOKIE7["name"]; ?></span>.<br>Après avoir supprimer le cookie, pensez à <a href="../help.php#Comment rafraîchir / actualiser une page web" class="link">rafraîchir la page</a>.</p>
                 <?php
-                if ($tick === TRUE) {
-                    tickPuzzle();
+                if ($tick === true) {
+                    tickPuzzle(null, $db);
                 }
                 if (puzzleIsResolved()) {
                     include("../include/table.php");
