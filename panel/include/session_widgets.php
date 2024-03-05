@@ -1,5 +1,6 @@
 <?php
-$id_session = getRows($db, "sessions", "*", "id_owner = $id_user AND status = 1")["id"];
+$session = getRows($db, "sessions", "*", "id_owner = $id_user AND status = 1");
+$id_session = $session["id"];
 $users_session_users_list = getRows($db, "users_session", "pseudo, joined_at, puzzles", "id_session = $id_session");
 if (isset($_POST["kick_user"])) {
     $user_session_id = $_POST["kick_user"];
@@ -23,6 +24,9 @@ if (isset($_GET["sort-by"])) {
 
 <section class="widgets">
     <div class="widget">
+        <h1><?php echo $session["code"]; ?></h1>
+    </div>
+    <div class="widget">
         <form method="GET" action="" class="pure-form">
             <fieldset>
                 <label for="sorting-type">Trier par</label>
@@ -38,17 +42,8 @@ if (isset($_GET["sort-by"])) {
             <thead>
                 <tr>
                     <th>Pseudo</th>
-                    <th>Énigme 1</th>
-                    <th>Énigme 2</th>
-                    <th>Énigme 3</th>
-                    <th>Énigme 4</th>
-                    <th>Énigme 5</th>
-                    <th>Énigme 6</th>
-                    <th>Énigme 7</th>
-                    <th>Énigme 8</th>
-                    <th>Énigme 9</th>
-                    <th>Énigme 10</th>
-                    <th>A rejoint à</th>
+                    <th colspan="10">Énigmes</th>
+                    <th>Heure</th>
                     <th>Actions</th>
                 </tr>
             </thead>
@@ -68,7 +63,7 @@ if (isset($_GET["sort-by"])) {
         for (let i = 0; i < users_list_tbody.length; i++) {
             user_puzzle_in_page = [];
             for (let j = 0; j < 10; j++) {
-                user_puzzle_in_page.push(users_list_tbody[i].querySelector("#user-puzzle-" + (j + 1).toString()).textContent == "\u{1F7E0}" ? "0" : "1");
+                user_puzzle_in_page.push(users_list_tbody[i].querySelector("#user-puzzle-" + (j + 1).toString()).getAttribute("class") == "td-resolved" ? "1" : "0");
             }
             users_in_page.push([users_list_tbody[i].querySelector("#user-pseudo").textContent, user_puzzle_in_page])
         }
@@ -109,8 +104,10 @@ if (isset($_GET["sort-by"])) {
                             let new_all_td_puzzle = [];
                             for (let i = 0; i < 10; i++) {
                                 let new_td_puzzle = document.createElement("td");
+                                let td_class = element_puzzle_progression[i] == "1" ? "td-resolved" : "td-unresolved";
                                 new_td_puzzle.setAttribute("id", "user-puzzle-" + (i + 1).toString());
-                                new_td_puzzle.textContent = element_puzzle_progression[i] == "1" ? "\u{1F7E2}" : "\u{1F7E0}";
+                                new_td_puzzle.setAttribute("class", td_class);
+                                new_td_puzzle.textContent = (i + 1).toString().padStart(2, "0");
                                 new_all_td_puzzle.push(new_td_puzzle);
                             }
                             let new_td_joined_at = document.createElement("td");
@@ -136,8 +133,9 @@ if (isset($_GET["sort-by"])) {
                         } else if (users_in_page.length > 0 && userAlreadyHere) {
                             for (let i = 0; i < 10; i++) {
                                 if (users_in_page[index][1][i] != element_puzzle_progression[i]) {
-                                    new_value = element_puzzle_progression[i] == "1" ? "\u{1F7E2}" : "\u{1F7E0}";
-                                    users_list_tbody[index].querySelector("#user-puzzle-" + (i + 1).toString()).textContent = new_value;
+                                    td_class = element_puzzle_progression[i] == "1" ? "td-resolved" : "td-unresolved";
+                                    users_list_tbody[index].querySelector("#user-puzzle-" + (i + 1).toString()).setAttribute("class", td_class);
+                                    users_list_tbody[index].querySelector("#user-puzzle-" + (i + 1).toString()).textContent = (i + 1).toString().padStart(2, "0");
                                 }
                             }
                         }

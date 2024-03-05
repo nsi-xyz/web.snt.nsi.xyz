@@ -388,6 +388,8 @@ body {
 .td-resolved {
     cursor: pointer;
     background-color: #7cb342;
+    color: #fff;
+    font-weight: bold;
     border-left: 1px solid #141414;
     border-width: 0 0 0 1px;
     font-size: inherit;
@@ -401,6 +403,8 @@ body {
 .td-unresolved {
     cursor: pointer;
     background-color: #ff9800;
+    color: #fff;
+    font-weight: bold;
     border-left: 1px solid #141414;
     border-width: 0 0 0 1px;
     font-size: inherit;
