@@ -49,7 +49,7 @@ function tickPuzzle($database, $puzzleID = null) {
     if (!puzzleIsResolved($puzzleID)) {
         $_SESSION["resolvedPuzzles"][] = $puzzleID;
         if (currentUserInSession()) {
-            $session_id = getUserSession()["id_session"];
+            $session_id = $_SESSION["user_logged_in"]["id_session"];
             $arraypuzzlesformat = array();
             for ($i = 1; $i <= 10; $i++) {
                 $arraypuzzlesformat[] = in_array($i, $_SESSION["resolvedPuzzles"]) ? "1" : "0";
@@ -315,14 +315,7 @@ function joinSession($pseudo, $id_session, $database, $local_path) {
 }
 
 function currentUserInSession() {
-    return isset($_SESSION["user_logged_in"]) && $_SESSION["user_logged_in"]["username"] != "invité";
-}
-
-function getUserSession() {
-    if (currentUserInSession()) {
-        return $_SESSION["user_logged_in"];
-    }
-    return -1;
+    return isset($_SESSION["user_logged_in"]["pseudo"]);
 }
 
 /**
