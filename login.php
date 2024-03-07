@@ -89,13 +89,16 @@ if (isset($_SESSION["user_logged_in"]) && $_SESSION["user_logged_in"]["username"
               $user_username = strtolower($_POST["username"]);
               $user_password = $_POST["password"];
               if (login_success($user_username, $user_password, $db)) {
-                $_SESSION["user_logged_in"] = getRows($db, "users", "*", "username = \"$user_username\"");
+                $_SESSION["user_logged_in"] = getRows($db, "users", "id,name,surname,username,id_group", "username = \"$user_username\"");
                 echo '<script>window.location.replace(window.location.href);</script>';
               } else {
                 echo "Identifiant ou mot de passe incorrect.";
               }
             }
             ?>
+
+            <p>Vous êtes professeur ?<br><a id="create-account" href="#"> Créez votre compte !</a></p>
+
           </div>
         </section>
       </div>
