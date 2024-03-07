@@ -20,8 +20,15 @@ $p_h = (in_array($p, array("index.php", "help.php", "login.php"))) ? "." : "..";
             ';
         } elseif (isUserConnected()) {
           echo '
-          <div class="infos-users">
-            <li>🚹 Utilisateur : <strong>'.$_SESSION["user_logged_in"]["username"].'</strong></li>
+          <div class="infos-users">';
+          $codeSession = getRows($db, "sessions", "code", "id_owner = {$_SESSION["user_logged_in"]["id"]} AND status = 1");
+            if (isset($codeSession) && $codeSession != null) {
+              echo '<li>🕒 Session : <strong>'.$codeSession["code"].'</strong></li>';
+            } else {
+              echo '<li>🕒 Aucune session existante</li>';
+            }
+            
+            echo '<li style="padding-top: 0.6em;">🚹 Utilisateur : <strong>'.$_SESSION["user_logged_in"]["username"].'</strong></li>
           </div>';
           echo '<li class="pure-menu-item-back"><a href="'.$p_h.'/panel/" class="pure-menu-link">➡️ Panel Admin</a></li>';
         }
