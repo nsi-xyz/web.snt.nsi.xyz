@@ -71,7 +71,7 @@ if (isset($_GET["sort-by"])) {
             .then(response => response.json())
             .then(json => {
                 let index = 0;
-                switch ("<? echo $_SESSION["sort-by"]; ?>") {
+                switch ('<?php echo $_SESSION["sort-by"]; ?>') {
                     case "Date":
                         sortByDate(json);
                         break;
