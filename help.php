@@ -93,9 +93,28 @@ include("./include/checksession.php");
             </tr>
           </tbody>
         </table>
-        <h2 id="Effacer sa progression et recommencer les énigmes" class="content-subhead">Effacer sa progression et recommencer les énigmes</h2>
-        <p class="p-content">En cliquant sur le bouton si dessous, vous effacez votre progression et recommencez de zéro. Cette action est irréversible.</p>
-        <button class ="reset-button" type="button" onclick="reset()">Effacer / Recommencer</button>
+        <?php
+        if (isUserConnected()){
+          echo '
+          <h2 id="Effacer sa progression et recommencer les énigmes" class="content-subhead">Se déconnecter</h2>
+          <p class="p-content">En cliquant sur le bouton si dessous, vous allez vous déconnecter.</p>
+          <button class ="reset-button" type="button" onclick="reset()">Se déconnecter</button>
+        ';
+        } elseif (currentUserInSession()) {
+          echo '
+          <h2 id="Effacer sa progression et recommencer les énigmes" class="content-subhead">Quitter la session</h2>
+          <p class="p-content">En cliquant sur le bouton si dessous, vous allez quitter la session.</p>
+          <button class ="reset-button" type="button" onclick="reset()">Quitter la session</button>
+        ';
+        } else {
+          echo '
+          <h2 id="Effacer sa progression et recommencer les énigmes" class="content-subhead">Effacer sa progression et recommencer les énigmes</h2>
+          <p class="p-content">En cliquant sur le bouton si dessous, vous allez effacer votre progression et recommencer de zéro. Cette action est <strong>irréversible</strong>.</p>
+          <button class ="reset-button" type="button" onclick="reset()">Effacer / Recommencer</button>
+          ';
+        }
+        
+        ?>
         <?php
         if (isset($_COOKIE["reset-js"])) {
           resetSession("./index.php");
