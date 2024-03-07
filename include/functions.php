@@ -35,7 +35,7 @@ function setPageTitle() {
 }
 
 /**
- * La fonction vérifie si unz énigme est résolue et si ce n'est pas le cas, ajoute l'ID de
+ * La fonction vérifie si une énigme est résolue et si ce n'est pas le cas, ajoute l'ID de
  * l'énigme à la liste des énigmes résolues dans la session et actualise la page après 3 secondes.
  *
  * @param $puzzleID Ce paramètre est facultatif et représente l'ID de l'énigme qui doit être
@@ -54,8 +54,8 @@ function tickPuzzle($database, $puzzleID = null) {
             for ($i = 1; $i <= 10; $i++) {
                 $arraypuzzlesformat[] = in_array($i, $_SESSION["resolvedPuzzles"]) ? "1" : "0";
             }
-            // updateRow($database, "users_session", array("puzzles"), array(implode($arraypuzzlesformat)), "id_session = $session_id"); // TODO
-            updateRow($database, "users_session", array("puzzles" => implode($arraypuzzlesformat)), "id_session = $session_id"); // TODO
+            updateRow($database, "users_session", array("puzzles" => implode($arraypuzzlesformat)), "id_session = $session_id");
+            // $_SESSION["user_logged_in"]["puzzles"] = getRows($database,"users_session","puzzles","")["puzzles"]; // TODO
             updateLocalDB(getRowsInJSON($database, "users_session", "*", "1"), "../js/db-$session_id.json");
         }
         include("./include/nav.php");
@@ -316,6 +316,10 @@ function joinSession($pseudo, $id_session, $database, $local_path) {
 
 function currentUserInSession() {
     return isset($_SESSION["user_logged_in"]["pseudo"]);
+}
+
+function isUserConnected(){
+    return isset($_SESSION["user_logged_in"]["username"]) && $_SESSION["user_logged_in"]["username"] != "invité";
 }
 
 /**
