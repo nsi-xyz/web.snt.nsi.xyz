@@ -1,8 +1,8 @@
 <div id="menu">
   <div class="pure-menu">
     <a class="pure-menu-heading" href="./index.php">Panel Admin</a>
-    <ul>
-      <li>Utilisateur : <?php echo $_SESSION["user_logged_in"]["username"]; ?></li>
+    <ul class="infos-users">
+      <li>🚹 Utilisateur : <strong><?php echo $_SESSION["user_logged_in"]["username"]; ?></strong></li>
     </ul>
     <?php
     $file = basename($_SERVER['PHP_SELF']);
@@ -25,6 +25,7 @@
     <li class="<?php echo $selected_sessions_class; ?>"><a href="#" class="pure-menu-link-hidden">&#x1F5C2;&#xFE0F; Parcourir les sessions</a></li>
     <li class="<?php echo $selected_users_class; ?>"><a href="./users.php" id="account-manager" class="pure-menu-link">&#x2699;&#xFE0F; Gestion des comptes</a></li>
     <li class="<?php echo $selected_trads_class; ?>"><a href="#" class="pure-menu-link-hidden">&#x1F5C3;&#xFE0F; Gestion des traductions</a></li>
+    <li class="pure-menu-item-back"><a href="../index.php" class="pure-menu-link">↩️ Retour sur le site</a></li>
     <li class="pure-menu-item-reset"><a class="pure-menu-link" id="logout">&#x1F6AA; Se déconnecter</a></li>
   </div>
 </div>
@@ -45,5 +46,5 @@ if (isset($_COOKIE["reset-js"])) {
   function isAllowed(idUser){
     // document.getElementById("account-manager").classList.
     // A FAIRE
-  } 
+  }
 </script>

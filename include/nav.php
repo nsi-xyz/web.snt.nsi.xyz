@@ -9,12 +9,23 @@ $p_h = (in_array($p, array("index.php", "help.php", "login.php"))) ? "." : "..";
     <a class="pure-menu-heading" href=".<?php echo $p_i; ?>/index.php">10 Énigmes à résoudre</a>
     <ul class="pure-menu-list">
       <?php
-      if (!currentUserInSession()) {
-        echo '<li class="pure-menu-item menu-item-divided pure-menu-item-login"><a class="pure-menu-link" href=".'.$p_i.'/login.php">&#x1F464; S\'identifier</a></li>';
-      } else {
-        //todo
-      }
-      ?>
+        if (!currentUserInSession() && !isUserConnected()) {
+          echo '<li class="pure-menu-item menu-item-divided pure-menu-item-login"><a class="pure-menu-link" href=".'.$p_i.'/login.php">&#x1F464; S\'identifier</a></li>';
+        } elseif (currentUserInSession()) {
+          echo '
+          <div class="infos-users">
+            <li>🕒 Session : <strong>'.getRows($db,"sessions","code","id={$_SESSION["user_logged_in"]["id_session"]}")["code"].'</strong></li>
+            <li style="padding-top: 0.6em;">🚹 Pseudo : <strong>'.$_SESSION["user_logged_in"]["pseudo"].'</strong></li>
+          </div>
+            ';
+        } elseif (isUserConnected()) {
+          echo '
+          <div class="infos-users">
+            <li>🚹 Utilisateur : <strong>'.$_SESSION["user_logged_in"]["username"].'</strong></li>
+          </div>';
+          echo '<li class="pure-menu-item-back"><a href="'.$p_h.'/panel/" class="pure-menu-link">➡️ Panel Admin</a></li>';
+        }
+        ?>
 <?php           
 for ($i = 1; $i < 10; $i++) {
     $emoji = in_array($i, $_SESSION["resolvedPuzzles"]) ? "&#x1F7E2;" : "&#x1F7E0;";
@@ -49,6 +60,17 @@ $plural = intval($time) >= 2 || $time == "?" ? "s" : "";
 
 echo '            <div class="menu-bottom"><li class="pure-menu-item-timer">Il reste <timer>'.$time.'</timer> minute'.$plural.'</li>
   ';
-echo '            <li class="pure-menu-item-reset"><a href="'.$p_h.'/help.php#Effacer sa progression et recommencer les énigmes" class="pure-menu-link">&#x274C; Effacer / Recommencer</a></li></div>
+
+if (isUserConnected()){
+  echo '            <li class="pure-menu-item-reset"><a href="'.$p_h.'/help.php#Effacer sa progression et recommencer les énigmes" class="pure-menu-link">&#x274C; Déconnexion</a></li></div>
     </div>
 ';
+} elseif (currentUserInSession()) {
+  echo '            <li class="pure-menu-item-reset"><a href="'.$p_h.'/help.php#Effacer sa progression et recommencer les énigmes" class="pure-menu-link">&#x274C; Quitter la session</a></li></div>
+    </div>
+';
+} else {
+  echo '            <li class="pure-menu-item-reset"><a href="'.$p_h.'/help.php#Effacer sa progression et recommencer les énigmes" class="pure-menu-link">&#x274C; Effacer / Recommencer</a></li></div>
+      </div>
+  ';
+}
