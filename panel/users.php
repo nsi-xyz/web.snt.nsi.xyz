@@ -19,6 +19,7 @@ if (!isset($_SESSION["modeEditOrCreateUser"])){
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
 </head>
 <body>
+  <!-- Ici est un easter eggs : la longueur d'un stylo bille noir avec bouchon est de 141.28mm - Merci à vous. -->
   <div id="layout">
     <a href="#menu" id="menuLink" class="menu-link">
       <span></span>
@@ -91,21 +92,6 @@ if (!isset($_SESSION["modeEditOrCreateUser"])){
                   $newInfosUser[$attribut] = $_POST[$attribut];
                 }
               }
-                // if ($_POST["name"] === "" || $_POST["name"] === $infosUser["name"]){
-                //   $newInfosUser["name"] = $infosUser["name"];  
-                // } else {
-                //   $newInfosUser["name"] = $_POST["name"];
-                // }
-                // if ($_POST["surname"] === "" || $_POST["surname"] === $infosUser["surname"]){
-                //   $newInfosUser["surname"] = $infosUser["surname"];  
-                // } else {
-                //   $newInfosUser["surname"] = $_POST["surname"];
-                // }
-                // if ($_POST["username"] === "" || $_POST["username"] === $infosUser["username"]){
-                //   $newInfosUser["username"] = $infosUser["username"];  
-                // } else {
-                //   $newInfosUser["username"] = $_POST["username"];
-                // }
                 if (! empty($_POST["password"])){
                   $newInfosUser["password"] = $_POST["password"];
                 }
@@ -119,6 +105,8 @@ if (!isset($_SESSION["modeEditOrCreateUser"])){
                 $resultUpdate = updateUser($db,$newInfosUser,$infosUser["username"]);
                 
                 if ($resultUpdate){
+                  // Ce qui est en commentaire ne fonctionne pas, en gros actuellement ça ne met pas à jour le cookie de session si on modifie son propre compte. Ce sera une maj à faire à l'avenir.
+                  // $_SESSION["user_logged_in"] = getRows($db, "users", "id,name,surname,username,id_group", "username = \"{$_SESSION["user_logged_in"]["username"]}\"");
                   echo '<p style="color: green; font-weight: bolder;">Utilisateur modifié</p>';
                   $_SESSION["modeEditOrCreateUser"] = 0;
                   echo '<script>setTimeout(function() { window.location.replace(window.location.href); }, 1000);</script>';
