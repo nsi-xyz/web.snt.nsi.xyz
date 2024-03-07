@@ -167,6 +167,11 @@ body {
         background-color: #F8333C;
     }
 
+    #menu .pure-menu-item-back a:hover,
+    #menu .pure-menu-item-back a:focus {
+        background-color: #42b8dd;
+    }
+
     @media screen and (min-height: 570px) and (min-width: 768px) {
         .menu-bottom {
             list-style: none;
@@ -585,4 +590,22 @@ kbd {
 .button-delete {
     background: rgb(202, 60, 60);
     color: #FFF;
+}
+
+.infos-users{
+    color: #b6b4b4;
+}
+
+.infos-users{
+    padding: 0.6em 0 0.6em 0.6em;
+}
+
+.infos-users strong{
+    font-weight: normal;
+    color: white;
+}
+
+#create-account {
+    color: #3b8bba;
+    text-decoration: none;
 }
