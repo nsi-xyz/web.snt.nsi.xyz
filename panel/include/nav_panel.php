@@ -42,9 +42,4 @@ if (isset($_COOKIE["reset-js"])) {
     document.cookie = "reset-js=ok;" + expiration + ";path=/";
     window.location.replace(window.location.href);
   });
-
-  function isAllowed(idUser){
-    // document.getElementById("account-manager").classList.
-    // A FAIRE
-  }
 </script>

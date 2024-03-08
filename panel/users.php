@@ -106,7 +106,7 @@ if (!isset($_SESSION["modeEditOrCreateUser"])){
                 
                 if ($resultUpdate){
                   // Ce qui est en commentaire ne fonctionne pas, en gros actuellement ça ne met pas à jour le cookie de session si on modifie son propre compte. Ce sera une maj à faire à l'avenir.
-                  // $_SESSION["user_logged_in"] = getRows($db, "users", "id,name,surname,username,id_group", "username = \"{$_SESSION["user_logged_in"]["username"]}\"");
+                  // $_SESSION["user_logged_in"] = getRows($db, "users", "*", "username = \"{$_SESSION["user_logged_in"]["username"]}\"");
                   echo '<p style="color: green; font-weight: bolder;">Utilisateur modifié</p>';
                   $_SESSION["modeEditOrCreateUser"] = 0;
                   echo '<script>setTimeout(function() { window.location.replace(window.location.href); }, 1000);</script>';
