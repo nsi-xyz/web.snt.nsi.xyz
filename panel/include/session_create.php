@@ -4,7 +4,7 @@
 <p class="p-content">Vous êtes sur le point de créer une session accessible pour vos élèves. Ci-dessous, vous pouvez configurer les paramètres liés à la session.</p>
 <form method="POST" action="" class="pure-form pure-form-stacked">
     <h3 class="content-subhead">Durée de la session</h3>
-    <label for="aligned-name">Durée en secondes avant que la session ne se ferme</label>
+    <label for="aligned-name">[WIP • NE FONCTIONNE PAS] Durée en secondes avant que la session ne se ferme</label>
     <input type="number" id="aligned-name" placeholder="Durée en secondes" name="session_duration" value="3600"/>
     <button class ="create-session-button" type="submit">Créer une session</button>
 </form>
