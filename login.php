@@ -2,6 +2,9 @@
 include("./panel/include/db.php");
 include("./include/functions.php");
 include("./include/checksession.php");
+if (!isset($_SESSION["modeLoginOrCreateUser"])){
+  $_SESSION["modeLoginOrCreateUser"] = 1; // Mode Login
+}
 
 if (isset($_SESSION["user_logged_in"]) && $_SESSION["user_logged_in"]["username"] != "invité") {
   $verifiedUser = false;
@@ -40,7 +43,7 @@ if (isset($_SESSION["user_logged_in"]) && $_SESSION["user_logged_in"]["username"
       </div>
       <div class="content">
         <h2 class="content-subhead">S'identifier</h2>
-        <p class="p-content">Rejoignez facilement une session avec le code fourni par votre enseignant ou connectez-vous en tant qu'enseignant ou administrateur pour gérer vos sessions et bien plus.</p>
+        <p class="p-content">Rejoignez facilement une session avec le code fourni par votre enseignant, connectez-vous ou créez un compte en tant qu'enseignant pour gérer vos sessions et bien plus.</p>
         <p class="p-content">Le site web est également accessible sans connexion pour une exploration et une découverte rapide et facile.</p>
         <section class="forms">
           <div class="form">
@@ -48,9 +51,9 @@ if (isset($_SESSION["user_logged_in"]) && $_SESSION["user_logged_in"]["username"
               <fieldset>
                 <legend>Rejoindre une session</legend>
                 <label for="aligned-foo">Pseudo</label>
-                <input type="text" id="aligned-foo" name="pseudo" placeholder="Pseudo"/><br>
+                <input type="text" id="aligned-foo" name="pseudo" placeholder="Pseudo" pattern="^[^\x22]{0,255}$" title="Guillemets interdits"/><br>
                 <label for="aligned-foo">Code de la session</label>
-                <input type="text" id="aligned-foo" name="code" placeholder="Code de la session"/><br>
+                <input type="text" id="aligned-foo" name="code" placeholder="Code de la session" pattern="^[^\x22]{0,255}$" title="Guillemets interdits"/><br>
                 <button type="submit" class="pure-button pure-button-primary-join">Rejoindre la session</button>
               </fieldset>
             </form>
@@ -73,38 +76,92 @@ if (isset($_SESSION["user_logged_in"]) && $_SESSION["user_logged_in"]["username"
             }
             ?>
           </div>
-          <div class="form">
+          <?php if ($_SESSION["modeLoginOrCreateUser"] == 1){
+            echo '<div class="form">
             <form method="POST" action="" class="pure-form pure-form-stacked">
               <fieldset>
                 <legend>Se connecter</legend>
-                <label for="aligned-foo">Nom d'utilisateur</label>
-                <input type="text" id="aligned-foo" name="username" placeholder="Nom d'utilisateur"/><br>
+                <label for="aligned-foo">Nom d\'utilisateur</label>
+                <input type="text" id="aligned-foo" name="username" placeholder="Nom d\'utilisateur" pattern="^[^\x22]{0,255}$" title="Guillemets interdits"/><br>
                 <label for="stacked-password">Mot de passe</label>
-                <input type="password" id="stacked-password" name="password" placeholder="Mot de passe"/><br>
+                <input type="password" id="stacked-password" name="password" placeholder="Mot de passe" pattern="^[^\x22]{0,255}$"/><br>
                 <button type="submit" class="pure-button pure-button-primary-join">Se connecter</button>
               </fieldset>
             </form>
-            <?php
+            <p>Vous êtes professeur ? <br><a id="create-account" href="javascript:createAccount(0)">Créez votre compte !</a></p>
+            
+
+            </div>';
+
             if (isset($_POST["username"]) && isset($_POST["password"])) {
               $user_username = strtolower($_POST["username"]);
               $user_password = $_POST["password"];
               if (login_success($user_username, $user_password, $db)) {
-                $_SESSION["user_logged_in"] = getRows($db, "users", "id,name,surname,username,id_group", "username = \"$user_username\"");
+                $_SESSION["user_logged_in"] = getRows($db, "users", "*", "username = \"$user_username\"");
                 echo '<script>window.location.replace(window.location.href);</script>';
               } else {
                 echo "Identifiant ou mot de passe incorrect.";
               }
             }
-            ?>
 
-            <p>Vous êtes professeur ?<br><a id="create-account" href="#"> Créez votre compte !</a></p>
+          } else {
+            echo '<div class="form">
+            <form method="POST" action="" class="pure-form pure-form-stacked">
+              <fieldset>
+                <legend>Créer un compte</legend>
+                <label for="aligned-foo">Nom</label>
+                <input type="text" id="aligned-foo" name="name" placeholder="Nom" required="" pattern="^[^\x22]{0,255}$" title="Guillemets interdits"/><br>
+                <label for="aligned-foo">Prénom</label>
+                <input type="text" id="aligned-foo" name="surname" placeholder="Prénom" required="" pattern="^[^\x22]{0,255}$" title="Guillemets interdits"/><br>
+                <label for="aligned-foo">Nom d\'utilisateur</label>
+                <input type="text" id="aligned-foo" name="username" placeholder="Nom d\'utilisateur" required="" pattern="^[^\s\xA0\x22]{0,255}$" title="Espaces et guillemets interdits"/><br>
+                <label for="stacked-password">Mot de passe</label>
+                <input type="password" id="stacked-password" name="password" placeholder="Mot de passe" required="" pattern="^[^\s\xA0\x22]{0,255}$" title="Espaces et guillemets interdits"/><br>
+                <button type="submit" class="pure-button pure-button-primary-join">Créer un compte</button>
+              </fieldset>
+            </form>
+            <p>Vous avez déjà un compte ? <br><a id="create-account" href="javascript:createAccount(1)">Vous connectez</a></p>
 
-          </div>
+            </div>';
+
+            if (isset($_POST["name"], $_POST["surname"], $_POST["username"], $_POST["password"])) {
+              sleep(1);
+              $resultCreateUser = createUser($db, strtoupper($_POST["name"]), $_POST["surname"], $_POST["username"], $_POST["password"], 0);
+              if (! $resultCreateUser){
+              echo '<p style="color: red; font-weight: bolder;">Nom d\'utilisateur déjà existant !</p>';
+              } else {
+                $_SESSION["user_logged_in"] = getRows($db, "users", "*", "username = \"{$_POST["username"]}\"");
+                $_SESSION["modeLoginOrCreateUser"] = 1;
+                echo '<script>window.location.replace(window.location.href);</script>';
+              }
+            }
+          }?>
         </section>
       </div>
     </div>
     <?php include("./include/footer.php"); ?>
   </div>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+  <script>
+    function createAccount(changeModeLoginOrCreate){
+      jQuery.ajax({
+        type: "POST",
+        url: "login.php",
+        data: {modeLoginOrCreateUser : changeModeLoginOrCreate},
+        success: function(response) {
+          window.location.replace(window.location.href);
+        }
+      });
+    }
+  </script>
+    
+  <?php 
+    if (isset($_POST["modeLoginOrCreateUser"])){
+      $_SESSION["modeLoginOrCreateUser"] = $_POST["modeLoginOrCreateUser"];
+    }
+  ?>
+
+  
   <script src="./js/ui.js"></script>
   <?php include("./include/timer.php"); ?>
 </body>
