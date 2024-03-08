@@ -30,7 +30,11 @@ $p_h = (in_array($p, array("index.php", "help.php", "login.php"))) ? "." : "..";
             
             echo '<li style="padding-top: 0.6em;">🚹 Utilisateur : <strong>'.$_SESSION["user_logged_in"]["username"].'</strong></li>
           </div>';
-          echo '<li class="pure-menu-item-back"><a href="'.$p_h.'/panel/" class="pure-menu-link">➡️ Panel Admin</a></li>';
+          if ($_SESSION["user_logged_in"]["id_group"] == 1){
+            echo '<li class="pure-menu-item-back"><a href="'.$p_h.'/panel/" class="pure-menu-link">➡️ Panel Admin</a></li>';
+          } else {
+            echo '<li class="pure-menu-item-back"><a href="'.$p_h.'/panel/session.php" class="pure-menu-link">➡️ Gérer la session</a></li>';
+          }
         }
         ?>
 <?php           
