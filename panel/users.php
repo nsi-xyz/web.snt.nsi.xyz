@@ -2,6 +2,10 @@
 include("./include/db.php");
 include("../include/functions.php");
 include("../include/checksession.php");
+if ($_SESSION["user_logged_in"]["id_group"] != 1) {
+  header("location: ./index.php");
+  exit;
+} 
 if (!isset($_SESSION["modeEditOrCreateUser"])){
   $_SESSION["modeEditOrCreateUser"] = 0; // Mode création
 }

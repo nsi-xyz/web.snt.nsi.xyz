@@ -86,6 +86,10 @@ if (isset($_COOKIE["LOGGEDIN"])) {
     $_SESSION["user_logged_in"] = getRows($db, "users", "*", "username = \"$cookie_username\"");
   }
 }
+if (in_array("panel", explode("/", $_SERVER['PHP_SELF'])) && !isUserConnected()) {
+  header('Location: ../login.php');
+  exit;
+}
 if (!isset($_SESSION["time_init"])) {
   $_SESSION["time_init"] = time();
 }
