@@ -13,6 +13,7 @@ include("./include/checksession.php");
   <link rel="stylesheet" href="css/pure-min.css">
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20,400,0,0">
   <link rel="stylesheet" href="css/style.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
 </head>
 <body>
   <div id="layout">
@@ -116,8 +117,8 @@ include("./include/checksession.php");
         
         ?>
         <?php
-        if (isset($_COOKIE["reset-js"])) {
-          resetSession("./index.php",1);
+        if (isset($_POST["reset_session"])) {
+          resetSession("./index.php", 1);
         }
         ?>
       </div>
@@ -131,11 +132,14 @@ include("./include/checksession.php");
   <?php include("./include/timer.php"); ?>
   <script>
     function reset() {
-      let date = new Date();
-      date.setTime(date.getTime() + 1000);
-      let expiration = "expires=" + date.toUTCString();
-      document.cookie = "reset-js=ok;" + expiration + ";path=/";
-      window.location.replace((window.location.href).replace("#" + encodeURIComponent("Effacer sa progression et recommencer les énigmes"), ""));
+      jQuery.ajax({
+        type: "POST",
+        url: "help.php",
+        data: {reset_session: true},
+        success: function(response) {
+          window.location.replace((window.location.href).replace("#" + encodeURIComponent("Effacer sa progression et recommencer les énigmes"), ""));
+        }
+      });
     }
     </script>
 </body>
