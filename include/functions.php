@@ -55,9 +55,9 @@ function tickPuzzle($database, $puzzleID = null) {
             for ($i = 1; $i <= 10; $i++) {
                 $arraypuzzlesformat[] = in_array($i, $_SESSION["resolvedPuzzles"]) ? "1" : "0";
             }
-            updateRow($database, "users_session", array("puzzles" => implode($arraypuzzlesformat)), "pseudo = $pseudo AND id_session = $session_id");
-            // $_SESSION["user_logged_in"]["puzzles"] = getRows($database,"users_session","puzzles","")["puzzles"]; // TODO
-            updateLocalDB(getRowsInJSON($database, "users_session", "*", "1"), "../js/db-$session_id.json");
+            updateRow($database, "users_session", array("puzzles" => implode($arraypuzzlesformat)), "pseudo = \"$pseudo\" AND id_session = $session_id");
+            $_SESSION["user_logged_in"]["puzzles"] = getRows($database, "users_session", "puzzles", "1")["puzzles"];
+            updateLocalDB(getRowsInJSON($database, "users_session", "*", "id_session = $session_id"), "../js/db-$session_id.json");
         }
         include("./include/nav.php");
         echo '<script>window.location.replace(window.location.href);</script>';
