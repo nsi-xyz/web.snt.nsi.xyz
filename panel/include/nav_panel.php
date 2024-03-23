@@ -27,20 +27,6 @@
     <li class="<?php echo $selected_users_class; ?>"><a href="./users.php" class="<?php echo "pure-menu-link".$hidden; ?>">&#x2699;&#xFE0F; Gestion des comptes</a></li>
     <li class="<?php echo $selected_trads_class; ?>"><a href="#" class="pure-menu-link-hidden">&#x1F5C3;&#xFE0F; Gestion des traductions</a></li>
     <li class="pure-menu-item-back"><a href="../index.php" class="pure-menu-link">↩️ Retour sur le site</a></li>
-    <li class="pure-menu-item-reset"><a class="pure-menu-link" id="logout">&#x1F6AA; Se déconnecter</a></li>
+    <li class="pure-menu-item-reset"><a href="../logout.php" class="pure-menu-link">&#x1F6AA; Se déconnecter</a></li>
   </div>
 </div>
-<?php
-if (isset($_COOKIE["reset-js"])) {
-  resetSession("../login.php", 1);
-}
-?>
-<script>
-  document.getElementById("logout").addEventListener("click", function() {
-    let date = new Date();
-    date.setTime(date.getTime() + 1000);
-    let expiration = "expires=" + date.toUTCString();
-    document.cookie = "reset-js=ok;" + expiration + ";path=/";
-    window.location.replace(window.location.href);
-  });
-</script>

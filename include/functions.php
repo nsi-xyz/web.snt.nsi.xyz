@@ -67,29 +67,25 @@ function tickPuzzle($database, $puzzleID = null) {
 /**
  * La fonction réinitialise la session et supprime tous les cookies.
  */
-function resetSession($redir, $logout = 0) {
-    $cookies = array(COOKIE7, COOKIE8, COOKIECHOCOLAT, COOKIECHOCOLATINE, COOKIEHAZLENUT, COOKIESESSION, COOKIEPUBLICITAIRE, COOKIEGOOGLE, COOKIEFACEBOOK, COOKIEAMAZON);
-    for ($i = 0; $i <= 9; $i++) {
-        $cookie = $cookies[$i];
-        if (isset($_COOKIE[$cookie["name"]])) {
-            setcookie($cookie["name"], $cookie["value"], time() - SESSDURATION, "/");
-        }
-    }
-    if (isset($_COOKIE[session_name()])) {
-        setcookie(session_name(), "", time() - SESSDURATION);
-    }
-    if (isset($_COOKIE["LOGGEDIN"]) && $logout == 1) {
+function logout($redir, $reset = 0) {
+    if (isset($_COOKIE["LOGGEDIN"])) {
         setcookie("LOGGEDIN", "", time() - COOKIEAUTHDURATION, "/");
+    }
+    if ($reset) {
+        $cookies = array(COOKIE7, COOKIE8, COOKIECHOCOLAT, COOKIECHOCOLATINE, COOKIEHAZLENUT, COOKIESESSION, COOKIEPUBLICITAIRE, COOKIEGOOGLE, COOKIEFACEBOOK, COOKIEAMAZON);
+        for ($i = 0; $i <= 9; $i++) {
+            $cookie = $cookies[$i];
+            if (isset($_COOKIE[$cookie["name"]])) {
+                setcookie($cookie["name"], $cookie["value"], time() - SESSDURATION, "/");
+            }
+        }
+        if (isset($_COOKIE["PHPSESSID"])) {
+            setcookie("PHPSESSID", "", time() - SESSDURATION, "/");
+        }
     }
     session_unset();
     session_destroy();
-    echo '<script>
-var date = new Date();
-date.setTime(date.getTime() + '.(SESSDURATION*1000).');
-var expiration = "expires=" + date.toUTCString();
-document.cookie = "reset='.$redir.';" + expiration + ";path=/";
-</script>';
-    echo '<script>window.location.replace(window.location.href);</script>';
+    header("Location: $redir");
 }
 
 /**

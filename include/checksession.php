@@ -47,14 +47,7 @@ define("COOKIEAMAZON", array(
   "value" => "Amazon_Advertising._Amazon_offers_advertising_opportunities_for_sellers_and_advertisers_on_its_e-commerce_platform._And_for_this_Amazon_tracks_you_on_the_web_with_cookies."
 ));
 // Vérifications.
-if (isset($_COOKIE["reset"])) {
-  $redir = $_COOKIE["reset"];
-  setcookie("reset", "", time() - SESSDURATION, "/");
-  setcookie("PHPSESSID", "reset", time() + SESSDURATION, "/");
-  header("Location: $redir");
-  echo '<script>window.location.replace(window.location.href);</script>';
-}
-if (!isset($_COOKIE["PHPSESSID"]) || $_COOKIE["PHPSESSID"] == "reset") {
+if (!isset($_COOKIE["PHPSESSID"])) {
   session_set_cookie_params(SESSDURATION);
   session_start();
   session_regenerate_id();

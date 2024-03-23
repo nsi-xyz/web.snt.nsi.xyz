@@ -4,7 +4,7 @@ $current_time = time();
 $elapsed_time = $current_time - $_SESSION['time_init'];
 $_SESSION["time_left"] = $timer_duration - $elapsed_time <= 0 ? $timer_duration : $timer_duration - $elapsed_time;
 if ($_SESSION["time_left"] <= 0) {
-    resetSession("./index.php");
+    // TODO
 }
 ?>
 
