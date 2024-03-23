@@ -64,10 +64,10 @@ include("./include/checksession.php");
           </thead>
           <tbody>
             <tr>
-              <td><a class="link" href="https://microsoftedge.microsoft.com/addons/detail/cookieeditor/neaplmfkghagebokkhpjpoebhdledlfi">Cookie-Editor</a></td>
-              <td><a class="link" href="https://addons.mozilla.org/fr/firefox/addon/cookie-quick-manager/">Cookie Quick Manager</a></td>
-              <td><a class="link" href="https://chrome.google.com/webstore/detail/editthiscookie/fngmhnnpilhplaeedifhccceomclgfbg">EditThisCookie</a></td>
-              <td><a class="link" href="https://apps.apple.com/fr/app/cookie-editor/id6446215341">Cookie-Editor</a></td>
+              <td><a class="link" href="https://microsoftedge.microsoft.com/addons/detail/cookieeditor/neaplmfkghagebokkhpjpoebhdledlfi" target="_blank">Cookie-Editor</a></td>
+              <td><a class="link" href="https://addons.mozilla.org/fr/firefox/addon/cookie-quick-manager/" target="_blank">Cookie Quick Manager</a></td>
+              <td><a class="link" href="https://chrome.google.com/webstore/detail/editthiscookie/fngmhnnpilhplaeedifhccceomclgfbg" target="_blank">EditThisCookie</a></td>
+              <td><a class="link" href="https://apps.apple.com/fr/app/cookie-editor/id6446215341" target="_blank">Cookie-Editor</a></td>
             </tr>
           </tbody>
         </table>
@@ -87,10 +87,10 @@ include("./include/checksession.php");
           </thead>
           <tbody>
             <tr>
-              <td><a class="link" href="https://microsoftedge.microsoft.com/addons/detail/ublock-origin/odfafepnkmbhccpbejgmiehpchacaeak">uBlock Origin</a></td>
-              <td><a class="link" href="https://addons.mozilla.org/fr/firefox/addon/ublock-origin/">uBlock Origin</a></td>
-              <td><a class="link" href="https://chrome.google.com/webstore/detail/ublock-origin/cjpalhdlnbpafiamejdnhcphjbkeiagm">uBlock Origin</a></td>
-              <td><a class="link" href="https://apps.apple.com/fr/app/adblock-pour-safari/id1402042596">AdBlock</a></td>
+              <td><a class="link" href="https://microsoftedge.microsoft.com/addons/detail/ublock-origin/odfafepnkmbhccpbejgmiehpchacaeak" target="_blank">uBlock Origin</a></td>
+              <td><a class="link" href="https://addons.mozilla.org/fr/firefox/addon/ublock-origin/" target="_blank">uBlock Origin</a></td>
+              <td><a class="link" href="https://chrome.google.com/webstore/detail/ublock-origin/cjpalhdlnbpafiamejdnhcphjbkeiagm" target="_blank">uBlock Origin</a></td>
+              <td><a class="link" href="https://apps.apple.com/fr/app/adblock-pour-safari/id1402042596" target="_blank">AdBlock</a></td>
             </tr>
           </tbody>
         </table>
