@@ -58,6 +58,10 @@ function tickPuzzle($database, $puzzleID = null) {
             updateRow($database, "users_session", array("puzzles" => implode($arraypuzzlesformat)), "pseudo = \"$pseudo\" AND id_session = $session_id");
             $_SESSION["user_logged_in"]["puzzles"] = getRows($database, "users_session", "puzzles", "pseudo = \"$pseudo\"")["puzzles"];
             updateLocalDB(getRowsInJSON($database, "users_session", "*", "id_session = $session_id"), "../js/db-$session_id.json");
+            if (count($_SESSION["resolvedPuzzles"]) == 10) { // Si l'utilisateur a terminé toutes les énigmes, on enregistre la date
+                $finished_at = date("Y-m-d H:i:s");
+                updateRow($database, "users_session", array("finished_at" => date('Y-m-d H:i:s', time())), "pseudo = \"$pseudo\" AND id_session = $session_id");
+            }
         }
         include("./include/nav.php");
         echo '<script>window.location.replace(window.location.href);</script>';
