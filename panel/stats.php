@@ -26,6 +26,23 @@ include("../include/checksession.php");
         <h1>web.snt.nsi.xyz</h1>
         <h2>10 énigmes à résoudre pour découvrir le web</h2>
       </div>
+      <?php
+      if (isset($_GET["session"])) {
+        $code = strtoupper($_GET["session"]);
+        if (rowsCount($db, "sessions", "code = \"$code\"") == 1) {
+          $session = getRows($db, "sessions", "*", "code = \"$code\"");
+          $session_id = $session["id"];
+          $session_id_owner = $session["id_owner"];
+          $session_owner = getRows($db, "users", "username", "id = \"$session_id_owner\"")["username"];
+          $session_stats = getRows($db, "users_session", "*", "id_session = \"$session_id\"");
+          include("./include/stats_widgets.php");
+        }
+      } else {
+        echo '<div class="content">';
+        include("./include/stats_nosession.php");
+        echo '</div>';
+      }
+      ?>
       <!--<div class="content">-->
       <!--</div>-->
     </div>

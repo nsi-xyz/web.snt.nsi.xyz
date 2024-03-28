@@ -1,7 +1,7 @@
 <?php
 $adresse = "localhost:3306";
 $user = "root";
-$password = "root";
+$password = "";
 $db_name = "xtjh1161_web_snt_nsi_xyz_alpha";
 $dsn = "mysql:host=$adresse;dbname=$db_name";
 try {
