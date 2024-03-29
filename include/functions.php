@@ -151,7 +151,7 @@ function addRow($database, $relation, $values) {
         return $value;
     }, $attributs)).")";
     $values_query = "(".implode(", ", array_map(function($value) {
-        return "\"".$value."\"";
+        return $value !== NULL ? "\"".$value."\"" : "NULL";
     }, $values)).")";
     $sql = "INSERT INTO $relation $attributs_query VALUES $values_query";
     $stmp = $database->prepare($sql);
@@ -311,7 +311,7 @@ function canJoinSession($pseudo, $id_session, $database) {
 }
 
 function joinSession($pseudo, $id_session, $database, $local_path) {
-    addRow($database, "users_session", array($pseudo, $id_session, date('Y-m-d H:i:s'), "0000000000"));
+    addRow($database, "users_session", array($pseudo, $id_session, date('Y-m-d H:i:s'), NULL, "0000000000"));
     updateLocalDB(getRowsInJSON($database, "users_session", "*", "id_session = $id_session"), $local_path);
 }
 

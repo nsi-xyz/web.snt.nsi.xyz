@@ -31,9 +31,9 @@ if (isset($_GET["sort-by"])) {
             <fieldset>
                 <label for="sorting-type">Trier par</label>
                 <select id="sorting-type" name="sort-by">
-                    <option><? echo $_SESSION["sort-by"] == "Date" ? "Date" : ($_SESSION["sort-by"] == "Pseudo (ABC)" ? "Pseudo (ABC)" : "Pseudo (ZYX)")?></option>
-                    <option><? echo $_SESSION["sort-by"] == "Date" ? "Pseudo (ABC)" : ($_SESSION["sort-by"] == "Pseudo (ABC)" ? "Pseudo (ZYX)" : "Date")?></option>
-                    <option><? echo $_SESSION["sort-by"] == "Date" ? "Pseudo (ZYX)" : ($_SESSION["sort-by"] == "Pseudo (ABC)" ? "Date" : "Pseudo (ABC)")?></option>
+                    <option><?php echo $_SESSION["sort-by"] == "Date" ? "Date" : ($_SESSION["sort-by"] == "Pseudo (ABC)" ? "Pseudo (ABC)" : "Pseudo (ZYX)")?></option>
+                    <option><?php echo $_SESSION["sort-by"] == "Date" ? "Pseudo (ABC)" : ($_SESSION["sort-by"] == "Pseudo (ABC)" ? "Pseudo (ZYX)" : "Date")?></option>
+                    <option><?php echo $_SESSION["sort-by"] == "Date" ? "Pseudo (ZYX)" : ($_SESSION["sort-by"] == "Pseudo (ABC)" ? "Date" : "Pseudo (ABC)")?></option>
                 </select>
                 <button type="submit" class="pure-button pure-button-primary">Appliquer</button>
             </fieldset>
