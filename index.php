@@ -43,9 +43,6 @@ include("./include/checksession.php");
     </div>
     <?php include("./include/footer.php"); ?>
   </div>
-  <script>
-    const currentPuzzle = null;
-  </script>
   <script src="./js/ui.js"></script>
   <?php include("./include/timer.php"); ?>
 </body>

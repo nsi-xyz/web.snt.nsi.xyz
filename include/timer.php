@@ -1,27 +1,29 @@
 <?php
-$timer_duration = SESSDURATION;
-$current_time = time();
-$elapsed_time = $current_time - $_SESSION['time_init'];
-$_SESSION["time_left"] = $timer_duration - $elapsed_time <= 0 ? $timer_duration : $timer_duration - $elapsed_time;
-if ($_SESSION["time_left"] <= 0) {
-    // TODO
+if (currentUserInSession()) {
+    $id_session = $_SESSION["user_logged_in"]["id_session"];
+    $time_now = new DateTime(date("Y-m-d H:i:s", time()));
+    $session_date = getRows($db, "sessions", "date", "id = \"$id_session\"")["date"];
+    $session_duration = getRows($db, "sessions", "duration", "id = \"$id_session\"")["duration"];
+    $session_date_end = new DateTime(date("Y-m-d H:i:s", strtotime($session_date) + $session_duration));
+    $session_time_left = abs($session_date_end->getTimestamp() - $time_now->getTimestamp());
+    $_SESSION["time_session_left"] = $session_time_left;
 }
 ?>
-
 <script>
-val = <?php echo round(($_SESSION["time_left"])/60); ?>
+val = <?php echo $_SESSION["time_session_left"]; ?>;
 
-document.querySelector("timer").textContent = val.toString().padStart(2, "0")
+document.querySelector("timer").textContent = `${(Math.floor(val/3600)).toString().padStart(2, "0")}:${((Math.floor(val/60)) % 60).toString().padStart(2, "0")}:${(val % 60).toString().padStart(2, "0")}`;
 const timer = document.querySelector("timer");
 function updateTimer() {
-    let value = parseInt(timer.textContent);
+    let values = timer.textContent.split(":");
+    let value = parseInt(values[0]*3600) + parseInt(values[1]*60) + parseInt(values[2]);
     if (value > 0) {
         value--;
-        timer.textContent = value.toString().padStart(2, "0");
+        timer.textContent = `${(Math.floor(value/3600)).toString().padStart(2, "0")}:${((Math.floor(value/60)) % 60).toString().padStart(2, "0")}:${(value % 60).toString().padStart(2, "0")}`;
     } else {
-        window.location.replace(window.location.href);
+        window.location.replace("<?php (in_array(basename($_SERVER['PHP_SELF']), array("index.php", "help.php", "login.php"))) ? "." : ".."; ?>/logout.php?reset");
     }
 }
 
-setInterval(updateTimer, 60000);
+setInterval(updateTimer, 1000);
 </script>

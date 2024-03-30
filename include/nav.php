@@ -66,10 +66,12 @@ $class = $p == "help.php" ? "pure-menu-item menu-item-divided pure-menu-selected
 echo '            <li class="'.$class.'"><a href="'.$p_h.'/help.php" class="pure-menu-link">&#x1F537; Aide & Boite à outils</a></li>
           </ul>
       </div>';
-$time = isset($_SESSION["time_left"]) ? $_SESSION["time_left"] : "?";
-$plural = intval($time) >= 2 || $time == "?" ? "s" : "";
-
-echo '            <div class="menu-bottom"><li class="pure-menu-item-timer">Il reste <timer>'.$time.'</timer> minute'.$plural.'</li>
+if (!currentUserInSession()) {
+  $time = isset($_SESSION["time_session_start"]) ? "Démarré à : <timer>".date("H\hi", $_SESSION["time_session_start"])."</timer>" : "Démarré à : <timer>?</timer>";
+} else {
+  $time = "Fin de la session : <timer></timer>";
+}
+echo '            <div class="menu-bottom"><li class="pure-menu-item-timer">'.$time.'</li>
   ';
 
 if (isUserConnected()){
