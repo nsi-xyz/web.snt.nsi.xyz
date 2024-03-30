@@ -48,12 +48,13 @@ if (!isset($_SESSION["magic_word_6"])) {
         </div>
     <?php include("../include/footer.php"); ?>
     </div>
+    <?php include("../include/timer.php"); ?>
     <script>
     let index = 0;
     let magic_word = "<?php echo $_SESSION["magic_word_6"]; ?>";
     const currentPuzzle = <?php echo getCurrentPuzzleID(); ?>;
     </script>
+    <script src="../js/puzzles.js"></script>
     <script src="../js/ui.js"></script>
-    <?php include("../include/timer.php"); ?>
 </body>
 </html>

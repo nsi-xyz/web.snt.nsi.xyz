@@ -64,14 +64,15 @@ if (!isset($_SESSION["magic_word_4"])) {
                 }
                 ?>
             </div>
-            <script>
-            const currentPuzzle = <?php echo getCurrentPuzzleID(); ?>;
-            </script>
-            <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.25.0/prism.min.js"></script>
         </div>
         <?php include("../include/footer.php"); ?>
     </div>
-    <script src="../js/ui.js"></script>
     <?php include("../include/timer.php"); ?>
+    <script>
+    const currentPuzzle = <?php echo getCurrentPuzzleID(); ?>;
+    </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.25.0/prism.min.js"></script>
+    <script src="../js/puzzles.js"></script>
+    <script src="../js/ui.js"></script>
 </body>
 </html>

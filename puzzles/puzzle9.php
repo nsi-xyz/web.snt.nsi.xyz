@@ -31,7 +31,7 @@ include("../include/checksession.php");
                 <h2 class="content-subhead">Installer un bloqueur de publicité</h2>
                 <p class="p-content">Vous devez <a href="../help.php#Bloquer les publicités" class="link">installer dans ce navigateur un bloqueur de publicité</a>.<br>Après avoir installé un tel bloqueur, il faudra <a href="../help.php#Comment rafraîchir / actualiser une page web" class="link">rafraîchir la page</a>.<br>Si cette énigme s'est résolue toute seule, c'est que vous utilisiez un navigateur dans lequel un bloqueur de publicité était déjà actif, probablement déjà installé par un précédent utilisateur.</p>
                 <?php
-                if (isset($_COOKIE["puzzle9"])) {
+                if (isset($_POST["puzzle9"])) {
                     tickPuzzle($db);
                 }
                 if (puzzleIsResolved()) {
@@ -42,32 +42,14 @@ include("../include/checksession.php");
         </div>
     <?php include("../include/footer.php"); ?>
     </div>
+    <?php include("../include/timer.php"); ?>
     <script>
     const currentPuzzle = <?php echo getCurrentPuzzleID(); ?>;
     </script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <?php if (!puzzleIsResolved()) : ?>
+    <script src="../js/puzzles.js"></script>
+    <?php endif; ?>
     <script src="../js/ui.js"></script>
-    <?php include("../include/timer.php"); ?>
-    <?php
-    if (!puzzleIsResolved()) {
-        echo '    <script>
-        const testAd = document.createElement("div");
-        testAd.innerHTML = "&nbsp;";
-        testAd.className = "ad-slot";
-        document.body.appendChild(testAd);
-        setTimeout(() => {
-            const adBlockerActive = testAd.clientHeight === 0;
-            document.body.removeChild(testAd);
-            if (adBlockerActive) {
-                let date = new Date();
-                date.setTime(date.getTime() + 1000);
-                let expiration = "expires=" + date.toUTCString();
-                document.cookie = "puzzle9=ok;" + expiration + ";path=/";
-                window.location.replace(window.location.href);
-            }
-        }, 100);
-    </script>
-';
-    }
-    ?>
 </body>
 </html>

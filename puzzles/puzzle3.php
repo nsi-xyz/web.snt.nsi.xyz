@@ -55,13 +55,14 @@ $pos = array_keys($comments_in_css_file, $_SESSION["magic_word_3"])[0] + 1;
                 }
                 ?>
             </div>
-            <script>
-            const currentPuzzle = <?php echo getCurrentPuzzleID(); ?>;
-            </script>
-            <script src="../js/ui.js"></script>
         </div>
         <?php include("../include/footer.php"); ?>
     </div>
     <?php include("../include/timer.php"); ?>
+    <script>
+    const currentPuzzle = <?php echo getCurrentPuzzleID(); ?>;
+    </script>
+    <script src="../js/puzzles.js"></script>
+    <script src="../js/ui.js"></script>
 </body>
 </html>

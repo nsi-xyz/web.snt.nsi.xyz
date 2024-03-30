@@ -70,10 +70,6 @@ $slot = rand(1, 5);
                     include("../include/table.php");
                 }
                 ?>
-                  <script>
-                  const currentPuzzle = null;
-                  </script>
-                <script src="../js/ui.js"></script>
             </div> <?php echo $slot == 4 ? '<!--'.$_SESSION["magic_word_1"].'-->' : ''; ?>
 
         </div>
@@ -81,6 +77,11 @@ $slot = rand(1, 5);
         <?php include("../include/footer.php"); ?>
     </div>
     <?php include("../include/timer.php"); ?>
+    <script>
+    const currentPuzzle = <?php echo getCurrentPuzzleID(); ?>;
+    </script>
+    <script src="../js/puzzles.js"></script>
+    <script src="../js/ui.js"></script>
 </body>
 </html> <?php echo $slot == 5 ? '<!--'.$_SESSION["magic_word_1"].'-->' : ''; ?>
 

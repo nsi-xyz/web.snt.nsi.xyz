@@ -52,10 +52,6 @@ $slot = rand(1, 2);
                 }
                 ?>
             </div>
-            <script>
-            const currentPuzzle = <?php echo getCurrentPuzzleID(); ?>;
-            </script>
-            <script src="../js/ui.js"></script>
         </div>
         <style>
             .mystere {
@@ -65,5 +61,10 @@ $slot = rand(1, 2);
         <?php include("../include/footer.php"); ?>
     </div>
     <?php include("../include/timer.php"); ?>
+    <script>
+    const currentPuzzle = <?php echo getCurrentPuzzleID(); ?>;
+    </script>
+    <script src="../js/puzzles.js"></script>
+    <script src="../js/ui.js"></script>
 </body>
 </html>

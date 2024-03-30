@@ -50,10 +50,11 @@ if (!isset($_SESSION["target_value_8"])) {
         </div>
     <?php include("../include/footer.php"); ?>
     </div>
+    <?php include("../include/timer.php"); ?>
     <script>
     const currentPuzzle = <?php echo getCurrentPuzzleID(); ?>;
     </script>
+    <script src="../js/puzzles.js"></script>
     <script src="../js/ui.js"></script>
-    <?php include("../include/timer.php"); ?>
 </body>
 </html>
