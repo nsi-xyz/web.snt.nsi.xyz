@@ -482,6 +482,7 @@ kbd {
 .create-session-button {
     display: block;
     margin: auto;
+    margin-top: 7%;
     color: #FBF5F3;
     background-color: #9471DE;
     border-radius: 1px;

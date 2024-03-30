@@ -290,9 +290,9 @@ function sessionInProgress($database, $user_id) {
  *
  * @return null
  */
-function createSession($database, $id_owner) {
+function createSession($database, $id_owner, $duration) {
     $codeSession = generateSessionCode($database);
-    addRow($database, "sessions", array($codeSession, $id_owner, date('Y-m-d H:i:s', time()), 1));
+    addRow($database, "sessions", array($codeSession, $id_owner, date('Y-m-d H:i:s', time()), $duration, 1));
     $id_session_created = getRows($database, "sessions", "*", "id_owner = $id_owner AND status = 1")["id"];
     updateLocalDB("[]", "../js/db-$id_session_created.json");
 }
