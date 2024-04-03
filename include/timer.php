@@ -9,9 +9,9 @@ if (currentUserInSession()) {
     $_SESSION["time_session_left"] = $session_time_left;
 }
 ?>
+<?php if (currentUserInSession()) : ?>
 <script>
 val = <?php echo $_SESSION["time_session_left"]; ?>;
-
 document.querySelector("timer").textContent = `${(Math.floor(val/3600)).toString().padStart(2, "0")}:${((Math.floor(val/60)) % 60).toString().padStart(2, "0")}:${(val % 60).toString().padStart(2, "0")}`;
 const timer = document.querySelector("timer");
 function updateTimer() {
@@ -27,3 +27,4 @@ function updateTimer() {
 
 setInterval(updateTimer, 1000);
 </script>
+<?php endif; ?>

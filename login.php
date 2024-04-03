@@ -45,15 +45,16 @@ if (isset($_SESSION["user_logged_in"]) && $_SESSION["user_logged_in"]["username"
         <h2 class="content-subhead">S'identifier</h2>
         <p class="p-content">Rejoignez facilement une session avec le code fourni par votre enseignant, connectez-vous ou créez un compte en tant qu'enseignant pour gérer vos sessions et bien plus.</p>
         <p class="p-content">Le site web est également accessible sans connexion pour une exploration et une découverte rapide et facile.</p>
+        <error></error>
         <section class="forms">
           <div class="form">
             <form method="GET" action="" class="pure-form pure-form-stacked">
               <fieldset>
                 <legend>Rejoindre une session</legend>
-                <label for="aligned-foo">Pseudo</label>
-                <input type="text" id="aligned-foo" name="pseudo" placeholder="Pseudo" pattern="^[^\x22]{0,255}$" title="Guillemets interdits"/><br>
-                <label for="aligned-foo">Code de la session</label>
-                <input type="text" id="aligned-foo" name="code" placeholder="Code de la session" pattern="^[^\x22]{0,255}$" title="Guillemets interdits"/><br>
+                <label for="pseudo">Pseudo</label>
+                <input type="text" id="pseudo" name="pseudo" placeholder="Pseudo" pattern="^[^\x22]{0,255}$" title="Guillemets interdits"/><br>
+                <label for="code">Code de la session</label>
+                <input type="text" id="code" name="code" placeholder="Code de la session" pattern="^[^\x22]{0,255}$" title="Guillemets interdits"/><br>
                 <button type="submit" class="pure-button pure-button-primary-join">Rejoindre la session</button>
               </fieldset>
             </form>
@@ -68,10 +69,10 @@ if (isset($_SESSION["user_logged_in"]) && $_SESSION["user_logged_in"]["username"
                   $_SESSION["user_logged_in"] = getRows($db, "users_session", "*", "pseudo = \"$pseudo\" AND id_session = $id");
                   echo '<script>window.location.replace(window.location.href);</script>';
                 } else {
-                  echo "Impossible de rejoindre la session.";
+                  throwError("Impossible de rejoindre la session.");
                 }
               } else {
-                echo "Cette session n'existe pas.";
+                throwError("Cette session n'existe pas.");
               }
             }
             ?>
@@ -81,8 +82,8 @@ if (isset($_SESSION["user_logged_in"]) && $_SESSION["user_logged_in"]["username"
             <form method="POST" action="" class="pure-form pure-form-stacked">
               <fieldset>
                 <legend>Se connecter</legend>
-                <label for="aligned-foo">Nom d\'utilisateur</label>
-                <input type="text" id="aligned-foo" name="username" placeholder="Nom d\'utilisateur" pattern="^[^\x22]{0,255}$" title="Guillemets interdits"/><br>
+                <label for="username">Nom d\'utilisateur</label>
+                <input type="text" id="username" name="username" placeholder="Nom d\'utilisateur" pattern="^[^\x22]{0,255}$" title="Guillemets interdits"/><br>
                 <label for="stacked-password">Mot de passe</label>
                 <input type="password" id="stacked-password" name="password" placeholder="Mot de passe" pattern="^[^\x22]{0,255}$"/><br>
                 <button type="submit" class="pure-button pure-button-primary-join">Se connecter</button>
@@ -93,14 +94,15 @@ if (isset($_SESSION["user_logged_in"]) && $_SESSION["user_logged_in"]["username"
 
             </div>';
 
-            if (isset($_POST["username"]) && isset($_POST["password"])) {
+            if (isset($_POST["username"], $_POST["password"])) {
               $user_username = strtolower($_POST["username"]);
               $user_password = $_POST["password"];
               if (login_success($user_username, $user_password, $db)) {
                 $_SESSION["user_logged_in"] = getRows($db, "users", "*", "username = \"$user_username\"");
                 echo '<script>window.location.replace(window.location.href);</script>';
               } else {
-                echo "Identifiant ou mot de passe incorrect.";
+                throwError("Identifiant ou mot de passe incorrect.");
+                unset($_POST["username"], $_POST["password"]);
               }
             }
 
@@ -109,12 +111,12 @@ if (isset($_SESSION["user_logged_in"]) && $_SESSION["user_logged_in"]["username"
             <form method="POST" action="" class="pure-form pure-form-stacked">
               <fieldset>
                 <legend>Créer un compte</legend>
-                <label for="aligned-foo">Nom</label>
-                <input type="text" id="aligned-foo" name="name" placeholder="Nom" required="" pattern="^[^\x22]{0,255}$" title="Guillemets interdits"/><br>
-                <label for="aligned-foo">Prénom</label>
-                <input type="text" id="aligned-foo" name="surname" placeholder="Prénom" required="" pattern="^[^\x22]{0,255}$" title="Guillemets interdits"/><br>
-                <label for="aligned-foo">Nom d\'utilisateur</label>
-                <input type="text" id="aligned-foo" name="username" placeholder="Nom d\'utilisateur" required="" pattern="^[^\s\xA0\x22]{0,255}$" title="Espaces et guillemets interdits"/><br>
+                <label for="name">Nom</label>
+                <input type="text" id="name" name="name" placeholder="Nom" required="" pattern="^[^\x22]{0,255}$" title="Guillemets interdits"/><br>
+                <label for="surname">Prénom</label>
+                <input type="text" id="surname" name="surname" placeholder="Prénom" required="" pattern="^[^\x22]{0,255}$" title="Guillemets interdits"/><br>
+                <label for="username">Nom d\'utilisateur</label>
+                <input type="text" id="username" name="username" placeholder="Nom d\'utilisateur" required="" pattern="^[^\s\xA0\x22]{0,255}$" title="Espaces et guillemets interdits"/><br>
                 <label for="stacked-password">Mot de passe</label>
                 <input type="password" id="stacked-password" name="password" placeholder="Mot de passe" required="" pattern="^[^\s\xA0\x22]{0,255}$" title="Espaces et guillemets interdits"/><br>
                 <button type="submit" class="pure-button pure-button-primary-join">Créer un compte</button>

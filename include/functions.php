@@ -92,6 +92,15 @@ function logout($redir, $reset = 0) {
     header("Location: $redir");
 }
 
+function throwError($message) {
+    echo '
+        <script>
+            let error = document.querySelector("error");
+            error.setAttribute("class", "error-message");
+            error.textContent = "'.$message.'";
+        </script>';
+}
+
 /**
  * La fonction récupère une ligne spécifique d'une table de base de données sur la base d'une requête donnée.
  *
