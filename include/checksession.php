@@ -80,8 +80,7 @@ if (isset($_COOKIE["LOGGEDIN"])) {
   }
 }
 if (in_array("panel", explode("/", $_SERVER['PHP_SELF'])) && !isUserConnected()) {
-  header('Location: ../login.php');
-  exit;
+  throwError("Vous n'avez pas l'autorisation d'accéder à cette page.", "../login.php");
 }
 if (!isset($_SESSION["time_session_start"])) {
   $_SESSION["time_session_start"] = time();

@@ -92,13 +92,17 @@ function logout($redir, $reset = 0) {
     header("Location: $redir");
 }
 
-function throwError($message) {
+function throwError($message, $url = 0) {
     echo '
         <script>
             let error = document.querySelector("error");
             error.setAttribute("class", "error-message");
             error.textContent = "'.$message.'";
         </script>';
+    if ($url != 0) {
+        $_SESSION["error-message"] = $message;
+        echo '<script>window.location.href = "'.$url.'"</script>';
+    }
 }
 
 /**
