@@ -39,8 +39,10 @@ if (!isset($_SESSION["modeEditOrCreateUser"])){
           <?php
           if ($_SESSION["modeEditOrCreateUser"] == 0) {
             echo '
-            <p class="p-table">Créer un utilisateur</p>
             <form class="pure-form" method="post">
+            <div class="widget-title">
+              <h3>Créer un utilisateur</h3>
+            </div>
               <fieldset>
                 <input type="text" name="name" placeholder="NOM*" required="" pattern="^[^\x22]{0,255}$" title="Guillemets interdits"/>
                 <input type="text" name="surname" placeholder="Prénom*" required="" pattern="^[^\x22]{0,255}$" title="Guillemets interdits"/>
@@ -68,7 +70,9 @@ if (!isset($_SESSION["modeEditOrCreateUser"])){
           } else {
             $infosUser = $_SESSION["infosUser"];
             echo '
-            <p class="p-table">Modifier un utilisateur</p>
+            <div class="widget-title">
+              <h3>Modifier un utilisateur</h3>
+            </div>
             <form class="pure-form" method="post">
               <fieldset>
                 <input type="text" name="name" placeholder="Nom" pattern="^[^\x22]{0,255}$" title="Guillemets interdits" value="'.$infosUser["name"].'"/>
@@ -126,7 +130,9 @@ if (!isset($_SESSION["modeEditOrCreateUser"])){
           ?>
         </div>
         <div class="widget">
-          <p class="p-table">Liste des utilisateurs</p>
+          <div class="widget-title">
+            <h3>Liste des utilisateurs</h3>
+          </div>
           <table class="pure-table">
             <thead>
               <th>#</th>
@@ -157,7 +163,7 @@ if (!isset($_SESSION["modeEditOrCreateUser"])){
                       <td>
                         <div>
                           <button class="button-change-infos pure-button" onclick="updateInfosUser(['.urlencode($listeUsers["id"]).',\''.urlencode($listeUsers["name"]).'\',\''.urlencode($listeUsers["surname"]).'\',\''.urlencode($listeUsers["username"]).'\','.$listeUsers["id_group"].'])">Modifier</button>
-                          <button class="button-delete pure-button" onclick="deleteUser('.$listeUsers["id"].','.$_SESSION["user_logged_in"]["id"].')">Supprimer le compte</button>
+                          <button class="button-delete pure-button" onclick="deleteUser('.$listeUsers["id"].','.$_SESSION["user_logged_in"]["id"].')">Supprimer</button>
                         </div>
                       </td>
                     </tr>
@@ -180,7 +186,7 @@ if (!isset($_SESSION["modeEditOrCreateUser"])){
                         <td>
                           <div>
                             <button class="button-change-infos pure-button" onclick="updateInfosUser(['.urlencode($listeUsers[$i]["id"]).',\''.urlencode($listeUsers[$i]["name"]).'\',\''.urlencode($listeUsers[$i]["surname"]).'\',\''.urlencode($listeUsers[$i]["username"]).'\','.$listeUsers[$i]["id_group"].'])">Modifier</button>
-                            <button class="button-delete pure-button" onclick="deleteUser('.$listeUsers[$i]["id"].','.$_SESSION["user_logged_in"]["id"].')">Supprimer le compte</button>
+                            <button class="button-delete pure-button" onclick="deleteUser('.$listeUsers[$i]["id"].','.$_SESSION["user_logged_in"]["id"].')">Supprimer</button>
                           </div>
                         </td>
                       </tr>

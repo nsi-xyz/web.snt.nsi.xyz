@@ -34,7 +34,7 @@ include("../include/checksession.php");
           $session_id = $session["id"];
           $session_id_owner = $session["id_owner"];
           $session_owner = getRows($db, "users", "username", "id = \"$session_id_owner\"")["username"];
-          $session_stats = getRows($db, "users_session", "*", "id_session = \"$session_id\"");
+          $session_users = getRows($db, "users_session", "*", "id_session = \"$session_id\"");
           include("./include/stats_widgets.php");
         }
       } else {
