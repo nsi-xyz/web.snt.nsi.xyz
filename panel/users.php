@@ -43,6 +43,7 @@ if (!isset($_SESSION["modeEditOrCreateUser"])){
             <div class="widget-title">
               <h3>Créer un utilisateur</h3>
             </div>
+            <error-1></error-1>
               <fieldset>
                 <input type="text" name="name" placeholder="NOM*" required="" pattern="^[^\x22]{0,255}$" title="Guillemets interdits"/>
                 <input type="text" name="surname" placeholder="Prénom*" required="" pattern="^[^\x22]{0,255}$" title="Guillemets interdits"/>
@@ -73,6 +74,7 @@ if (!isset($_SESSION["modeEditOrCreateUser"])){
             <div class="widget-title">
               <h3>Modifier un utilisateur</h3>
             </div>
+            <error-1></error-1>
             <form class="pure-form" method="post">
               <fieldset>
                 <input type="text" name="name" placeholder="Nom" pattern="^[^\x22]{0,255}$" title="Guillemets interdits" value="'.$infosUser["name"].'"/>
@@ -133,6 +135,7 @@ if (!isset($_SESSION["modeEditOrCreateUser"])){
           <div class="widget-title">
             <h3>Liste des utilisateurs</h3>
           </div>
+          <error-2></error-2>
           <table class="pure-table">
             <thead>
               <th>#</th>
@@ -208,7 +211,7 @@ if (!isset($_SESSION["modeEditOrCreateUser"])){
 
                 function deleteUser(idUser,idLoggedUser){
                   if (idUser == idLoggedUser){
-                    alert("Vous ne pouvez pas supprimer votre propre compte.")
+                    throwError("Vous ne pouvez pas supprimer votre propre compte.", 2)
                   } else{
                     if (confirm("Etes-vous sûr de vouloir supprimer cet utilisateur ?")) {
                       jQuery.ajax({
@@ -251,5 +254,6 @@ if (!isset($_SESSION["modeEditOrCreateUser"])){
   
   </div>
   <script src="../js/ui.js"></script>
+  <script src="../js./script.js"></script>
 </body>
 </html>
