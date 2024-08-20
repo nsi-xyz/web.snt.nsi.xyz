@@ -89,6 +89,10 @@ if (!isset($_SESSION["time_session_start"])) {
 if (!isset($_SESSION["resolvedPuzzles"])) {
   $_SESSION["resolvedPuzzles"] = array();
   }
+if (!isset($_SESSION["locale"])) {
+  $_SESSION["locale"] = "fr";
+}
+include "./ressources/locales/".$_SESSION["locale"].".php";
 if (filter_var(basename($_SERVER['PHP_SELF']), FILTER_SANITIZE_NUMBER_INT) == 10) {
   $_SESSION["puzzle10"] = TRUE;
 }

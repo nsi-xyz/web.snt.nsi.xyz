@@ -7,6 +7,9 @@ if (currentUserInSession()) {
     $session_date_end = new DateTime(date("Y-m-d H:i:s", strtotime($session_date) + $session_duration));
     $session_time_left = abs($session_date_end->getTimestamp() - $time_now->getTimestamp());
     $_SESSION["time_session_left"] = $session_time_left;
+    if (!puzzleIsResolved()) {
+        // ToDo
+    }
 }
 ?>
 <?php if (currentUserInSession()) : ?>

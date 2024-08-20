@@ -381,3 +381,16 @@ function generateSessionCode($database) {
     }
     return $sessionCode;
 }
+
+function traduction($key) {
+    global $messages;
+    if (!isset($messages[$key])) {
+        return "Missing Translation (".strtoupper($_SESSION["locale"])."_".$key.")";
+    }
+    $translation = $messages[$key];
+    $translation = preg_replace_callback('/{{(.*?)}}/', function ($matches) {
+        $subKey = $matches[1];
+        return traduction($subKey);
+    }, $translation);
+    return $translation;
+}
