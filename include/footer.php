@@ -7,6 +7,8 @@
       <li class="pure-menu-item"><a href="https://nsi.xyz" class="pure-menu-link-footer" target="_blank">nsi.xyz</a></li>
       <li class="pure-menu-item"> </li>
       <li class="pure-menu-item"><a href="https://purecss.io" class="pure-menu-link-footer" target="_blank">Pure CSS</a></li>
+      <li class="pure-menu-item"> </li>
+      <li class="pure-menu-item"><a href="https://paypal.me/ilyasrahm" class="pure-menu-link-footer" target="_blank">Faire un don</a></li>
     </ul>
   </div>
 </div>
