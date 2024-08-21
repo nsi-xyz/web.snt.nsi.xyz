@@ -1,14 +1,14 @@
 <div class="footer">
-  <p class="footer-content">Une idée originale de Vincent ROBERT, enseignant de spécialité NSI au Lycée Louis Pasteur d'Avignon.</p>
-  <p class="footer-content">Développé par Ilyas RAHMOUN et Thomas SANCHEZ dans l'année 2023-2024 dans le cadre d'un projet de spécialité NSI.</p>
-  <p class="footer-content">Version <?php echo VERSION; ?></p>
+  <p class="footer-content"><?php echo traduction("footer_description_line_1"); ?></p>
+  <p class="footer-content"><?php echo traduction("footer_description_line_2"); ?></p>
+  <p class="footer-content"><?php echo traduction("footer_version"); ?> <?php echo VERSION; ?></p>
   <div class="pure-menu-horizontal">
     <ul>
-      <li class="pure-menu-item"><a href="https://nsi.xyz" class="pure-menu-link-footer" target="_blank">nsi.xyz</a></li>
+      <li class="pure-menu-item"><a href="https://nsi.xyz" class="pure-menu-link-footer" target="_blank"><?php echo traduction("external_nsixyz_name"); ?></a></li>
       <li class="pure-menu-item"> </li>
-      <li class="pure-menu-item"><a href="https://purecss.io" class="pure-menu-link-footer" target="_blank">Pure CSS</a></li>
+      <li class="pure-menu-item"><a href="https://purecss.io" class="pure-menu-link-footer" target="_blank"><?php echo traduction("external_purecss_name"); ?></a></li>
       <li class="pure-menu-item"> </li>
-      <li class="pure-menu-item"><a href="https://paypal.me/ilyasrahm" class="pure-menu-link-footer" target="_blank">Faire un don</a></li>
+      <li class="pure-menu-item"><a href="https://paypal.me/ilyasrahm" class="pure-menu-link-footer" target="_blank"><?php echo traduction("external_donation"); ?></a></li>
     </ul>
   </div>
 </div>

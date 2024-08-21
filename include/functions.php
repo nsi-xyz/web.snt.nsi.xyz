@@ -384,6 +384,9 @@ function generateSessionCode($database) {
 
 function traduction($key) {
     global $messages;
+    if ($_SESSION["locale"] == "debug") {
+        return $key;
+    }
     if (!isset($messages[$key])) {
         return "Missing Translation (".strtoupper($_SESSION["locale"])."_".$key.")";
     }
