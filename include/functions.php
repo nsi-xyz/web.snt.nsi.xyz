@@ -117,8 +117,8 @@ function throwError($message, $url = null) {
  * de données.
  * @return array
  */
-function getRows($database, $relation, $attribut, $query, $force_multiples_rows = 0) {
-    $sql = "SELECT $attribut FROM $relation WHERE $query";
+function getRows($database, $relation, $attribut, $query, $force_multiples_rows = 0, $like = null) {
+    $sql =  $like == null ? "SELECT $attribut FROM $relation WHERE $query" : "SELECT $attribut FROM $relation WHERE $query LIKE $like";
     $stmp = $database->prepare($sql);
     $stmp->execute();
     return rowsCount($database, $relation, $query) > 1 || $force_multiples_rows == 1 ? $stmp->fetchAll() : $stmp->fetch(PDO::FETCH_ASSOC);
@@ -388,7 +388,7 @@ function traduction($key) {
         return $key;
     }
     if (!isset($messages[$key])) {
-        return "Missing Translation (".strtoupper($_SESSION["locale"])."_".$key.")";
+        return "Missing Translation (".$key.", ".strtoupper($_SESSION["locale"]).")";
     }
     $translation = $messages[$key];
     $translation = preg_replace_callback('/{{(.*?)}}/', function ($matches) {

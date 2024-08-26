@@ -26,13 +26,73 @@ include("../include/checksession.php");
         <h1>web.snt.nsi.xyz</h1>
         <h2>10 énigmes à résoudre pour découvrir le web</h2>
       </div>
-      <!--<div class="content">-->
-      <!--</div>-->
+      <div class="content">
+        <form method="GET" action="" class="pure-form">
+          <input type="text" name="key" placeholder="<?php echo traduction("trads_search_key_placeholder"); ?>" value="<?php echo isset($_GET["key"]) ? $_GET["key"] : ""; ?>" required>
+          <button type="submit" class="pure-button"><?php echo traduction("trads_search_key_button"); ?></button>
+        </form>
+        <div class="trad-box">
+          <div class="key-box">
+            <ul class="key-list">
+              <?php
+              if (isset($_GET["key"])) {
+                $trads = getRows($db, "traductions_".$_SESSION["locale"], "*", "trad", 1, "\"%".$_GET["key"]."%\"");
+                $trads_research;
+                $trads_id;
+                foreach ($trads as $trad) {
+                  $trads_research[$trad['trad']] = $trad['value'];
+                  $trads_research[$trad['id']] = $trad['value'];
+                  $trads_id[$trad['trad']] = $trad['id'];
+                }
+                foreach ($trads_research as $trad => $value) {
+                  if (!is_int($trad)) {
+                    echo "<li>".$trad."<button onclick=\"editTrad(".$trads_id[$trad].")\">".traduction("trads_edit_button")."</button></li>";
+                  }
+                }
+              }
+              ?>
+            </ul>
+          </div>
+          <div class="value-box">
+            <textarea id="new-trad" rows="30" cols="70"><?php
+              if (isset($_GET["key"], $_GET["selection"])) {
+                echo $trads_research[$_GET["selection"]];
+              }
+              ?></textarea>
+            <button onclick="updateTrad()"><?php echo traduction("trads_edit_save_button"); ?></button>
+          </div>
+          <?php 
+          if (isset($_POST["new_trad"])) {
+            echo $_POST["new_trad"];
+          } else {
+            print_r($_POST);
+          }
+          ?>
+        </div>
+      </div>
     </div>
     <?php include("../include/footer.php"); ?>
   </div>
   <script>
-    const currentPuzzle = null;
+    function editTrad(key) {
+      console.log(key);
+      window.location.href += `&selection=${key}`;
+    }
+
+    function updateTrad() {
+      trad = document.getElementById("new-trad").value;
+      jQuery.ajax({
+        type: "POST",
+        url: "trads.php",
+        data: {"new_trad": trad},
+        success: function(response) {
+          window.location.replace(window.location.href);
+        },
+        error: function(jqXHR, textStatus, errorThrown) {
+          console.error("Erreur AJAX : " + textStatus + " - " + errorThrown);
+        }
+      });
+    }
   </script>
   <script src="../js/ui.js"></script>
 </body>
