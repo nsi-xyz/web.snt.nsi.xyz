@@ -7,8 +7,6 @@
       <li class="pure-menu-item"><a href="https://nsi.xyz" class="pure-menu-link-footer" target="_blank"><?php echo traduction("external_nsixyz_name"); ?></a></li>
       <li class="pure-menu-item"> </li>
       <li class="pure-menu-item"><a href="https://purecss.io" class="pure-menu-link-footer" target="_blank"><?php echo traduction("external_purecss_name"); ?></a></li>
-      <li class="pure-menu-item"> </li>
-      <li class="pure-menu-item"><a href="https://paypal.me/ilyasrahm" class="pure-menu-link-footer" target="_blank"><?php echo traduction("external_donation"); ?></a></li>
     </ul>
   </div>
 </div>
