@@ -69,7 +69,7 @@ include("./include/checksession.php");
             <tr>
               <td><a class="link" href="https://microsoftedge.microsoft.com/addons/detail/cookieeditor/neaplmfkghagebokkhpjpoebhdledlfi" target="_blank">Cookie-Editor</a></td>
               <td><a class="link" href="https://addons.mozilla.org/fr/firefox/addon/cookie-quick-manager/" target="_blank">Cookie Quick Manager</a></td>
-              <td><a class="link" href="https://chrome.google.com/webstore/detail/editthiscookie/fngmhnnpilhplaeedifhccceomclgfbg" target="_blank">EditThisCookie</a></td>
+              <td><a class="link" href="https://chromewebstore.google.com/detail/cookie-editor/iphcomljdfghbkdcfndaijbokpgddeno?hl=fr" target="_blank">Cookie Editor</a></td>
               <td><a class="link" href="https://apps.apple.com/fr/app/cookie-editor/id6446215341" target="_blank">Cookie-Editor</a></td>
             </tr>
           </tbody>
