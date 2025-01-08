@@ -53,7 +53,7 @@ if (isset($_SESSION["user_logged_in"]) && $_SESSION["user_logged_in"]["username"
               <fieldset>
                 <legend>Rejoindre une session</legend>
                 <label for="pseudo">Pseudo</label>
-                <input type="text" id="pseudo" name="pseudo" placeholder="Pseudo" pattern="^[^\x22]{0,255}$" title="Guillemets interdits"/><br>
+                <input type="text" id="pseudo" name="pseudo" placeholder="Pseudo" pattern="^[^\x22]{0,255}$" title="Guillemets interdits" maxlength="16"><br>
                 <label for="code">Code de la session</label>
                 <input type="text" id="code" name="code" placeholder="Code de la session" pattern="^[^\x22]{0,255}$" title="Guillemets interdits"/><br>
                 <button type="submit" class="pure-button pure-button-primary-join">Rejoindre la session</button>
@@ -84,7 +84,7 @@ if (isset($_SESSION["user_logged_in"]) && $_SESSION["user_logged_in"]["username"
               <fieldset>
                 <legend>Se connecter</legend>
                 <label for="username">Nom d\'utilisateur</label>
-                <input type="text" id="username" name="username" placeholder="Nom d\'utilisateur" pattern="^[^\x22]{0,255}$" title="Guillemets interdits"/><br>
+                <input type="text" id="username" name="username" placeholder="Nom d\'utilisateur" pattern="^[^\x22]{0,255}$" title="Guillemets interdits" maxlength="16"><br>
                 <label for="stacked-password">Mot de passe</label>
                 <input type="password" id="stacked-password" name="password" placeholder="Mot de passe" pattern="^[^\x22]{0,255}$"/><br>
                 <button type="submit" class="pure-button pure-button-primary-join">Se connecter</button>
@@ -113,11 +113,11 @@ if (isset($_SESSION["user_logged_in"]) && $_SESSION["user_logged_in"]["username"
               <fieldset>
                 <legend>Créer un compte</legend>
                 <label for="name">Nom</label>
-                <input type="text" id="name" name="name" placeholder="Nom" required="" pattern="^[^\x22]{0,255}$" title="Guillemets interdits"/><br>
+                <input type="text" id="name" name="name" placeholder="Nom" required="" pattern="^[^\x22]{0,255}$" title="Guillemets interdits" maxlength="16"><br>
                 <label for="surname">Prénom</label>
-                <input type="text" id="surname" name="surname" placeholder="Prénom" required="" pattern="^[^\x22]{0,255}$" title="Guillemets interdits"/><br>
+                <input type="text" id="surname" name="surname" placeholder="Prénom" required="" pattern="^[^\x22]{0,255}$" title="Guillemets interdits" maxlength="16"><br>
                 <label for="username">Nom d\'utilisateur</label>
-                <input type="text" id="username" name="username" placeholder="Nom d\'utilisateur" required="" pattern="^[^\s\xA0\x22]{0,255}$" title="Espaces et guillemets interdits"/><br>
+                <input type="text" id="username" name="username" placeholder="Nom d\'utilisateur" required="" pattern="^[^\s\xA0\x22]{0,255}$" title="Espaces et guillemets interdits" maxlength="16"><br>
                 <label for="stacked-password">Mot de passe</label>
                 <input type="password" id="stacked-password" name="password" placeholder="Mot de passe" required="" pattern="^[^\s\xA0\x22]{0,255}$" title="Espaces et guillemets interdits"/><br>
                 <button type="submit" class="pure-button pure-button-primary-join">Créer un compte</button>
