@@ -74,7 +74,7 @@ include("./include/checksession.php");
             </tr>
           </tbody>
         </table>
-        <p class="p-content">Une fois l'extension installée, vous pouvez y accéder via une icône ressemblant à une pièce de puzzle dans la barre supérieure de votre navigateur.</p>
+        <p class="p-content">Une fois l'extension installée, vous pouvez y accéder via une icône ressemblant à une pièce de puzzle dans la barre supérieure de votre navigateur. Si un lien dans le tableau ci-dessus est cassé, vous devrez chercher et installer une autre extension.</p>
         <h2 id="Modifier / supprimer un cookie" class="content-subhead">Modifier / supprimer un cookie</h2>
         <p class="p-content">Pour modifier ou supprimer un cookie, vous devrez passer par l'extension préalablement installée.</p>
         <h2 id="Bloquer les publicités" class="content-subhead">Bloquer les publicités</h2>
