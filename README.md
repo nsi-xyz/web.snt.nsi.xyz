@@ -24,14 +24,14 @@ La deuxième énigme aborde le CSS, et montre ce qu'il serait possible de faire 
 
 ### Énigme 3
 
-Difficulté : ⭐⭐⭐<br>
+Difficulté : ⭐⭐⭐⭐<br>
 Notions : CSS
 
 La troisième énigme est axé sur CSS, et enseigne la façon de d'accéder à la feuille de style d'une page web.
 
 ### Énigme 4
 
-Difficulté : ⭐⭐⭐<br>
+Difficulté : ⭐⭐⭐⭐⭐<br>
 Notions : CSS
 
 La quatrième énigme est axé sur CSS, et enseigne la façon de comprendre la structure d'une feuille de style sur une page web.
@@ -73,7 +73,7 @@ La neuvième énigme est axé sur les publicités sur internet et comment s'en d
 
 ### Énigme 10
 
-Difficulté : ⭐⭐⭐⭐⭐<br>
+Difficulté : ⭐⭐⭐⭐⭐⭐<br>
 Notions : Analyse, recherche
 
 La dixième énigme ?
