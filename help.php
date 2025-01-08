@@ -92,7 +92,7 @@ include("./include/checksession.php");
             <tr>
               <td><a class="link" href="https://microsoftedge.microsoft.com/addons/detail/ublock-origin/odfafepnkmbhccpbejgmiehpchacaeak" target="_blank">uBlock Origin</a></td>
               <td><a class="link" href="https://addons.mozilla.org/fr/firefox/addon/ublock-origin/" target="_blank">uBlock Origin</a></td>
-              <td><a class="link" href="https://chrome.google.com/webstore/detail/ublock-origin/cjpalhdlnbpafiamejdnhcphjbkeiagm" target="_blank">uBlock Origin</a></td>
+              <td><a class="link" href="https://chrome.google.com/webstore/detail/ublock-origin/cjpalhdlnbpafiamejdnhcphjbkeiagm" target="_blank">uBlock Origin</a> ou <a class="link" href="https://chromewebstore.google.com/detail/ublock-origin-lite/ddkjiahejlhfcafbddmgiahcphecmpfh?hl=fr" target="_blank">uBlock Origin lite</a> </td>
               <td><a class="link" href="https://apps.apple.com/fr/app/adblock-pour-safari/id1402042596" target="_blank">AdBlock</a></td>
             </tr>
           </tbody>
