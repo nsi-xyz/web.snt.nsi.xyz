@@ -20,11 +20,24 @@ if (isset($_GET["sort-by"])) {
     $_SESSION["sort-by"] = urldecode($_GET["sort-by"]);
 }
 ?>
+<h2 class="content-subhead">Ma session</h2>
+    <p class="p-content">Gestion et informations sur votre session.</p>
+    <h3 class="content-subhead">Code de session</h3>
+        <p class="p-content">Code de la session à partager aux participants :</p>
+        <div class="session-code-controls">
+            <button class="session-code-rezize-button" onclick="resizeCode('-')"><img class="session-code-zoom-icon" src="../assets/dezoom_nixxdsgn.png" title="Zoom • Réduire"></button>
+            <p class="session-code-code">Zoom du code : <span id="zoom-value">100%</span></p>
+            <button class="session-code-rezize-button" onclick="resizeCode('+')"><img class="session-code-zoom-icon" src="../assets/zoom_nixxdsgn.png" title="Zoom • Agrandir"></button>
+        </div>
+        <div class="session-code-div">
+            <button class="session-code-button" title="Copier le code dans le presse-papier" type="button" onclick="copyToClipboard()">
+                <span id="session-code-code"><?php echo $session["code"]; ?></span>
+                <img id="session-code-copy-icon" src="../assets/copy_anggara.png" title="Copier le code dans le presse-papier">
+            </button>
+        </div>
+
 
 <section class="widgets">
-    <div class="widget">
-        <h1><?php echo $session["code"]; ?></h1>
-    </div>
     <div class="widget">
         <form method="GET" action="" class="pure-form">
             <fieldset>
@@ -51,9 +64,11 @@ if (isset($_GET["sort-by"])) {
         </table>
     </div>
     <div class="widget">
+        <p>Fin de la session dans : <timer>#ToDo</timer></p>
         <button class ="stop-button" type="button" onclick="stop(<?php echo $id_session; ?>)">Forcer l'arrêt de la session</button>
+    </div>
 </section>
-
+<?php include("../include/timer.php"); ?>
 
 <script>
     function updateUsersList(id_session, path) {
@@ -205,6 +220,42 @@ if (isset($_GET["sort-by"])) {
                 window.location.replace(window.location.href);
                 }
             });
+    }
+
+    function copyToClipboard() {
+        let codeElement = document.getElementById("session-code-code");
+        const code = codeElement.innerText;
+        navigator.clipboard.writeText(code).then(() => {
+            codeElement.innerText = "Code copié !";
+            setTimeout(() => {
+                codeElement.innerText = code;
+            }, 1000)
+        });
+    }
+
+    function resizeCode(action) {
+        let codeElement = document.getElementById("session-code-code");
+        let zoomValueElement = document.getElementById("zoom-value");
+        const currentSize = parseInt(window.getComputedStyle(codeElement).fontSize, 10);
+        let codeIconElement = document.getElementById("session-code-copy-icon")
+        const currentIconSize = parseInt(window.getComputedStyle(codeIconElement).width, 10)
+        console.log(currentIconSize);
+
+        if (action === "+") {
+            if (currentSize < 96) {
+                codeElement.style.fontSize = (currentSize + 8) + "px";
+                codeIconElement.style.width = (currentIconSize + 8) + "px";
+                codeIconElement.style.height = (currentIconSize + 8) + "px";
+                zoomValueElement.innerText = (((currentSize + 8)/32)*100).toString().padStart(3, "0") + "%";
+            }
+        } else if (action === "-") {
+            if (currentSize > 0) {
+                codeElement.style.fontSize = (currentSize - 8) + "px";
+                codeIconElement.style.width = (currentIconSize - 8) + "px";
+                codeIconElement.style.height = (currentIconSize - 8) + "px";
+                zoomValueElement.innerText = (((currentSize - 8)/32)*100).toString().padStart(3, "0") + "%";
+            }
+        }
     }
 
     updateUsersList(<?php echo $id_session; ?>, "../js/db-<?php echo $id_session; ?>.json");

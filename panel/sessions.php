@@ -26,8 +26,10 @@ include("../include/checksession.php");
         <h1>web.snt.nsi.xyz</h1>
         <h2>10 énigmes à résoudre pour découvrir le web</h2>
       </div>
-      <!--<div class="content">-->
-      <!--</div>-->
+      <div class="content">
+        <h2 class="content-subhead">Bientôt disponible !</h2>
+        <p class="p-content">Cette fonctionnalité sera disponible prochainement.</p>
+      </div>
     </div>
     <?php include("../include/footer.php"); ?>
   </div>

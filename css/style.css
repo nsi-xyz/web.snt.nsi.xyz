@@ -654,3 +654,53 @@ textarea {
     border: 1px solid #ccc;
     box-shadow: 1px 1px 1px #999;
 }
+
+.session-code-div {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.session-code-button {
+    cursor: pointer;
+    background-color: #fff;
+    border: none;
+}
+
+.session-code-rezize-button {
+    cursor: pointer;
+    background-color: #fff;
+    border: none;
+}
+
+#session-code-code {
+    color: #000;
+    font-size: xx-large;
+    vertical-align: middle;
+}
+
+.session-code-code {
+    color: #000;
+    font-size: medium;
+    vertical-align: middle;
+}
+
+.session-code-zoom-icon {
+    width: 1.5em;
+    height: 1.5em;
+    display: inline-block;
+    vertical-align: middle;
+}
+
+#session-code-copy-icon {
+    width: 32px;
+    height: 32px;
+    display: inline-block;
+    vertical-align: middle;
+    margin-left: 0.5em;
+}
+
+.session-code-controls {
+    display: flex;
+    flex-direction: row;
+}

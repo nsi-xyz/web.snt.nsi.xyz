@@ -28,15 +28,17 @@ $session_in_progress = sessionInProgress($db, $id_user);
         <h1>web.snt.nsi.xyz</h1>
         <h2>10 énigmes à résoudre pour découvrir le web</h2>
       </div>
-      <?php
-      if ($session_in_progress) {
-        include("./include/session_widgets.php");
-      } else {
-        echo '<div class="content">';
-        include("./include/session_create.php");
-        echo '</div>';
-      }
-      ?>
+      <div class="content">
+        <?php
+        if ($session_in_progress) {
+          include("./include/session_manage.php");
+        } else {
+          echo '<div class="content">';
+          include("./include/session_create.php");
+          echo '</div>';
+        }
+        ?>
+      </div>
     </div>
     <?php include("../include/footer.php"); ?>
   </div>
