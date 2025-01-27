@@ -1,6 +1,6 @@
 <?php
 // Constantes globales.
-define("VERSION", "1.3-SNAPSHOT-2.0");
+define("VERSION", "2.5 (27/01/2025)");
 define("SESSDURATION", 10800);
 define("COOKIEAUTHDURATION", 604800);
 define("GG_MESSAGE", "<p class=\"p-gg\">Bravo, vous avez résolu les 10 énigmes de web.snt.nsi.xyz. N'hésitez pas à chercher les pages cachées sur <a class=\"link\" href=\"https://labohelp.nsi.xyz/\" target=\"_blank\">LaboHelp</a> ou à explorer <a class=\"link\" href=\"https://nsi42.net/\" target=\"_blank\">nsi42.net</a> &#x1F609;");
@@ -82,6 +82,23 @@ if (isset($_COOKIE["LOGGEDIN"])) {
 }
 if (in_array("panel", explode("/", $_SERVER['PHP_SELF'])) && !isUserConnected()) {
   throwError("Vous n'avez pas l'autorisation d'accéder à cette page.", "../login.php");
+}
+if ((isUserConnected() && sessionInProgress($db, $_SESSION["user_logged_in"]["id"])) || (currentUserInSession())) {
+  if (currentUserInSession()) {
+    $id_session = $_SESSION["user_logged_in"]["id_session"];
+  } else {
+    $id_user = $_SESSION["user_logged_in"]["id"];
+    $id_session = getRows($db, "sessions", "*", "id_owner = $id_user AND status = 1")["id"];
+  }
+  $time_now = new DateTime(date("Y-m-d H:i:s", time()));
+  $session_date = getRows($db, "sessions", "date", "id = \"$id_session\"")["date"];
+  $session_duration = getRows($db, "sessions", "duration", "id = \"$id_session\"")["duration"];
+  $session_date_end = new DateTime(date("Y-m-d H:i:s", strtotime($session_date) + $session_duration));
+  $is_session_expired = $time_now > $session_date_end->modify("+1 second"); // Marge de 1 seconde pour éventuellement laisser le temps à session.php de stoper la session.
+  $session_is_open = getRows($db, "sessions", "*", "id = $id_session")["status"] == 1 ? true : false;
+  if ($session_is_open && $is_session_expired) {
+    stopSession($db, $id_session);
+  }
 }
 if (!isset($_SESSION["time_session_start"])) {
   $_SESSION["time_session_start"] = time();

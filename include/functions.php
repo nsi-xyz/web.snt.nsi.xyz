@@ -295,6 +295,7 @@ function sessionInProgress($database, $user_id) {
     }
     return false;
 }
+
 /**
  * La fonction créé une session et l'enregistre dans la relation/table "sessions".
  *
@@ -309,6 +310,26 @@ function createSession($database, $id_owner, $duration) {
     addRow($database, "sessions", array($codeSession, $id_owner, date('Y-m-d H:i:s', time()), $duration, 1));
     $id_session_created = getRows($database, "sessions", "*", "id_owner = $id_owner AND status = 1")["id"];
     updateLocalDB("[]", "../js/db-$id_session_created.json");
+}
+
+/**
+ * La fonction ferme une session.
+ *
+ * @param $database Ce paramètre est une instance d'une classe PDO indiquant dans quelle base de données agir.
+ * 
+ * @param $id_session L'ID de la session à fermer.
+ *
+ * @return null
+ */
+function stopSession($database, $id_session) {
+    updateRow($database, "sessions", array("status" => 0), "id = $id_session");
+    $path = __DIR__."/../js/db-$id_session.json";
+    if (!file_exists($path)) {
+        $path = __DIR__."/js/db-$id_session.json";
+    }
+    if (file_exists($path)) {
+        unlink($path);
+    }
 }
 
 function canJoinSession($pseudo, $id_session, $database) {

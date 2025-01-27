@@ -1,6 +1,4 @@
 <?php
-$session = getRows($db, "sessions", "*", "id_owner = $id_user AND status = 1");
-$id_session = $session["id"];
 $users_session_users_list = getRows($db, "users_session", "pseudo, joined_at, puzzles", "id_session = $id_session");
 if (isset($_POST["kick_user"])) {
     $user_session_id = $_POST["kick_user"];
@@ -8,67 +6,57 @@ if (isset($_POST["kick_user"])) {
     updateLocalDB(getRowsInJSON($db, "users_session", "*", "1"), "../js/db-$id_session.json");
     echo '<script>window.location.replace(window.location.href);</script>';
 }
-if (isset($_POST["stop_session"])) {
-    $stop_session_id = $_POST["stop_session"];
-    updateRow($db, "sessions", array("status" => 0), "id = $stop_session_id");
-    unlink("../js/db-$id_session.json");
-}
 if (!isset($_SESSION["sort-by"])) {
-    $_SESSION["sort-by"] = "Date";
+    $_SESSION["sort-by"] = "Heure";
 }
 if (isset($_GET["sort-by"])) {
     $_SESSION["sort-by"] = urldecode($_GET["sort-by"]);
 }
 ?>
 <h2 class="content-subhead">Ma session</h2>
-    <p class="p-content">Gestion et informations sur votre session.</p>
-    <h3 class="content-subhead">Code de session</h3>
-        <p class="p-content">Code de la session à partager aux participants :</p>
-        <div class="session-code-controls">
-            <button class="session-code-rezize-button" onclick="resizeCode('-')"><img class="session-code-zoom-icon" src="../assets/dezoom_nixxdsgn.png" title="Zoom • Réduire"></button>
-            <p class="session-code-code">Zoom du code : <span id="zoom-value">100%</span></p>
-            <button class="session-code-rezize-button" onclick="resizeCode('+')"><img class="session-code-zoom-icon" src="../assets/zoom_nixxdsgn.png" title="Zoom • Agrandir"></button>
-        </div>
-        <div class="session-code-div">
-            <button class="session-code-button" title="Copier le code dans le presse-papier" type="button" onclick="copyToClipboard()">
-                <span id="session-code-code"><?php echo $session["code"]; ?></span>
-                <img id="session-code-copy-icon" src="../assets/copy_anggara.png" title="Copier le code dans le presse-papier">
-            </button>
-        </div>
-
-
-<section class="widgets">
-    <div class="widget">
-        <form method="GET" action="" class="pure-form">
-            <fieldset>
-                <label for="sorting-type">Trier par</label>
-                <select id="sorting-type" name="sort-by">
-                    <option><?php echo $_SESSION["sort-by"] == "Date" ? "Date" : ($_SESSION["sort-by"] == "Pseudo (ABC)" ? "Pseudo (ABC)" : "Pseudo (ZYX)")?></option>
-                    <option><?php echo $_SESSION["sort-by"] == "Date" ? "Pseudo (ABC)" : ($_SESSION["sort-by"] == "Pseudo (ABC)" ? "Pseudo (ZYX)" : "Date")?></option>
-                    <option><?php echo $_SESSION["sort-by"] == "Date" ? "Pseudo (ZYX)" : ($_SESSION["sort-by"] == "Pseudo (ABC)" ? "Date" : "Pseudo (ABC)")?></option>
-                </select>
-                <button type="submit" class="pure-button pure-button-primary">Appliquer</button>
-            </fieldset>
-        </form>
-        <table class="pure-table">
-            <thead>
-                <tr>
-                    <th>Pseudo</th>
-                    <th colspan="10">Énigmes</th>
-                    <th>Heure</th>
-                    <th>Actions</th>
-                </tr>
-            </thead>
-            <tbody id="users-session-list">
-            </tbody>
-        </table>
-    </div>
-    <div class="widget">
-        <p>Fin de la session dans : <timer>#ToDo</timer></p>
-        <button class ="stop-button" type="button" onclick="stop(<?php echo $id_session; ?>)">Forcer l'arrêt de la session</button>
-    </div>
-</section>
-<?php include("../include/timer.php"); ?>
+<p class="p-content">Gestion et informations sur votre session.</p>
+<h3 class="content-subhead">Code de session</h3>
+<p class="p-content">Code de la session à partager aux participants :</p>
+<div class="session-code-controls">
+    <button class="session-code-rezize-button" onclick="resizeCode('-')"><img class="session-code-zoom-icon" src="../assets/dezoom_nixxdsgn.png" title="Zoom • Réduire"></button>
+    <p class="session-code-code">Zoom du code : <span id="zoom-value">100%</span></p>
+    <button class="session-code-rezize-button" onclick="resizeCode('+')"><img class="session-code-zoom-icon" src="../assets/zoom_nixxdsgn.png" title="Zoom • Agrandir"></button>
+</div>
+<div class="session-code-div">
+    <button class="session-code-button" title="Copier le code dans le presse-papier" type="button" onclick="copyToClipboard()">
+            <span id="session-code-code"><?php echo $session["code"]; ?></span>
+            <img id="session-code-copy-icon" src="../assets/copy_anggara.png" title="Copier le code dans le presse-papier">
+    </button>
+ </div>
+<h3 class="content-subhead">Participants à la session</h3>
+<p></p>
+<p class="p-content">La mise à jour du tableau en temps réel peut prendre jusqu'à 15 secondes. Actualiser la page permet une mise à jour immédiate.</p>
+<form method="GET" action="" class="pure-form">
+    <fieldset>
+        <label for="sorting-type">Trier par</label>
+        <select id="sorting-type" name="sort-by">
+            <option><?php echo $_SESSION["sort-by"] == "Heure" ? "Heure" : ($_SESSION["sort-by"] == "Pseudo (ABC)" ? "Pseudo (ABC)" : "Pseudo (ZYX)")?></option>
+            <option><?php echo $_SESSION["sort-by"] == "Heure" ? "Pseudo (ABC)" : ($_SESSION["sort-by"] == "Pseudo (ABC)" ? "Pseudo (ZYX)" : "Heure")?></option>
+            <option><?php echo $_SESSION["sort-by"] == "Heure" ? "Pseudo (ZYX)" : ($_SESSION["sort-by"] == "Pseudo (ABC)" ? "Heure" : "Pseudo (ABC)")?></option>
+        </select>
+        <button type="submit" class="pure-button pure-button-primary">Appliquer</button>
+    </fieldset>
+</form>
+<table class="pure-table">
+    <thead>
+        <tr>
+            <th>Pseudo</th>
+            <th colspan="10">Énigmes</th>
+            <th>Heure</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody id="users-session-list">
+    </tbody>
+</table>
+<h3 class="content-subhead">Gestion de ma session</h3>
+<p class="p-content">Fin de la session dans : <timer>#ToDo</timer></p>
+<button class ="stop-button" type="button" onclick="stop(<?php echo $id_session; ?>)">Forcer l'arrêt de la session</button>
 
 <script>
     function updateUsersList(id_session, path) {
@@ -86,7 +74,7 @@ if (isset($_GET["sort-by"])) {
             .then(json => {
                 let index = 0;
                 switch ('<?php echo $_SESSION["sort-by"]; ?>') {
-                    case "Date":
+                    case "Heure":
                         sortByDate(json);
                         break;
                     case "Pseudo (ABC)":
@@ -215,12 +203,16 @@ if (isset($_GET["sort-by"])) {
         jQuery.ajax({
             type: "POST",
             url: "session.php",
-            data: {stop_session: id},
+            data: { stop_session: id },
             success: function(response) {
-                window.location.replace(window.location.href);
-                }
-            });
+                const data = JSON.parse(response);
+                if (data.success && data.redir) {
+                    window.location.href = data.redir;
+                } 
+            }
+        });
     }
+
 
     function copyToClipboard() {
         let codeElement = document.getElementById("session-code-code");

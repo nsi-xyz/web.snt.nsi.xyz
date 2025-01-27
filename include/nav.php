@@ -1,4 +1,8 @@
 <?php
+if (isUserConnected() && sessionInProgress($db, $_SESSION["user_logged_in"]["id"])) {
+  $id_user = $_SESSION["user_logged_in"]["id"];
+  $id_session = getRows($db, "sessions", "*", "id_owner = $id_user AND status = 1")["id"];
+}
 $p = basename($_SERVER['PHP_SELF']);
 $currentPuzzle = (in_array($p, array("index.php", "help.php", "login.php"))) ? null : filter_var(basename($_SERVER['PHP_SELF']), FILTER_SANITIZE_NUMBER_INT);
 $p_i = (in_array($p, array("index.php", "help.php", "login.php"))) ? "" : ".";
@@ -31,7 +35,7 @@ $p_h = (in_array($p, array("index.php", "help.php", "login.php"))) ? "." : "..";
             echo '<li style="padding-top: 0.6em;">🚹 Utilisateur : <strong>'.$_SESSION["user_logged_in"]["username"].'</strong></li>
           </div>';
           if ($_SESSION["user_logged_in"]["id_group"] == 1){
-            echo '<li class="pure-menu-item-back"><a href="'.$p_h.'/panel/" class="pure-menu-link">➡️ Panel Admin</a></li>';
+            echo '<li class="pure-menu-item-back"><a href="'.$p_h.'/panel/" class="pure-menu-link">➡️ Panneau d\'administration</a></li>';
           } else {
             echo '<li class="pure-menu-item-back"><a href="'.$p_h.'/panel/session.php" class="pure-menu-link">➡️ Gérer la session</a></li>';
           }
@@ -66,7 +70,7 @@ $class = $p == "help.php" ? "pure-menu-item menu-item-divided pure-menu-selected
 echo '            <li class="'.$class.'"><a href="'.$p_h.'/help.php" class="pure-menu-link">'.traduction("nav_help").'</a></li>
           </ul>
       </div>';
-if (!currentUserInSession()) {
+if ((!currentUserInSession() && !isUserConnected()) || (isUserConnected() && !sessionInProgress($db, $_SESSION["user_logged_in"]["id"]))) {
   $time = isset($_SESSION["time_session_start"]) ? traduction("nav_startedat")." <timer>".date("H\hi", $_SESSION["time_session_start"])."</timer>" : traduction("nav_startedat")." <timer>?</timer>";
 } else {
   $time = "Fin de la session : <timer></timer>";

@@ -4,6 +4,18 @@ include("../include/functions.php");
 include("../include/checksession.php");
 $id_user = $_SESSION["user_logged_in"]["id"];
 $session_in_progress = sessionInProgress($db, $id_user);
+if ($session_in_progress) {
+  $session = getRows($db, "sessions", "*", "id_owner = $id_user AND status = 1");
+  $id_session = $session["id"];
+  $code_session = $session["code"];
+}
+if (isset($_POST["stop_session"])) {
+    $stop_session_id = $_POST["stop_session"];
+    stopSession($db, $id_session);
+    echo json_encode(["success" => true, "redir" => "./stats.php?session=$code_session"]);
+    exit();
+}
+
 ?>
 <!DOCTYPE html>
 <html lang="fr">
@@ -33,15 +45,14 @@ $session_in_progress = sessionInProgress($db, $id_user);
         if ($session_in_progress) {
           include("./include/session_manage.php");
         } else {
-          echo '<div class="content">';
           include("./include/session_create.php");
-          echo '</div>';
         }
         ?>
       </div>
     </div>
     <?php include("../include/footer.php"); ?>
   </div>
+  <?php include("../include/timer.php"); ?>
   <script>
     const currentPuzzle = null;
   </script>
