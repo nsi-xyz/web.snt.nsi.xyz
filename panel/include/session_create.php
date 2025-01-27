@@ -15,13 +15,13 @@
 </form>
 <?php
 if (isset($_POST["session_duration_hours"], $_POST["session_duration_minutes"], $_POST["session_duration_seconds"])) {
-    $h = $_POST["session_duration_hours"];
-    $m = $_POST["session_duration_minutes"];
-    $s = $_POST["session_duration_seconds"];
+    $h = intval($_POST["session_duration_hours"]);
+    $m = intval($_POST["session_duration_minutes"]);
+    $s = intval($_POST["session_duration_seconds"]);
     $session_duration = $h*3600 + $m*60 + $s;
-    if ($session_duration >= 500) {
-    createSession($db, $id_user, $session_duration);
-    echo '<script>window.location.replace(window.location.href);</script>';
+    if ($session_duration >= 300) {
+        createSession($db, $id_user, $session_duration);
+        echo '<script>window.location.replace(window.location.href);</script>';
     } else {
         throwError("Une session doit durer au moins 5 minutes.");
     }
