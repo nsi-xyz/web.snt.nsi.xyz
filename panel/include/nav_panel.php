@@ -1,6 +1,6 @@
 <div id="menu">
   <div class="pure-menu">
-    <a class="pure-menu-heading" href="./index.php">Panel Admin</a>
+    <a class="pure-menu-heading" href="./index.php">Panneau d'adminisration</a>
     <ul class="infos-users">
       <li>🚹 Utilisateur : <strong><?php echo $_SESSION["user_logged_in"]["username"]; ?></strong></li>
     </ul>
@@ -29,7 +29,7 @@
     <li class="<?php echo $selected_sessions_class; ?>"><a href="./sessions.php" class="pure-menu-link">&#x1F5C2;&#xFE0F; Parcourir les sessions</a></li>
     <li class="<?php echo $selected_users_class; ?>"><a href="./users.php" class="<?php echo "pure-menu-link".$hidden; ?>">&#x2699;&#xFE0F; Gestion des comptes</a></li>
     <li class="<?php echo $selected_trads_class; ?>"><a href="./trads.php" class="<?php echo "pure-menu-link".$hidden; ?>">&#x1F5C3;&#xFE0F; Gestion des traductions</a></li>
-    <li class="pure-menu-item-back"><a href="../index.php" class="pure-menu-link">↩️ Retour sur le site</a></li>
+    <li class="pure-menu-item-back"><a href="../index.php" class="pure-menu-link">↩️ Retour aux énigmes</a></li>
     <li class="pure-menu-item-reset"><a href="../logout.php" class="pure-menu-link">&#x1F6AA; Se déconnecter</a></li>
   </div>
 </div>
