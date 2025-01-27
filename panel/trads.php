@@ -2,6 +2,16 @@
 include("./include/db.php");
 include("../include/functions.php");
 include("../include/checksession.php");
+
+if (isset($_POST["new_trad"])) {
+  //updateTrad($db, "fr", $_POST["key_trad"], $_POST["new_trad"]);
+  $new = $_POST["new_trad"];
+  $key = $_POST["key_trad"];
+  echo $key;
+  updateRow($db, "traductions_fr", array("value" => $new), "trad = \"$key\"");
+  echo json_encode(["success" => false]);
+  exit();
+}
 ?>
 <!DOCTYPE html>
 <html lang="fr">
@@ -59,13 +69,13 @@ include("../include/checksession.php");
                 echo $trads_research[$_GET["selection"]];
               }
               ?></textarea>
-            <button onclick="updateTrad()"><?php echo traduction("trads_edit_save_button"); ?></button>
+            <button onclick="updateTrad('<?php echo $trads_research[$_GET['selection']]; ?>')"><?php echo traduction("trads_edit_save_button"); ?></button>
           </div>
           <?php 
           if (isset($_POST["new_trad"])) {
             echo $_POST["new_trad"];
           } else {
-            print_r($_POST);
+            echo "not set";
           }
           ?>
         </div>
@@ -81,15 +91,16 @@ include("../include/checksession.php");
 
     function updateTrad() {
       trad = document.getElementById("new-trad").value;
+      key = "<?php echo $trads_research[$_GET["selection"]]; ?>";
       jQuery.ajax({
         type: "POST",
         url: "trads.php",
-        data: {"new_trad": trad},
+        data: {new_trad: trad, key_trad: key},
         success: function(response) {
-          window.location.replace(window.location.href);
-        },
-        error: function(jqXHR, textStatus, errorThrown) {
-          console.error("Erreur AJAX : " + textStatus + " - " + errorThrown);
+          const data = JSON.parse(response);
+          if (data.success) {
+            window.location.href = window.location.href;
+          } 
         }
       });
     }
