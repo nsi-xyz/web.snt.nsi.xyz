@@ -335,6 +335,7 @@ function stopSession($database, $id_session) {
 function canJoinSession($pseudo, $id_session, $database) {
     $status = getRows($database, "sessions", "*", "id = $id_session")["status"];
     $sessionIsOpen = $status == 1 ? true : false;
+    $pseudoToShort = strlen($pseudo) < 3 ? true : false;
     $pseudoAlreadyUsed = rowsCount($database, "users_session", "id_session = $id_session AND pseudo = \"$pseudo\"") == 0 ? false : true;
     $pseudoIsVerifiedUser = false; // On ne peut pas rejoindre une session avec le pseudo d'un utilisateur ayant un compte
     foreach (getRows($database, "users", "username", "1") as $row) {
@@ -342,7 +343,7 @@ function canJoinSession($pseudo, $id_session, $database) {
             $pseudoIsVerifiedUser = true;
         }
     }
-    return $sessionIsOpen && !$pseudoAlreadyUsed && !$pseudoIsVerifiedUser;
+    return $sessionIsOpen && !$pseudoAlreadyUsed && !$pseudoIsVerifiedUser && !$pseudoToShort;
 }
 
 function joinSession($pseudo, $id_session, $database, $local_path) {
