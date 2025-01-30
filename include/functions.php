@@ -348,7 +348,7 @@ function canJoinSession($pseudo, $id_session, $database) {
     return $sessionIsOpen && !$pseudoAlreadyUsed && !$pseudoIsVerifiedUser && !$pseudoToShort && !$pseudoToLong;
 }
 
-function joinSession($pseudo, $id_session, $database, $local_path) {
+function joinSession($pseudo, $id_session, $database) {
     addRow($database, "users_session", array($pseudo, $id_session, date('Y-m-d H:i:s'), NULL, "0000000000"));
 }
 

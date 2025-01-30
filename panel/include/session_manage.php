@@ -199,7 +199,6 @@ if (isset($_GET["sort-by"])) {
             }
             return 0;
         });
-        console.log(new_json);
         return new_json;
     }
 
