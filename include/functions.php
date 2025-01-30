@@ -56,8 +56,8 @@ function tickPuzzle($database, $puzzleID = null) {
                 $arraypuzzlesformat[] = in_array($i, $_SESSION["resolvedPuzzles"]) ? "1" : "0";
             }
             updateRow($database, "users_session", array("puzzles" => implode($arraypuzzlesformat)), "pseudo = \"$pseudo\" AND id_session = $session_id");
+            addRow($database, "users_session_logs", array($pseudo, $session_id, $puzzleID, date('Y-m-d H:i:s', time())));
             $_SESSION["user_logged_in"]["puzzles"] = getRows($database, "users_session", "puzzles", "pseudo = \"$pseudo\"")["puzzles"];
-            updateLocalDB(getRowsInJSON($database, "users_session", "*", "id_session = $session_id"), "../js/db-$session_id.json");
             if (count($_SESSION["resolvedPuzzles"]) == 10) { // Si l'utilisateur a terminé toutes les énigmes, on enregistre la date
                 $finished_at = date("Y-m-d H:i:s");
                 updateRow($database, "users_session", array("finished_at" => date('Y-m-d H:i:s', time())), "pseudo = \"$pseudo\" AND id_session = $session_id");
@@ -146,6 +146,13 @@ function getRowsInJSON($database, $relation, $attribut, $query) {
     return json_encode($stmp->fetchAll());
 }
 
+function getRowsCustom($database, $sql, $json = 0) {
+    $request = $sql;
+    $smtp = $database->prepare($sql);
+    $smtp->execute();
+    return $json == 0 ? $smtp->fetchAll() : json_encode($smtp->fetchAll());
+}
+
 
 /**
  * La fonction ajoute un enregistrement/ligne à une table d'une base de données indiquée.
@@ -215,10 +222,6 @@ function getAttributs($database, $relation, $withID = 1) {
         }
     }
     return $attributs;
-}
-
-function updateLocalDB($json, $path) {
-    file_put_contents($path, $json);
 }
 
 function createUser($database, $name, $surname, $username, $password, $id_group){
@@ -308,8 +311,6 @@ function sessionInProgress($database, $user_id) {
 function createSession($database, $id_owner, $duration) {
     $codeSession = generateSessionCode($database);
     addRow($database, "sessions", array($codeSession, $id_owner, date('Y-m-d H:i:s', time()), $duration, 1));
-    $id_session_created = getRows($database, "sessions", "*", "id_owner = $id_owner AND status = 1")["id"];
-    updateLocalDB("[]", "../js/db-$id_session_created.json");
 }
 
 /**
@@ -347,9 +348,8 @@ function canJoinSession($pseudo, $id_session, $database) {
     return $sessionIsOpen && !$pseudoAlreadyUsed && !$pseudoIsVerifiedUser && !$pseudoToShort && !$pseudoToLong;
 }
 
-function joinSession($pseudo, $id_session, $database, $local_path) {
+function joinSession($pseudo, $id_session, $database) {
     addRow($database, "users_session", array($pseudo, $id_session, date('Y-m-d H:i:s'), NULL, "0000000000"));
-    updateLocalDB(getRowsInJSON($database, "users_session", "*", "id_session = $id_session"), $local_path);
 }
 
 function currentUserInSession() {

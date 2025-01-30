@@ -1,9 +1,11 @@
 <?php
 $users_session_users_list = getRows($db, "users_session", "pseudo, joined_at, puzzles", "id_session = $id_session");
-if (isset($_POST["kick_user"])) {
-    $user_session_id = $_POST["kick_user"];
+if (isset($_POST["kick_id"], $_POST["kick_session"], $_POST["kick_pseudo"])) {
+    $user_session_id = $_POST["kick_id"];
+    $user_id_session = $_POST["kick_session"];
+    $user_pseudo = $_POST["kick_pseudo"];
     delRow($db, "users_session", "id = $user_session_id");
-    updateLocalDB(getRowsInJSON($db, "users_session", "*", "1"), "../js/db-$id_session.json");
+    delRow($db, "users_session_logs", "id_session = $user_id_session AND pseudo = \"$user_pseudo\"");
     echo '<script>window.location.replace(window.location.href);</script>';
 }
 if (!isset($_SESSION["sort-by"])) {
@@ -30,7 +32,7 @@ if (isset($_GET["sort-by"])) {
  </div>
 <h3 class="content-subhead">Participants à la session</h3>
 <p></p>
-<p class="p-content">La mise à jour du tableau en temps réel peut prendre jusqu'à 15 secondes. Actualiser la page permet une mise à jour immédiate.</p>
+<p class="p-content">La mise à jour du tableau en temps réel peut prendre jusqu'à 10 secondes. Actualiser la page permet une mise à jour immédiate.</p>
 <form method="GET" action="" class="pure-form">
     <fieldset>
         <label for="sorting-type">Trier par</label>
@@ -59,103 +61,124 @@ if (isset($_GET["sort-by"])) {
 <button class ="stop-button" type="button" onclick="stop(<?php echo $id_session; ?>)">Forcer l'arrêt de la session</button>
 
 <script>
-    function updateUsersList(id_session, path) {
+    function updateTab(id) {
         let users_list_tbody = document.getElementById("users-session-list").getElementsByTagName("tr");
         let users_in_page = [];
         for (let i = 0; i < users_list_tbody.length; i++) {
-            user_puzzle_in_page = [];
-            for (let j = 0; j < 10; j++) {
-                user_puzzle_in_page.push(users_list_tbody[i].querySelector("#user-puzzle-" + (j + 1).toString()).getAttribute("class") == "td-resolved" ? "1" : "0");
-            }
-            users_in_page.push([users_list_tbody[i].querySelector("#user-pseudo").textContent, user_puzzle_in_page])
+            users_in_page.push([users_list_tbody[i].textContent, []]);
         }
-        fetch(path)
-            .then(response => response.json())
-            .then(json => {
-                let index = 0;
-                switch ('<?php echo $_SESSION["sort-by"]; ?>') {
-                    case "Heure":
-                        sortByDate(json);
+        fetch('./include/get_session_data.php', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({id_session: id})
+        })
+        .then(response => response.json())
+        .then(json => {
+            const sorting = '<?php echo $_SESSION["sort-by"]; ?>';
+            switch (sorting) {
+                case "Heure":
+                    sortByDate(json);
+                    break;
+                case "Pseudo (ABC)":
+                    sortByABC(json);
+                    break;
+                case "Pseudo (ZYX)":
+                    sortByZYX(json);
+                    break;
+                default:
+                    sortByDate(json);
+            }
+            json.forEach((element) => {
+                let element_id = element["id"];
+                let element_id_session = element["id_session"];
+                let element_pseudo = element["pseudo"];
+                let element_joined_at = element["joined_at"];
+                let element_puzzles_resolved = element["puzzles"].map(puzzle => puzzle[0]).sort((a, b) => a - b);;
+                let userAlreadyHere = false;
+                let user_puzzle_in_page = [];
+                for (let i = 0; i < users_in_page.length; i++) {
+                    if (users_in_page[i][0].includes(element_pseudo)) {
+                        userAlreadyHere = true;
                         break;
-                    case "Pseudo (ABC)":
-                        sortByABC(json);
-                        break;
-                    case "Pseudo (ZYX)":
-                        sortByZYX(json);
-                        break;
-                    default:
-                        sortByDate(json);
+                    }
                 }
-                json.forEach((element) => {
-                    let element_id = element["id"];
-                    let element_id_session = element["id_session"];
-                    let element_pseudo = element["pseudo"];
-                    let element_joined_at = element["joined_at"];
-                    let element_puzzle_progression = element["puzzles"].split("");
-                    let userAlreadyHere = false;
-                    for (let i = 0; i < users_in_page.length; i++) {
-                        if (users_in_page[i].includes(element_pseudo)) {
-                            userAlreadyHere = true;
+                if (element_id_session == id) {
+                    if (!userAlreadyHere) {
+                        let new_tr = document.createElement("tr");
+                        // Pseudo
+                        let td_pseudo = document.createElement("td");
+                        td_pseudo.setAttribute("id", "user-pseudo-" + element_id.toString());
+                        td_pseudo.textContent = element["pseudo"];
+                        new_tr.appendChild(td_pseudo);
+                        // Énigmes
+                        let td_puzzle;
+                        let td_puzzle_class;
+                        for (let i = 0; i < 10; i++) {
+                            td_puzzle = document.createElement("td");
+                            td_puzzle_class = element_puzzles_resolved.includes(i+1) ? "td-resolved" : "td-unresolved";
+                            td_puzzle.setAttribute("id", "user-puzzle-" + (i + 1).toString() + "-" + element_id.toString());
+                            td_puzzle.setAttribute("class", td_puzzle_class)
+                            td_puzzle.textContent = (i + 1).toString().padStart(2, "0");
+                            new_tr.appendChild(td_puzzle);
                         }
-                    } 
-                    if (element_id_session == id_session) {
-                        if (users_in_page.length == 0 || !userAlreadyHere) { // Si un utilisateur dans la session n'est pas affiché, on l'ajoute
-                            let new_tr = document.createElement("tr");
-                            let new_td_pseudo = document.createElement("td");
-                            new_td_pseudo.setAttribute("id", "user-pseudo");
-                            let new_all_td_puzzle = [];
-                            for (let i = 0; i < 10; i++) {
-                                let new_td_puzzle = document.createElement("td");
-                                let td_class = element_puzzle_progression[i] == "1" ? "td-resolved" : "td-unresolved";
-                                new_td_puzzle.setAttribute("id", "user-puzzle-" + (i + 1).toString());
-                                new_td_puzzle.setAttribute("class", td_class);
-                                new_td_puzzle.textContent = (i + 1).toString().padStart(2, "0");
-                                new_all_td_puzzle.push(new_td_puzzle);
+                        // Heure
+                        let td_joined_at = document.createElement("td");
+                        td_joined_at.setAttribute("id", "user-joined-at-" + element_id.toString());
+                        td_joined_at.textContent = (new Date(element_joined_at)).toTimeString().split(" ")[0];
+                        new_tr.appendChild(td_joined_at);
+                        // Actions
+                        let td_kick_button = document.createElement("td");
+                        let div_kick_button = document.createElement("div");
+                        td_kick_button.appendChild(div_kick_button);
+                        let button_kick_button = document.createElement("button");
+                        div_kick_button.appendChild(button_kick_button);
+                        button_kick_button.setAttribute("class", "button-kick pure-button");
+                        button_kick_button.setAttribute("onclick", "kickUser(" + element_id + ", " + element_id_session +  ", \"" + element_pseudo + "\")");
+                        button_kick_button.textContent = "Exclure";
+                        new_tr.appendChild(td_kick_button);
+                        // Insertion de la ligne
+                        let users_list = document.getElementById("users-session-list");
+                        let inserted = false;
+                        for (let i = 0; i < users_list.rows.length; i++) {
+                            let currentRow = users_list.rows[i];
+                            let currentPseudo = currentRow.cells[0].textContent;
+                            if ((sorting == "Pseudo (ABC)" && element_pseudo.localeCompare(currentPseudo) < 0) || (sorting == "Pseudo (ZYX)" && element_pseudo.localeCompare(currentPseudo) > 0)) {
+                                users_list.insertBefore(new_tr, currentRow);
+                                inserted = true;
+                                break;
                             }
-                            let new_td_joined_at = document.createElement("td");
-                            new_td_joined_at.setAttribute("id", "user-joined-at");
-                            new_td_pseudo.textContent = element_pseudo;
-                            let date_joined_at = new Date(element_joined_at)
-                            new_td_joined_at.textContent = date_joined_at.getHours().toString().padStart(2, "0") + ":" + date_joined_at.getMinutes().toString().padStart(2, "0") + ":" + date_joined_at.getSeconds().toString().padStart(2, "0");
-                            let new_td_kick_button = document.createElement("td");
-                            let new_div_kick_button = document.createElement("div");
-                            let new_button_kick_button = document.createElement("button");
-                            new_button_kick_button.setAttribute("class", "button-kick pure-button");
-                            new_button_kick_button.setAttribute("onclick", `kickUser(${element_id}, "${element_pseudo}")`);
-                            new_button_kick_button.textContent = "Exclure";
-                            new_div_kick_button.appendChild(new_button_kick_button);
-                            new_td_kick_button.appendChild(new_div_kick_button);
-                            new_tr.appendChild(new_td_pseudo);
-                            for (let i = 0; i < 10; i++) {
-                                new_tr.appendChild(new_all_td_puzzle[i]);
+                        }
+                        if (!inserted) {
+                            users_list.appendChild(new_tr);
+                        }
+                    } else if (users_in_page.length > 0 && userAlreadyHere) {
+                        for (let i = 0; i < 10; i++) {
+                            if (document.querySelector("#user-puzzle-" + (i + 1).toString() + "-" + element_id.toString()).getAttribute("class") == "td-resolved") {
+                                user_puzzle_in_page.push(i + 1);
                             }
-                            new_tr.appendChild(new_td_joined_at);
-                            new_tr.appendChild(new_td_kick_button);
-                            document.getElementById("users-session-list").appendChild(new_tr);
-                        } else if (users_in_page.length > 0 && userAlreadyHere) {
+                        }
+                        if (user_puzzle_in_page.length != element_puzzles_resolved.length) {
                             for (let i = 0; i < 10; i++) {
-                                if (users_in_page[index][1][i] != element_puzzle_progression[i]) {
-                                    td_class = element_puzzle_progression[i] == "1" ? "td-resolved" : "td-unresolved";
-                                    users_list_tbody[index].querySelector("#user-puzzle-" + (i + 1).toString()).setAttribute("class", td_class);
-                                    users_list_tbody[index].querySelector("#user-puzzle-" + (i + 1).toString()).textContent = (i + 1).toString().padStart(2, "0");
-                                }
+                                td_class = (element_puzzles_resolved.includes(i + 1)) ? "td-resolved" : "td-unresolved";
+                                document.querySelector("#user-puzzle-" + (i + 1).toString() + "-" + element_id.toString()).setAttribute("class", td_class);
+                                document.querySelector("#user-puzzle-" + (i + 1).toString() + "-" + element_id.toString()).textContent = (i + 1).toString().padStart(2, "0");
                             }
                         }
                     }
-                    index++;
-                });
+                }
             })
-            .catch(error => {
-                console.error(error);
-            });
+        })
+        .catch(error => console.error('Erreur : ', error));
     }
 
-    function kickUser(id, pseudo) {
+    function kickUser(id, id_session, pseudo) {
         if (confirm(`Êtes-vous sûr de vouloir exclure ${pseudo} ?`)) {
             jQuery.ajax({
                 type: "POST",
                 url: "session.php",
-                data: {kick_user: id},
+                data: {kick_id: id, kick_session: id_session, kick_pseudo: pseudo},
                 success: function(response) {
                     window.location.replace(window.location.href);;
                 }
@@ -164,27 +187,30 @@ if (isset($_GET["sort-by"])) {
     }
 
     function sortByABC(json_content) {
-        return json_content.sort((a, b) => {
+        new_json = json_content.sort((a, b) => {
             const pseudoA = a.pseudo.toUpperCase();
             const pseudoB = b.pseudo.toUpperCase();
-            if (pseudoA < pseudoB) {
+            const compar = pseudoA.localeCompare(pseudoB, "<?php echo $_SESSION["locale"]; ?>");
+            if (compar < 0) {
                 return -1;
             }
-            if (pseudoA > pseudoB) {
+            if (compar > 0) {
                 return 1;
             }
             return 0;
         });
+        return new_json;
     }
 
     function sortByZYX(json_content) {
         return json_content.sort((a, b) => {
             const pseudoA = a.pseudo.toUpperCase();
             const pseudoB = b.pseudo.toUpperCase();
-            if (pseudoA < pseudoB) {
+            const compar = pseudoA.localeCompare(pseudoB, "<?php echo $_SESSION["locale"]; ?>");
+            if (compar < 0) {
                 return 1;
             }
-            if (pseudoA > pseudoB) {
+            if (compar > 0) {
                 return -1;
             }
             return 0;
@@ -231,7 +257,6 @@ if (isset($_GET["sort-by"])) {
         const currentSize = parseInt(window.getComputedStyle(codeElement).fontSize, 10);
         let codeIconElement = document.getElementById("session-code-copy-icon")
         const currentIconSize = parseInt(window.getComputedStyle(codeIconElement).width, 10)
-        console.log(currentIconSize);
 
         if (action === "+") {
             if (currentSize < 96) {
@@ -250,8 +275,8 @@ if (isset($_GET["sort-by"])) {
         }
     }
 
-    updateUsersList(<?php echo $id_session; ?>, "../js/db-<?php echo $id_session; ?>.json");
+    updateTab(<?php echo $id_session; ?>);
     setInterval(() => {
-        updateUsersList(<?php echo $id_session; ?>, "../js/db-<?php echo $id_session; ?>.json");
-    }, 10000)
+        updateTab(<?php echo $id_session; ?>);
+    }, 5000)
 </script>
