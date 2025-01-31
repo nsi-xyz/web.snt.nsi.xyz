@@ -63,7 +63,7 @@ if (isset($_POST["new_trad"], $_POST["id_trad"])) {
                 if ($trads_research != null) {
                   foreach ($trads_research as $trad => $value) {
                     if (!is_int($trad)) {
-                      echo "<li class=\"key-item\"><button class=\"key-button-item\" onclick=\"editTrad(".$trads_id[$trad].")\">".$trad."</button></li>";
+                      echo "<li class=\"key-item\"><button class=\"key-button-item\" data-key=\"".$trads_id[$trad]."\" onclick=\"editTrad(".$trads_id[$trad].")\">".$trad."</button></li>";
                     }
                   }
                 } else {
@@ -97,6 +97,11 @@ if (isset($_POST["new_trad"], $_POST["id_trad"])) {
       const url = new URL(window.location.href);
       url.searchParams.set('selection', key);
       localStorage.setItem("scrollPosition", window.scrollY);
+      document.querySelectorAll('.key-item').forEach(item => {
+        item.classList.remove('selected');
+      });
+      const selectedItem = document.querySelector(`.key-button-item[data-key="${key}"]`).parentElement;
+      selectedItem.classList.add('selected');
       window.location.href = url.toString();
 }
 
@@ -123,7 +128,16 @@ if (isset($_POST["new_trad"], $_POST["id_trad"])) {
         window.scrollTo(0, parseInt(scrollPosition));
         localStorage.removeItem("scrollPosition");
       }
+      const urlParams = new URLSearchParams(window.location.search);
+      const selectionKey = urlParams.get("selection");
+      if (selectionKey) {
+        const selectedItem = document.querySelector(`.key-button-item[data-key="${selectionKey}"]`);
+        if (selectedItem) {
+          selectedItem.parentElement.classList.add('selected');
+        }
+      }
     }
+
   </script>
   <script src="../js/ui.js"></script>
 </body>

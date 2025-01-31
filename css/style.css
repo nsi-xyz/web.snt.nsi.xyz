@@ -689,6 +689,10 @@ kbd {
     display: block;
 }
 
+.key-item.selected {
+    background-color: #f0f0f0;
+  }
+
 .key-button-item {
     cursor: pointer;
     border: none;
