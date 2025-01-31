@@ -1,13 +1,5 @@
 <?php
 $users_session_users_list = getRows($db, "users_session", "pseudo, joined_at, puzzles", "id_session = $id_session");
-if (isset($_POST["kick_id"], $_POST["kick_session"], $_POST["kick_pseudo"])) {
-    $user_session_id = $_POST["kick_id"];
-    $user_id_session = $_POST["kick_session"];
-    $user_pseudo = $_POST["kick_pseudo"];
-    delRow($db, "users_session", "id = $user_session_id");
-    delRow($db, "users_session_logs", "id_session = $user_id_session AND pseudo = \"$user_pseudo\"");
-    echo '<script>window.location.replace(window.location.href);</script>';
-}
 if (!isset($_SESSION["sort-by"])) {
     $_SESSION["sort-by"] = "Heure";
 }
@@ -53,8 +45,7 @@ if (isset($_GET["sort-by"])) {
             <th>Actions</th>
         </tr>
     </thead>
-    <tbody id="users-session-list">
-    </tbody>
+    <tbody id="users-session-list"></tbody>
 </table>
 <h3 class="content-subhead">Gestion de ma session</h3>
 <p class="p-content">Fin de la session dans : <timer>#ToDo</timer></p>
@@ -107,6 +98,7 @@ if (isset($_GET["sort-by"])) {
                 if (element_id_session == id) {
                     if (!userAlreadyHere) {
                         let new_tr = document.createElement("tr");
+                        new_tr.setAttribute("id", "user-" + element_id.toString());
                         // Pseudo
                         let td_pseudo = document.createElement("td");
                         td_pseudo.setAttribute("id", "user-pseudo-" + element_id.toString());
@@ -180,7 +172,13 @@ if (isset($_GET["sort-by"])) {
                 url: "session.php",
                 data: {kick_id: id, kick_session: id_session, kick_pseudo: pseudo},
                 success: function(response) {
-                    window.location.replace(window.location.href);;
+                    const data = JSON.parse(response);
+                    if (data.success) {
+                        let row = document.getElementById("user-" + id.toString());
+                        row.parentNode.removeChild(row);
+                    }  else {
+                        console.error(data.error);
+                    }
                 }
             });
         }
