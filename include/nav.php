@@ -18,8 +18,8 @@ $p_h = (in_array($p, array("index.php", "help.php", "login.php"))) ? "." : "..";
         } elseif (currentUserInSession()) {
           echo '
           <div class="infos-users">
-            <li>🕒 Session : <strong>'.getRows($db,"sessions","code","id={$_SESSION["user_logged_in"]["id_session"]}")["code"].'</strong></li>
-            <li style="padding-top: 0.6em;">🚹 Pseudo : <strong>'.$_SESSION["user_logged_in"]["pseudo"].'</strong></li>
+            <li>'.traduction("nav_session").' <strong>'.getRows($db,"sessions","code","id={$_SESSION["user_logged_in"]["id_session"]}")["code"].'</strong></li>
+            <li style="padding-top: 0.6em;">'.traduction("nav_pseudo").' <strong>'.$_SESSION["user_logged_in"]["pseudo"].'</strong></li>
           </div>
             ';
         } elseif (isUserConnected()) {
@@ -27,17 +27,17 @@ $p_h = (in_array($p, array("index.php", "help.php", "login.php"))) ? "." : "..";
           <div class="infos-users">';
           $codeSession = getRows($db, "sessions", "code", "id_owner = {$_SESSION["user_logged_in"]["id"]} AND status = 1");
             if (isset($codeSession) && $codeSession != null) {
-              echo '<li>🕒 Session : <strong>'.$codeSession["code"].'</strong></li>';
+              echo '<li>'.traduction("nav_session").' <strong>'.$codeSession["code"].'</strong></li>';
             } else {
-              echo '<li>🕒 Aucune session existante</li>';
+              echo '<li>'.traduction("nav_nosession").'</li>';
             }
             
-            echo '<li style="padding-top: 0.6em;">🚹 Utilisateur : <strong>'.$_SESSION["user_logged_in"]["username"].'</strong></li>
+            echo '<li style="padding-top: 0.6em;">'.traduction("nav_user").' <strong>'.$_SESSION["user_logged_in"]["username"].'</strong></li>
           </div>';
           if ($_SESSION["user_logged_in"]["id_group"] == 1){
-            echo '<li class="pure-menu-item-back"><a href="'.$p_h.'/panel/" class="pure-menu-link">➡️ Panneau d\'administration</a></li>';
+            echo '<li class="pure-menu-item-back"><a href="'.$p_h.'/panel/" class="pure-menu-link">'.traduction("nav_panel_admin").'</a></li>';
           } else {
-            echo '<li class="pure-menu-item-back"><a href="'.$p_h.'/panel/session.php" class="pure-menu-link">➡️ Gérer la session</a></li>';
+            echo '<li class="pure-menu-item-back"><a href="'.$p_h.'/panel/session.php" class="pure-menu-link">'.traduction("nav_panel").'</a></li>';
           }
         }
         ?>
@@ -51,8 +51,8 @@ for ($i = 1; $i < 10; $i++) {
 }
 $d = $i != 10 ? "0" : "";
 if (!isset($_SESSION["puzzle10"])) {
-  $indicators = array("L'énigme 10 est cachée,", "le lien hypertexte qui pointe vers", "l'énigme 10 ne s'affiche", "que quand vous aurez résolu", "la 1ère partie de l'énigme 10.", "Pour commencer", "il faut déjà trouver", "comment accéder", "à l'énigme 😉");
-  $commentary = $currentPuzzle != NULL ? $indicators[$currentPuzzle - 1] : "Rien à voir ici.";
+  $indicators = array(traduction("comment_puzzle10_clue1"), traduction("comment_puzzle10_clue2"), traduction("comment_puzzle10_clue3"), traduction("comment_puzzle10_clue4"), traduction("comment_puzzle10_clue5"), traduction("comment_puzzle10_clue6"), traduction("comment_puzzle10_clue7"), traduction("comment_puzzle10_clue8"), traduction("comment_puzzle10_clue9"));
+  $commentary = $currentPuzzle != NULL ? $indicators[$currentPuzzle - 1] : traduction("comment_puzzle10_not_clue");
   echo '            <li class="pure-menu-item"><a href="#" id="alert" class="pure-menu-link-hidden">&#x26AB; '.traduction("nav_puzzle").' 10</a><!--'.$commentary.'--></li>
 ';
 echo '<script>
@@ -73,17 +73,17 @@ echo '            <li class="'.$class.'"><a href="'.$p_h.'/help.php" class="pure
 if ((!currentUserInSession() && !isUserConnected()) || (isUserConnected() && !sessionInProgress($db, $_SESSION["user_logged_in"]["id"]))) {
   $time = isset($_SESSION["time_session_start"]) ? traduction("nav_startedat")." <timer>".date("H\hi", $_SESSION["time_session_start"])."</timer>" : traduction("nav_startedat")." <timer>?</timer>";
 } else {
-  $time = "Fin de la session : <timer></timer>";
+  $time = traduction("nav_sessionendin")." <timer></timer>";
 }
 echo '            <div class="menu-bottom"><li class="pure-menu-item-timer">'.$time.'</li>
   ';
 
 if (isUserConnected()){
-  echo '            <li class="pure-menu-item-reset"><a href="'.$p_h.'/help.php#Effacer sa progression et recommencer les énigmes" class="pure-menu-link">&#x274C; Déconnexion</a></li></div>
+  echo '            <li class="pure-menu-item-reset"><a href="'.$p_h.'/help.php#Effacer sa progression et recommencer les énigmes" class="pure-menu-link">'.traduction("nav_logout").'</a></li></div>
     </div>
 ';
 } elseif (currentUserInSession()) {
-  echo '            <li class="pure-menu-item-reset"><a href="'.$p_h.'/help.php#Effacer sa progression et recommencer les énigmes" class="pure-menu-link">&#x274C; Quitter la session</a></li></div>
+  echo '            <li class="pure-menu-item-reset"><a href="'.$p_h.'/help.php#Effacer sa progression et recommencer les énigmes" class="pure-menu-link">'.traduction("nav_leave").'</a></li></div>
     </div>
 ';
 } else {
