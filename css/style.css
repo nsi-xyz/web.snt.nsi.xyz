@@ -458,6 +458,31 @@ kbd {
     white-space: nowrap;
 }
 
+.button-success,
+.button-error,
+.button-warning,
+.button-secondary {
+    color: white;
+    border-radius: 4px;
+    text-shadow: 0 1px 1px rgba(0, 0, 0, 0.2);
+}
+
+.button-success {
+    background: rgb(28, 184, 65);
+}
+
+.button-error {
+    background: rgb(202, 60, 60);
+}
+
+.button-warning {
+    background: rgb(223, 117, 20);
+}
+
+.button-secondary {
+    background: rgb(66, 184, 221);
+}
+
 .stop-button,
 .reset-button {
     display: block;
@@ -632,27 +657,64 @@ kbd {
 }
 
 .trad-box {
-    display: flex;
+    max-width: 960px;
+    margin: 2rem auto;
+    padding: 1.5rem;
+    background: white;
+    box-shadow: 0px 3px 6px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
 }
 
+.box {
+    display: grid;
+    grid-template-columns: 1fr 2fr;
+    gap: 1.5rem;
+  }
+
 .key-box {
-    color: black;
-    background-color: #eeeeee;
+    padding: 1rem;
+    border-radius: 8px;
+    height: fit-content;
 }
 
 .key-list {
-    list-style-type: none;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.key-item {
+    padding: 0.5rem 0;
+    border-bottom: 1px solid #ddd;
+    display: block;
+}
+
+.key-item.selected {
+    background-color: #f0f0f0;
+  }
+
+.key-button-item {
+    cursor: pointer;
+    border: none;
+    padding: 1%;
+    width: 100%;
+    text-align: left;
+    background: none;
+}
+
+.value-box {
+    background: #fefefe;
+    padding: 1rem;
+    border-radius: 8px;
 }
 
 textarea {
-    font-size: 0.8rem;
-    letter-spacing: 1px;
-    padding: 10px;
-    max-width: 100%;
-    line-height: 1.5;
-    border-radius: 5px;
-    border: 1px solid #ccc;
-    box-shadow: 1px 1px 1px #999;
+    width: 100%;
+    padding: 0.5rem;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 1rem;
+    resize: vertical;
 }
 
 .session-code-div {
@@ -698,6 +760,13 @@ textarea {
     display: inline-block;
     vertical-align: middle;
     margin-left: 0.5em;
+}
+
+#trad-edit-icon {
+    width: 16px;
+    height: 16px;
+    display: inline-block;
+    vertical-align: middle;
 }
 
 .session-code-controls {

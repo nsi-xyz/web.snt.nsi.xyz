@@ -32,7 +32,7 @@ include("../include/checksession.php");
         <h2 class="content-subhead">Mon compte</h2>
         <p class="p-content">Lorsque votre compte est créé, il n'est actuellement pas possible de le modifier ou le supprimer par vous-même.</p>
         <h2 class="content-subhead">Gestion des données</h2>
-        <p class="p-content">Toutes les données enregistrées le sont de manière sécurisé. Cela concerne les données de votre compte, où encore les données relatifs à vos sessions (pseudos des participants, résultats, etc.). Vous pouvez à tout moment demander la suppression de vos données et celles de vos sessions. Pour exercer ce droit, veuillez nous contacter.</p>
+        <p class="p-content">Toutes les données enregistrées le sont de manière sécurisée. Cela concerne les données de votre compte, ou encore les données relatives à vos sessions (pseudos des participants, résultats, etc.). Vous pouvez à tout moment demander la suppression de vos données et celles de vos sessions. Pour exercer ce droit, veuillez nous contacter.</p>
         <h2 class="content-subhead">Nous contacter</h2>
         <p class="p-content">Pour contacter un administrateur du site, utilisez le formulaire de contact sur <a class="link" href="https://nsi.xyz/nous-contacter/" target="_blank">nsi.xyz</a>.</p>
       </div>

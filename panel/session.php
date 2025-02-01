@@ -16,6 +16,20 @@ if (isset($_POST["stop_session"])) {
     exit();
 }
 
+if (isset($_POST["kick_id"], $_POST["kick_session"], $_POST["kick_pseudo"])) {
+  $user_session_id = $_POST["kick_id"];
+  $user_id_session = $_POST["kick_session"];
+  $user_pseudo = $_POST["kick_pseudo"];
+  try {
+      delRow($db, "users_session", "id = $user_session_id");
+      delRow($db, "users_session_logs", "id_session = $user_id_session AND pseudo = \"$user_pseudo\"");
+      echo json_encode(["success" => true]);
+  } catch (Exception $e) {
+      echo json_encode(["success" => false, "error" => $e->getMessage()]);
+  }
+  exit();
+}
+
 ?>
 <!DOCTYPE html>
 <html lang="fr">
