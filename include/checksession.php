@@ -1,6 +1,6 @@
 <?php
 // Constantes globales.
-define("VERSION", "2.7");
+define("VERSION", "2.8");
 define("SESSDURATION", 10800);
 define("COOKIEAUTHDURATION", 604800);
 define("GG_MESSAGE", "<p class=\"p-gg\">Bravo, vous avez résolu les 10 énigmes de web.snt.nsi.xyz. N'hésitez pas à chercher les pages cachées sur <a class=\"link\" href=\"https://labohelp.nsi.xyz/\" target=\"_blank\">LaboHelp</a> ou à explorer <a class=\"link\" href=\"https://nsi42.net/\" target=\"_blank\">nsi42.net</a> &#x1F609;");
