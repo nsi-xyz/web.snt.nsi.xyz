@@ -420,7 +420,3 @@ function traduction($key) {
     }, $translation);
     return $translation;
 }
-
-function updateTrad($database, $lang, $key, $new) {
-    updateRow($database, "traductions_".$lang, array("value" => $new), "trad = \"$key\"");
-}

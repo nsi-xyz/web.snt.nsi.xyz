@@ -458,6 +458,33 @@ kbd {
     white-space: nowrap;
 }
 
+.button-success-disabled {
+    border: none;
+    background-image: none;
+    opacity: .4;
+    cursor: not-allowed;
+    box-shadow: none;
+    pointer-events: none;
+    background: rgb(28, 184, 65);
+    color: white;
+    border-radius: 4px;
+    text-shadow: 0 1px 1px rgba(0, 0, 0, 0.2);
+}
+
+.button-error-disabled {
+    border: none;
+    background-image: none;
+    opacity: .4;
+    cursor: not-allowed;
+    box-shadow: none;
+    pointer-events: none;
+    background: rgb(202, 60, 60);
+    color: white;
+    border-radius: 4px;
+    text-shadow: 0 1px 1px rgba(0, 0, 0, 0.2);
+}
+
+
 .button-success,
 .button-error,
 .button-warning,

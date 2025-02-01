@@ -1,5 +1,11 @@
-function throwError(message, id_widget) {
-    let error = document.querySelector(`error-${id_widget}`);
-    error.setAttribute("class", "error-message");
-    error.textContent = message;
+function throwSuccess(message) {
+    let msg = document.querySelector("msg");
+    msg.setAttribute("class", "success-message");
+    msg.textContent = message;
+}
+
+function throwError(message) {
+    let msg = document.querySelector("msg");
+    msg.setAttribute("class", "error-message");
+    msg.textContent = message;
 }
