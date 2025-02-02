@@ -3,9 +3,6 @@
 define("VERSION", "2.8");
 define("SESSDURATION", 10800);
 define("COOKIEAUTHDURATION", 604800);
-define("GG_MESSAGE", "<p class=\"p-gg\">Bravo, vous avez résolu les 10 énigmes de web.snt.nsi.xyz. N'hésitez pas à chercher les pages cachées sur <a class=\"link\" href=\"https://labohelp.nsi.xyz/\" target=\"_blank\">LaboHelp</a> ou à explorer <a class=\"link\" href=\"https://nsi42.net/\" target=\"_blank\">nsi42.net</a> &#x1F609;");
-define("HIDDEN_PUZZLE10_MESSAGE", "Ce lien n\'est pas cliquable...\\nMais cette énigme existe ! \uD83E\uDD14");
-define("PUZZLE_ALREADY_RESOLVED_MESSAGE", "<p class=\"p-table\">Cette énigme est déjà résolue. Voici votre progression :</p>");
 define("COOKIE7", array(
   "name" => "cookie_enigme_7",
   "value" => "Cookie_to_delete_to_solve_puzzle_7._PLEASE_NOTE_THAT_DELETING_ALL_COOKIES_RESETS_YOUR_PROGRESS."
@@ -81,7 +78,7 @@ if (isset($_COOKIE["LOGGEDIN"])) {
   }
 }
 if (in_array("panel", explode("/", $_SERVER['PHP_SELF'])) && !isUserConnected()) {
-  throwError("Vous n'avez pas l'autorisation d'accéder à cette page.", "../login.php");
+  throwError(traduction("error_not_authorized_message"), "../login.php");
 }
 if ((isUserConnected() && sessionInProgress($db, $_SESSION["user_logged_in"]["id"])) || (currentUserInSession())) {
   if (currentUserInSession()) {

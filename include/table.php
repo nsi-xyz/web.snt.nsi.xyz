@@ -1,5 +1,5 @@
 <table class="table">
-  <?php echo getCurrentPuzzleID() != NULL ? PUZZLE_ALREADY_RESOLVED_MESSAGE : "" ?>
+  <?php echo getCurrentPuzzleID() != NULL ? traduction("puzzle_message_already_resolved") : "" ?>
           <tbody>
             <tr>
               <?php
@@ -15,10 +15,10 @@
               echo '<td class="td-'.$class.'" onclick="location.href=\''.$path.'/puzzles/puzzle10.php\'">10</td>
               ';
               } else {
-                echo '<td class="td-hidden" onclick="alert(\''.HIDDEN_PUZZLE10_MESSAGE.'\')">10</td>
+                echo '<td class="td-hidden" onclick="alert(\''.traduction("puzzle_message_hidden_puzzle10").'\')">10</td>
                 ';
               }
               ?></tr>
           </tbody>
 </table>
-<?php echo count($_SESSION["resolvedPuzzles"]) == 10 ? GG_MESSAGE : "" ?>
+<?php echo count($_SESSION["resolvedPuzzles"]) == 10 ? traduction("puzzle_message_gg") : "" ?>
