@@ -4,7 +4,7 @@ include("../include/functions.php");
 include("../include/checksession.php");
 
 if (isset($_POST["new_trad"], $_POST["id_trad"])) {
-  $new = $_POST["new_trad"];
+  $new = addslashes($_POST["new_trad"]);
   $id_trad = $_POST["id_trad"];
   updateRow($db, "traductions_fr", array("value" => $new), "id = \"$id_trad\"");
   echo json_encode(["success" => true]);
