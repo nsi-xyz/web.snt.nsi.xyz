@@ -58,6 +58,12 @@ if (!isset($_COOKIE["PHPSESSID"])) {
 } else {
   session_start();
 }
+if (isset($_GET["lang"])) {
+  $_SESSION["locale"] = $_GET["lang"];
+}
+if (!isset($_SESSION["locale"])) {
+$_SESSION["locale"] = "fr";
+}
 if (!isset($_SERVER["HTTPS"]) && $_SERVER["HTTP_HOST"] != "localhost") {
   header('Location: https://web.snt.nsi.xyz'.$_SERVER['PHP_SELF']);
   exit;
@@ -102,12 +108,6 @@ if (!isset($_SESSION["time_session_start"])) {
 }
 if (!isset($_SESSION["resolvedPuzzles"])) {
   $_SESSION["resolvedPuzzles"] = array();
-}
-if (isset($_GET["lang"])) {
-    $_SESSION["locale"] = $_GET["lang"];
-}
-if (!isset($_SESSION["locale"])) {
-  $_SESSION["locale"] = "fr";
 }
 if ($_SESSION["locale"] != "debug") {
   $rows = getRows($db, "traductions_".$_SESSION["locale"], "*", "1");
