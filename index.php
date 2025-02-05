@@ -3,7 +3,7 @@ include("./panel/include/db.php");
 include("./include/functions.php");
 include("./include/checksession.php");
 ?>
-<!DOCTYPE html>
+<!DOCTYPE html> <!-- <?php echo traduction("comment_index_welcome"); ?> -->
 <html lang="fr">
 <head>
   <meta charset="UTF-8">
