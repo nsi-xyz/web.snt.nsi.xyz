@@ -27,18 +27,18 @@ include("./include/checksession.php");
         <?php include("./include/table.php"); ?>
       </div>
       <div class="content">
-        <h2 class="content-subhead"><?php echo traduction("home_content_web_meaning_title"); ?></h2>
-        <p class="p-content"><?php echo traduction("home_content_web_meaning_message"); ?></p>
-        <h2 class="content-subhead"><?php echo traduction("home_content_snt_meaning_title"); ?></h2>
-        <p class="p-content"><?php echo traduction("home_content_snt_meaning_meaning_message"); ?></p>
-        <h2 class="content-subhead"><?php echo traduction("home_content_nsi_meaning_title"); ?></h2>
-        <p class="p-content"><?php echo traduction("home_content_nsi_meaning_message"); ?></p>
-        <h2 class="content-subhead"><?php echo traduction("home_content_xyz_meaning_title"); ?></h2>
-        <p class="p-content"><?php echo traduction("home_content_xyz_meaning_message"); ?></p>
-        <h2 class="content-subhead"><?php echo traduction("home_content_websntnsixyz_meaning_title"); ?></h2>
-        <p class="p-content"><?php echo traduction("home_content_websntnsixyz_meaning_message"); ?></p>
-        <h2 class="content-subhead"><?php echo traduction("home_content_starter_title"); ?></h2>
-        <p class="p-content"><?php echo traduction("home_content_starter_message"); ?></p>
+        <h2 class="content-subhead"><?php echo traduction("home_content_subhead1_h2"); ?></h2>
+        <p class="p-content"><?php echo traduction("home_content_subhead1_p"); ?></p>
+        <h2 class="content-subhead"><?php echo traduction("home_content_subhead2_h2"); ?></h2>
+        <p class="p-content"><?php echo traduction("home_content_subhead2_p"); ?></p>
+        <h2 class="content-subhead"><?php echo traduction("home_content_subhead3_h2"); ?></h2>
+        <p class="p-content"><?php echo traduction("home_content_subhead3_p"); ?></p>
+        <h2 class="content-subhead"><?php echo traduction("home_content_subhead4_h2"); ?></h2>
+        <p class="p-content"><?php echo traduction("home_content_subhead4_p"); ?></p>
+        <h2 class="content-subhead"><?php echo traduction("home_content_subhead5_h2"); ?></h2>
+        <p class="p-content"><?php echo traduction("home_content_subhead5_p"); ?></p>
+        <h2 class="content-subhead"><?php echo traduction("home_content_subhead6_h2"); ?></h2>
+        <p class="p-content"><?php echo traduction("home_content_subhead6_p"); ?></p>
       </div>
     </div>
     <?php include("./include/footer.php"); ?>

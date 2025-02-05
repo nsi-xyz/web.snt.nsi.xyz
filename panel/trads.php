@@ -96,7 +96,7 @@ if (isset($_POST["id_trad"], $_POST["delete_trad"])) {
             <h3>Éditeur</h3>
             <textarea id="new-trad" rows="30" cols="70"><?php
             if (isset($_GET["key"], $_GET["selection"]) && $trads_id != null && in_array($_GET["selection"], $trads_id)) {
-              echo $trads_research[$_GET["selection"]];
+              echo htmlspecialchars($trads_research[$_GET["selection"]]);
             }
           ?></textarea>
             <?php
