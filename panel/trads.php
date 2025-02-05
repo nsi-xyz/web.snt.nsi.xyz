@@ -13,7 +13,7 @@ if (isset($_POST["new_trad"], $_POST["id_trad"])) {
 
 if (isset($_POST["key"])) {
   $key = $_POST["key"];
-  addRow($db, "traductions_fr", array($key, "none"));
+  addRow($db, "traductions_fr", array($key, ""));
   echo json_encode(["success" => true]);
   exit();
 }

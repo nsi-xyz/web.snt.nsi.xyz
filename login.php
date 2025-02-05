@@ -39,8 +39,9 @@ if (isset($_SESSION["user_logged_in"]) && $_SESSION["user_logged_in"]["username"
     <?php include("./include/nav.php"); ?>
     <div id="main">
       <div class="header">
-        <h1><?php echo traduction("global_website_name"); ?></h1>
-        <h2><?php echo traduction("global_website_description"); ?></h2>
+        <h1><?php echo traduction("login_header_h1"); ?></h1>
+        <h2><?php echo traduction("login_header_h2"); ?></h2>
+        <h3 class="h3-login"><?php echo traduction("login_header_h3"); ?></h3>
       </div>
       <div class="content">
         <h2 class="content-subhead">S'identifier</h2>

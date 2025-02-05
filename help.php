@@ -26,8 +26,9 @@ include("./include/checksession.php");
     <?php include("./include/nav.php"); ?>
     <div id="main">
       <div class="header">
-        <h1><?php echo traduction("global_website_name"); ?></h1>
-        <h2><?php echo traduction("global_website_description"); ?></h2>
+        <h1><?php echo traduction("help_header_h1"); ?></h1>
+        <h2><?php echo traduction("help_header_h2"); ?></h2>
+        <h3 class="h3-help"><?php echo traduction("help_header_h3"); ?></h3>
       </div>
       <div class="content">
         <h2 id="Que contient cette page d'aide" class="content-subhead">Que contient cette page d'aide</h2>
