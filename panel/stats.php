@@ -14,6 +14,7 @@ include("../include/checksession.php");
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20,400,0,0">
   <link rel="stylesheet" href="../css/style.css">
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body>
   <div id="layout">
@@ -26,6 +27,7 @@ include("../include/checksession.php");
         <h1>web.snt.nsi.xyz</h1>
         <h2>10 énigmes à résoudre pour découvrir le web</h2>
       </div>
+      <div class="content">
       <?php
       if (isset($_GET["session"])) {
         $code = strtoupper($_GET["session"]);
@@ -34,17 +36,14 @@ include("../include/checksession.php");
           $session_id = $session["id"];
           $session_id_owner = $session["id_owner"];
           $session_owner = getRows($db, "users", "username", "id = \"$session_id_owner\"")["username"];
-          $session_users = getRows($db, "users_session", "*", "id_session = \"$session_id\"");
-          include("./include/stats_widgets.php");
+          $session_users = getRows($db, "users_session", "*", "id_session = \"$session_id\"", 1);
+          include("./include/stats_viewer.php");
         }
       } else {
-        echo '<div class="content">';
         include("./include/stats_nosession.php");
-        echo '</div>';
       }
       ?>
-      <!--<div class="content">-->
-      <!--</div>-->
+      </div>
     </div>
     <?php include("../include/footer.php"); ?>
   </div>

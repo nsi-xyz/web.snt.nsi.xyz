@@ -405,6 +405,10 @@ body {
     width: 100%;
 }
 
+th:nth-child(1) {
+    white-space: nowrap;
+}
+
 .td-resolved {
     cursor: pointer;
     background-color: #7cb342;
@@ -641,9 +645,12 @@ kbd {
 .pure-table td, .pure-table th {
     padding: .8em .8em;
     text-align: center;
+    vertical-align: middle;
     border-top: 1px solid #cbcbcb;
 }
 
+.button-kick,
+.button-more-infos,
 .button-validate-modification,
 .button-delete,
 .button-change-infos {
@@ -656,8 +663,13 @@ kbd {
     background: rgb(28, 184, 65);
 }
 
+.button-more-infos,
 .button-change-infos {
     background: rgb(66, 184, 221);
+}
+
+.button-back {
+    margin-top: 3%;
 }
 
 .button-kick,

@@ -49,7 +49,7 @@ if (isset($_GET["sort-by"])) {
 </table>
 <h3 class="content-subhead">Gestion de ma session</h3>
 <p class="p-content">Fin de la session dans : <timer>#ToDo</timer></p>
-<button class ="stop-button" type="button" onclick="stop(<?php echo $id_session; ?>)">Forcer l'arrêt de la session</button>
+<button class ="stop-button" type="button" onclick="stop(<?php echo $id_session; ?>, 1)">Forcer l'arrêt de la session</button>
 
 <script>
     function updateTab(id) {
@@ -223,11 +223,11 @@ if (isset($_GET["sort-by"])) {
         });
     }
 
-    function stop(id) {
+    function stop(id, force_stop = 0) {
         jQuery.ajax({
             type: "POST",
             url: "session.php",
-            data: { stop_session: id },
+            data: {stop_session: id, force: force_stop},
             success: function(response) {
                 const data = JSON.parse(response);
                 if (data.success && data.redir) {

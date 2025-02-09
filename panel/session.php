@@ -9,11 +9,16 @@ if ($session_in_progress) {
   $id_session = $session["id"];
   $code_session = $session["code"];
 }
-if (isset($_POST["stop_session"])) {
-    $stop_session_id = $_POST["stop_session"];
-    stopSession($db, $id_session);
-    echo json_encode(["success" => true, "redir" => "./stats.php?session=$code_session"]);
-    exit();
+if (isset($_POST["stop_session"], $_POST["force"])) {
+  $stop_session_id = $_POST["stop_session"];
+  if ($_POST["force"] == 1) {
+    $interval = (new DateTime($session["date"]))->diff(new DateTime());
+    $new_duration = $interval->days*24*60*60 + $interval->h*60*60 + $interval->i*60 + $interval->s;
+    updateRow($db, "sessions", array("duration" => $new_duration), "id_owner = $id_user AND status = 1");
+  }
+  stopSession($db, $id_session);
+  echo json_encode(["success" => true, "redir" => "./stats.php?session=$code_session"]);
+  exit();
 }
 
 if (isset($_POST["kick_id"], $_POST["kick_session"], $_POST["kick_pseudo"])) {
