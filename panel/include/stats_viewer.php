@@ -1,8 +1,10 @@
 <?php
 $data_session = getSessionData($db, $session_id);
 usort($data_session, function ($a, $b) {
-    return strcmp($a['pseudo'], $b['pseudo']);
+    global $collator;
+    return collator_compare($collator, $a['pseudo'], $b['pseudo']);
 });
+
 $data_session_json = json_encode($data_session);
 ?>
 <?php if (!isset($_GET["user"])) : ?>
