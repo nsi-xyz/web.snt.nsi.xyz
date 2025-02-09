@@ -12,3 +12,9 @@
     </ul>
   </div>
 </div>
+<?php if ((strpos(traduction("info_home"), "Missing Translation") === false) && (traduction("info_home") != "")) : ?>
+  <script src="./js/script.js"></script>
+  <script>
+    throwInfo("<?php echo traduction("info_home"); ?>");
+  </script>
+<?php endif; ?>

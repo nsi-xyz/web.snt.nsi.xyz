@@ -27,6 +27,7 @@ include("./include/checksession.php");
         <?php include("./include/table.php"); ?>
       </div>
       <div class="content">
+        <msg></msg>
         <h2 class="content-subhead"><?php echo traduction("home_content_subhead1_h2"); ?></h2>
         <p class="p-content"><?php echo traduction("home_content_subhead1_p"); ?></p>
         <h2 class="content-subhead"><?php echo traduction("home_content_subhead2_h2"); ?></h2>
