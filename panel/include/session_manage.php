@@ -1,7 +1,7 @@
 <?php
-$users_session_users_list = getRows($db, "users_session", "pseudo, joined_at, puzzles", "id_session = $id_session");
+$users_session_users_list = getRows($db, "users_session", "pseudo, joined_at", "id_session = $id_session");
 if (!isset($_SESSION["sort-by"])) {
-    $_SESSION["sort-by"] = "Heure";
+    $_SESSION["sort-by"] = "Date";
 }
 if (isset($_GET["sort-by"])) {
     $_SESSION["sort-by"] = urldecode($_GET["sort-by"]);
@@ -29,9 +29,9 @@ if (isset($_GET["sort-by"])) {
     <fieldset>
         <label for="sorting-type">Trier par</label>
         <select id="sorting-type" name="sort-by">
-            <option><?php echo $_SESSION["sort-by"] == "Heure" ? "Heure" : ($_SESSION["sort-by"] == "Pseudo (ABC)" ? "Pseudo (ABC)" : "Pseudo (ZYX)")?></option>
-            <option><?php echo $_SESSION["sort-by"] == "Heure" ? "Pseudo (ABC)" : ($_SESSION["sort-by"] == "Pseudo (ABC)" ? "Pseudo (ZYX)" : "Heure")?></option>
-            <option><?php echo $_SESSION["sort-by"] == "Heure" ? "Pseudo (ZYX)" : ($_SESSION["sort-by"] == "Pseudo (ABC)" ? "Heure" : "Pseudo (ABC)")?></option>
+            <option><?php echo $_SESSION["sort-by"] == "Date" ? "Date" : ($_SESSION["sort-by"] == "Pseudo (ABC)" ? "Pseudo (ABC)" : "Pseudo (ZYX)")?></option>
+            <option><?php echo $_SESSION["sort-by"] == "Date" ? "Pseudo (ABC)" : ($_SESSION["sort-by"] == "Pseudo (ABC)" ? "Pseudo (ZYX)" : "Date")?></option>
+            <option><?php echo $_SESSION["sort-by"] == "Date" ? "Pseudo (ZYX)" : ($_SESSION["sort-by"] == "Pseudo (ABC)" ? "Date" : "Pseudo (ABC)")?></option>
         </select>
         <button type="submit" class="pure-button pure-button-primary">Appliquer</button>
     </fieldset>
@@ -41,7 +41,7 @@ if (isset($_GET["sort-by"])) {
         <tr>
             <th>Pseudo</th>
             <th colspan="10">Énigmes</th>
-            <th>Heure</th>
+            <th>Date</th>
             <th>Actions</th>
         </tr>
     </thead>
@@ -52,6 +52,8 @@ if (isset($_GET["sort-by"])) {
 <button class ="stop-button" type="button" onclick="stop(<?php echo $id_session; ?>, 1)">Forcer l'arrêt de la session</button>
 
 <script>
+    let longSession = <?php echo $session["duration"] >= 86400 ? 1 : 0; ?>;
+
     function updateTab(id) {
         let users_list_tbody = document.getElementById("users-session-list").getElementsByTagName("tr");
         let users_in_page = [];
@@ -69,7 +71,7 @@ if (isset($_GET["sort-by"])) {
         .then(json => {
             const sorting = '<?php echo $_SESSION["sort-by"]; ?>';
             switch (sorting) {
-                case "Heure":
+                case "Date":
                     sortByDate(json);
                     break;
                 case "Pseudo (ABC)":
@@ -115,10 +117,17 @@ if (isset($_GET["sort-by"])) {
                             td_puzzle.textContent = (i + 1).toString().padStart(2, "0");
                             new_tr.appendChild(td_puzzle);
                         }
-                        // Heure
+                        // Date
                         let td_joined_at = document.createElement("td");
                         td_joined_at.setAttribute("id", "user-joined-at-" + element_id.toString());
-                        td_joined_at.textContent = (new Date(element_joined_at)).toTimeString().split(" ")[0];
+                        if (longSession) {
+                            let isoDate = element_joined_at.replace(" ", "T");
+                            let date = luxon.DateTime.fromISO(isoDate);
+                            let formattedDate = date.toFormat("HH:mm:ss (dd/MM/yyyy)");
+                            td_joined_at.textContent = formattedDate;
+                        } else {
+                            td_joined_at.textContent = (new Date(element_joined_at)).toTimeString().split(" ")[0];
+                        }
                         new_tr.appendChild(td_joined_at);
                         // Actions
                         let td_kick_button = document.createElement("td");

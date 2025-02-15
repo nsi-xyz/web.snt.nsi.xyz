@@ -2,7 +2,15 @@
 $dateFormatter = new IntlDateFormatter('fr_FR', IntlDateFormatter::FULL, IntlDateFormatter::MEDIUM);
 $collator = collator_create('fr_FR');
 // Constantes globales.
-define("VERSION", "2.9.2");
+define("VERSION", "2.10");
+define("NAME_MIN_LENGTH", 2);
+define("NAME_MAX_LENGTH", 24);
+define("PSEUDO_MIN_LENGTH", 3);
+define("PSEUDO_MAX_LENGTH", 24);
+define("USERNAME_MIN_LENGTH", 3);
+define("USERNAME_MAX_LENGTH", 16);
+define("PASSWORD_MIN_LENGTH", 7);
+define("PASSWORD_MAX_LENGTH", 32);
 define("SESSDURATION", 10800);
 define("COOKIEAUTHDURATION", 604800);
 define("COOKIE7", array(
@@ -92,7 +100,7 @@ if (isset($_COOKIE["LOGGEDIN"])) {
   }
 }
 if (in_array("panel", explode("/", $_SERVER['PHP_SELF'])) && !isUserConnected()) {
-  throwError(traduction("error_not_authorized_message"), "../login.php");
+  throwError(traduction("error_not_authorized_message"), "../login.php", "msg", true, true);
 }
 if ((isUserConnected() && sessionInProgress($db, $_SESSION["user_logged_in"]["id"])) || (currentUserInSession())) {
   if (currentUserInSession()) {

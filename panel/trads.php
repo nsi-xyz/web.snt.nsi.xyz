@@ -31,7 +31,7 @@ if (isset($_POST["id_trad"], $_POST["delete_trad"])) {
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="description" content="Le web, également connu sous le nom de World Wide Web (WWW), est un système d'information en ligne qui permet de consulter et de partager des documents et des ressources sur Internet. Sa découverte est au programme de SNT, en classe de seconde en France.">
-  <title>Accueil • web.snt.nsi.xyz</title>
+  <title><?php echo traduction("trads_website_title"); ?></title>
   <link rel="stylesheet" href="../css/pure-min.css">
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20,400,0,0">
   <link rel="stylesheet" href="../css/style.css">

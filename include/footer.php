@@ -12,9 +12,25 @@
     </ul>
   </div>
 </div>
-<?php if ((strpos(traduction("info_home"), "Missing Translation") === false) && (traduction("info_home") != "")) : ?>
-  <script src="./js/script.js"></script>
+<?php if (isset($_SESSION["message"])) : ?>
   <script>
-    throwInfo("<?php echo traduction("info_home"); ?>");
+    document.addEventListener("DOMContentLoaded", function() {
+      <?php
+      switch ($_SESSION["message"][1]) {
+        case "success":
+          echo 'throwSuccess("'.$_SESSION["message"][0].'", "'.$_SESSION["message"][2].'");';
+          unset($_SESSION["message"]);
+          break;
+        case "error":
+          echo 'throwError("'.$_SESSION["message"][0].'", "'.$_SESSION["message"][2].'");';
+          unset($_SESSION["message"]);
+          break;
+        case "info":
+          echo 'throwInfo("'.$_SESSION["message"][0].'", "'.$_SESSION["message"][2].'");';
+          unset($_SESSION["message"]);
+          break;
+      }
+      ?>
+  });
   </script>
 <?php endif; ?>

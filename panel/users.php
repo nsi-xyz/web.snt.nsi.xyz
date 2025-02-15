@@ -1,13 +1,92 @@
 <?php
-include("./include/db.php");
-include("../include/functions.php");
-include("../include/checksession.php");
-if ($_SESSION["user_logged_in"]["id_group"] != 1) {
-  header("location: ./index.php");
-  exit;
-} 
-if (!isset($_SESSION["modeEditOrCreateUser"])){
-  $_SESSION["modeEditOrCreateUser"] = 0; // Mode création
+include "./include/db.php";
+include "../include/functions.php";
+include "../include/checksession.php";
+$data_users = getRows($db, "users", "id, name, surname, username, created_at, last_update, last_connexion, id_group", "1", 1);
+if (isset($_POST["edit_user"])) {
+  $_SESSION["edit_user_id"] = $_POST["edit_user"];
+  echo json_encode(["success" => true]);
+  exit();
+}
+if (isset($_POST["delete_user"])) {
+  $_SESSION["delete_user_id"] = $_POST["delete_user"];
+  echo json_encode(["success" => true]);
+  exit();
+}
+if (isset($_SESSION["delete_user_id"])) {
+  $filtered = array_filter($data_users, function ($user) {
+    return $user["id"] == $_SESSION["delete_user_id"];
+  });
+  $data_user = reset($filtered);
+  $result = deleteUser($db, $data_user);
+  switch ($result) {
+    case 0:
+      unset($_SESSION["delete_user_id"]);
+      throwSuccess("Compte supprimé avec succès.", null, "msg", true, true);
+      break;
+    case -1:
+    case -2:
+      unset($_SESSION["delete_user_id"]);
+      throwError("Action impossible.", null, "msg", true, true);
+      break;
+  }
+}
+if (!isset($_SESSION["edit_user_id"])) {
+  $_SESSION["edit_user_id"] = 0;
+} else if ($_SESSION["edit_user_id"] > 0) {
+  $filtered = array_filter($data_users, function ($user) {
+    return $user["id"] == $_SESSION["edit_user_id"];
+  });
+  $data_user = reset($filtered);
+  $admin_status = $data_user["id_group"] == 1 ? " checked" : "";
+}
+if ((isset($_POST["apply"], $_POST["user_name"], $_POST["user_surname"], $_POST["user_username"]) || (isset($_POST["apply"], $_POST["user_name"], $_POST["user_surname"] ) && $_SESSION["edit_user_id"] > 0 && $data_user["username"] == "admin")) && !isset($_POST["reset_password"], $_POST["cancel"])) {
+  if ($data_user["username"] == "admin") {
+    $result = updateUser($db, $data_user, array("name" => $_POST["user_name"], "surname" => $_POST["user_surname"], "id_group" => 1));
+  } else {
+    $id_group = isset($_POST["user_id_group"]) ? 1 : 0;
+    $result = updateUser($db, $data_user, array("name" => $_POST["user_name"], "surname" => $_POST["user_surname"], "username" => $_POST["user_username"], "id_group" => $id_group));
+  }
+  switch ($result) {
+    case 0:
+      $_SESSION["edit_user_id"] = 0;
+      throwSuccess("Compte mis à jour avec succès.", null, "msg", true, true);
+      break;
+    case -1:
+      throwError("Action impossible.", null, "msg", true, true);
+      break;
+    case -2:
+      throwError("Ce nom d'utilisateur est déjà utilisé.", null, "msg", true, true);
+      break;
+    case -3:
+      throwError("Les champs ne respectent pas les longueurs requises", null, "msg", true, true);
+      break;
+  }
+} else if (isset($_POST["reset_password"]) && !isset($_POST["cancel"])) {
+  $_SESSION["edit_user_id"] = 0;
+  resetPassword($db, $data_user);
+} else if (isset($_POST["cancel"])) {
+  $_SESSION["edit_user_id"] = 0;
+  header("Location: users.php");
+  exit();
+}
+if (isset($_POST["create"], $_POST["user_name"], $_POST["user_surname"], $_POST["user_username"], $_POST["user_password"])) {
+  $id_group = isset($_POST["user_id_group"]) ? 1 : 0;
+  $result = createUser($db, $_POST["user_name"], $_POST["user_surname"], $_POST["user_username"], $_POST["user_password"], $id_group);
+  switch ($result) {
+    case 0:
+      throwSuccess("Compte créé avec succès.", null, "msg", true, true);
+      break;
+    case -1:
+      throwError("Action impossible.", null, "msg", true, true);
+      break;
+    case -2:
+      throwError("Ce nom d'utilisateur est déjà utilisé.", null, "msg", true, true);
+      break;
+    case -3:
+      throwError("Les champs ne respectent pas les longueurs requises", null, "msg", true, true);
+      break;
+  }
 }
 ?>
 <!DOCTYPE html>
@@ -16,14 +95,14 @@ if (!isset($_SESSION["modeEditOrCreateUser"])){
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="description" content="Le web, également connu sous le nom de World Wide Web (WWW), est un système d'information en ligne qui permet de consulter et de partager des documents et des ressources sur Internet. Sa découverte est au programme de SNT, en classe de seconde en France.">
-  <title>Gestion des comptes • web.snt.nsi.xyz</title>
+  <title><?php echo traduction("users_global_title"); ?></title>
   <link rel="stylesheet" href="../css/pure-min.css">
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20,400,0,0">
   <link rel="stylesheet" href="../css/style.css">
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+  <script src="../js/messages.js"></script>
 </head>
 <body>
-  <!-- Ici est un easter eggs : la longueur d'un stylo bille noir avec bouchon est de 141.28mm - Merci à vous. -->
   <div id="layout">
     <a href="#menu" id="menuLink" class="menu-link">
       <span></span>
@@ -31,229 +110,179 @@ if (!isset($_SESSION["modeEditOrCreateUser"])){
     <?php include("./include/nav_panel.php"); ?>
     <div id="main">
       <div class="header">
-        <h1>web.snt.nsi.xyz</h1>
-        <h2>10 énigmes à résoudre pour découvrir le web</h2>
+        <h1><?php echo traduction("users_header_h1"); ?></h1>
+        <h2><?php echo traduction("users_header_h1"); ?></h2>
       </div>
-      <section class="widgets">
-        <div class="widget">
-          <?php
-          if ($_SESSION["modeEditOrCreateUser"] == 0) {
-            echo '
-            <form class="pure-form" method="post">
-            <div class="widget-title">
-              <h3>Créer un utilisateur</h3>
-            </div>
-            <error-1></error-1>
-              <fieldset>
-                <input type="text" name="name" placeholder="NOM*" required="" pattern="^[^\x22]{0,255}$" title="Guillemets interdits"/>
-                <input type="text" name="surname" placeholder="Prénom*" required="" pattern="^[^\x22]{0,255}$" title="Guillemets interdits"/>
-                <input type="text" name="username" placeholder="Nom d\'utilisateur*" required="" pattern="^[^\s\xA0\x22]{0,255}$" title="Espaces et guillemets interdits"/>
-                <input type="password" name="password" placeholder="Mot de passe*" required="" pattern="^[^\s\xA0\x22]{0,255}$" title="Espaces et guillemets interdits"/>
-                <input type="checkbox" name="id_group" id="checkbox-radio-option-one" value="" /> Administrateur
-                <button type="submit" class="pure-button pure-button-primary">Créer l\'utilisateur</button>
-                <p>* Champ obligatoire</p>
-                </fieldset>
-            </form>';
-            if (isset($_POST["name"], $_POST["surname"], $_POST["username"], $_POST["password"])) {
-              if (isset($_POST["id_group"])){
-                sleep(1);
-                $resultCreateUser = createUser($db, strtoupper($_POST["name"]), $_POST["surname"], $_POST["username"], $_POST["password"], 1);
-              } else {
-                sleep(1);
-                $resultCreateUser = createUser($db, strtoupper($_POST["name"]), $_POST["surname"], $_POST["username"], $_POST["password"], 0);
-              }
-              if ($resultCreateUser){
-                echo '<p style="color: green; font-weight: bolder;">Utilisateur créé</p>';
-              } else {
-                echo '<p style="color: red; font-weight: bolder;">Nom d\'utilisateur déjà existant !</p>';
-              }
-            }
-          } else {
-            $infosUser = $_SESSION["infosUser"];
-            echo '
-            <div class="widget-title">
-              <h3>Modifier un utilisateur</h3>
-            </div>
-            <error-1></error-1>
-            <form class="pure-form" method="post">
-              <fieldset>
-                <input type="text" name="name" placeholder="Nom" pattern="^[^\x22]{0,255}$" title="Guillemets interdits" value="'.$infosUser["name"].'"/>
-                <input type="text" name="surname" placeholder="Prénom" pattern="^[^\x22]{0,255}$" title="Guillemets interdits" value="'.$infosUser["surname"].'"/>
-                <input type="text" name="username" placeholder="Nom d\'utilisateur" pattern="^[^\s\xA0\x22]{0,255}$" title="Espaces et guillemets interdits" value="'.$infosUser["username"].'"/>
-                <input type="password" name="password" placeholder="Mot de passe" pattern="^[^\s\xA0\x22]{0,255}$" title="Espaces et guillemets interdits"/>';
-            if ($infosUser["id_group"] == 1) {
-              echo '<input type="checkbox" name="id_group" id="checkbox-radio-option-one" value="" checked /> Administrateur';
-            } else {
-              echo '<input type="checkbox" name="id_group" id="checkbox-radio-option-one" value="" /> Administrateur';
-            }
-            echo '
-                <button type="submit" name="validate" class="button-validate-modification pure-button">Valider</button>
-                <button type="submit" name="cancel" class="button-delete pure-button">Annuler</button>
-                <p>* Champ obligatoire</p>
-              </fieldset>
-            </form>';
-            if (isset($_POST["validate"])) {
-              $newInfosUser = array("id" => $infosUser["id"]);
-              $attributs = ["name", "surname", "username"];
-              foreach ($attributs as $attribut) {
-                if ($_POST[$attribut] === "" || $_POST[$attribut] === $infosUser[$attribut]) {
-                  $newInfosUser[$attribut] = $infosUser[$attribut];
-                } else {
-                  $newInfosUser[$attribut] = $_POST[$attribut];
-                }
-              }
-                if (! empty($_POST["password"])){
-                  $newInfosUser["password"] = $_POST["password"];
-                }
-                if (isset($_POST["id_group"])){
-                  $newInfosUser["id_group"] = 1;
-                } else {
-                  $newInfosUser["id_group"] = 0;
-                }
-
-                sleep(1);
-                $resultUpdate = updateUser($db,$newInfosUser,$infosUser["username"]);
-                
-                if ($resultUpdate){
-                  // Ce qui est en commentaire ne fonctionne pas, en gros actuellement ça ne met pas à jour le cookie de session si on modifie son propre compte. Ce sera une maj à faire à l'avenir.
-                  // $_SESSION["user_logged_in"] = getRows($db, "users", "*", "username = \"{$_SESSION["user_logged_in"]["username"]}\"");
-                  echo '<p style="color: green; font-weight: bolder;">Utilisateur modifié</p>';
-                  $_SESSION["modeEditOrCreateUser"] = 0;
-                  echo '<script>setTimeout(function() { window.location.replace(window.location.href); }, 1000);</script>';
-                } else {
-                  echo '<p style="color: red; font-weight: bolder;">Nom d\'utilisateur déjà existant !</p>';
-                }
-
-              } elseif (isset($_POST["cancel"])){
-                $_SESSION["modeEditOrCreateUser"] = 0;
-                echo "<script>window.location.replace(window.location.href);</script>";
-              }
-            }
-          ?>
-        </div>
-        <div class="widget">
-          <div class="widget-title">
-            <h3>Liste des utilisateurs</h3>
-          </div>
-          <error-2></error-2>
+      <div class="content">
+        <?php if (!isset($_GET["user_id"])) : ?>
+          <h2 class="content-subhead">Éditeur de compte</h2>
+          <msg></msg>
+          <form method="POST" action="" class="pure-form pure-form-stacked">
+            <?php if ($_SESSION["edit_user_id"] == 0) : ?>
+              <h3 class="content-subhead">Créer un nouveau compte</h3>
+              <div class="form-group">
+                <label for="name">Nom</label>
+                <input type="text" id="name" name="user_name" placeholder="Nom" required pattern="^^[^\xA0\x22\\]+$" minlength="<?php echo NAME_MIN_LENGTH; ?>" maxlength="<?php echo NAME_MAX_LENGTH; ?>" />
+              </div>
+              <div class="form-group">
+                <label for="surname">Prénom</label>
+                <input type="text" id="surname" name="user_surname" placeholder="Prénom" required pattern="^[^\xA0\x22\\]+$" minlength="<?php echo NAME_MIN_LENGTH; ?>" maxlength="<?php echo NAME_MAX_LENGTH; ?>" />
+              </div>
+              <div class="form-group">
+                <label for="username">Nom d'utilisateur</label>
+                <input type="text" id="username" name="user_username" placeholder="Nom d'utilisateur" required pattern="^[^\s\xA0\x22\\]+$" minlength="<?php echo USERNAME_MIN_LENGTH; ?>" maxlength="<?php echo USERNAME_MAX_LENGTH; ?>" />
+              </div>
+              <div class="form-group">
+                <label for="password">Mot de passe</label>
+                <input type="password" id="password" name="user_password" placeholder="Mot de passe" required pattern="^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]+$" title="Le mot de passe doit faire entre 7 et 32 caractères et contenir au moins une lettre et un chiffre." minlength="<?php echo PASSWORD_MIN_LENGTH; ?>" maxlength="<?php echo PASSWORD_MAX_LENGTH; ?>" />
+              </div>
+              <div class="form-group">
+              <label for="checkbox-radio-option-one">
+                <input type="checkbox" name="user_id_group" id="checkbox-radio-option-one" value="" /> Administrateur
+              </label>
+              </div>
+              <button class ="button-success pure-button" name="create" type="submit">Créer</button>
+            <?php else : ?>
+              <h3 class="content-subhead">Modifier un compte</h3>
+              <div class="form-group">
+                <label for="name">Nom</label>
+                <input type="text" id="name" name="user_name" placeholder="Nom" required pattern="^[^\xA0\x22\\]+$" value="<?php echo $data_user["name"]; ?>" minlength="<?php echo NAME_MIN_LENGTH; ?>" maxlength="<?php echo NAME_MAX_LENGTH; ?>" />
+              </div>
+              <div class="form-group">
+                <label for="surname">Prénom</label>
+                <input type="text" id="surname" name="user_surname" placeholder="Prénom" required pattern="^[^\xA0\x22\\]+$" value="<?php echo $data_user["surname"]; ?>" minlength="<?php echo NAME_MIN_LENGTH; ?>" maxlength="<?php echo NAME_MAX_LENGTH; ?>" />
+              </div>
+              <?php if ($data_user["username"] != "admin") : ?>
+                <div class="form-group">
+                  <label for="username">Nom d'utilisateur</label>
+                  <input type="text" id="username" name="user_username" placeholder="Nom d'utilisateur" required pattern="^[^\s\xA0\x22\\]+$" value="<?php echo $data_user["username"]; ?>" minlength="<?php echo USERNAME_MIN_LENGTH; ?>" maxlength="<?php echo USERNAME_MAX_LENGTH; ?>" />
+                </div>
+                <div class="form-group">
+                <label for="checkbox-radio-option-one">
+                  <input type="checkbox" name="user_id_group" id="checkbox-radio-option-one" value=""<?php echo $admin_status; ?> /> Administrateur
+                </label>
+                </div>
+              <?php endif; ?>
+              <button class ="button-success pure-button" name="apply" type="submit">Appliquer</button>
+              <button class ="button-warning pure-button" name="reset_password" type="submit">Réinitialiser le mot de passe</button>
+              <button class ="button-error pure-button" name="cancel" type="submit">Annuler</button>
+            <?php endif; ?>
+          </form>
+          <h2 class="content-subhead">Liste des comptes</h2>
+          <p class="p-content">Liste des comptes actifs</p>
           <table class="pure-table">
             <thead>
-              <th>#</th>
-              <th>NOM</th>
-              <th>Prénom</th>
-              <th>Nom d'utilisateur</th>
-              <th>Administrateur</th>
-              <th>Actions</th>
+              <tr>
+                <th>Nom</th>
+                <th>Prénom</th>
+                <th>Nom d'utilisateur</th>
+                <th>Administrateur</th>
+                <th>Actions</th>
+              </tr>
             </thead>
-            <tbody>
+            <tbody id="users-list">
               <?php
-                $listeUsers = getRows($db,"users","id,name,surname,username,id_group","1");
-                
-                if (count(getRows($db,"users","id","1")) == 1){
-                  echo
-                    '<tr>
-                      <td>'.$listeUsers["id"].'</td>
-                      <td>'.$listeUsers["name"].'</td>
-                      <td>'.$listeUsers["surname"].'</td>
-                      <td>'.$listeUsers["username"].'</td>
-                      <td>';
-                      if ($listeUsers["id_group"] == 1){
-                        echo "✅";
-                      } else {
-                        echo "❌";
-                      }
-                      echo '</td>
-                      <td>
-                        <div>
-                          <button class="button-change-infos pure-button" onclick="updateInfosUser(['.urlencode($listeUsers["id"]).',\''.urlencode($listeUsers["name"]).'\',\''.urlencode($listeUsers["surname"]).'\',\''.urlencode($listeUsers["username"]).'\','.$listeUsers["id_group"].'])">Modifier</button>
-                          <button class="button-delete pure-button" onclick="deleteUser('.$listeUsers["id"].','.$_SESSION["user_logged_in"]["id"].')">Supprimer</button>
-                        </div>
-                      </td>
-                    </tr>
-                  ';
-                } else {
-                  for ($i = 0; $i < count($listeUsers); $i++) {
-                    echo
-                      '<tr>
-                        <td>'.$listeUsers[$i]["id"].'</td>
-                        <td>'.$listeUsers[$i]["name"].'</td>
-                        <td>'.$listeUsers[$i]["surname"].'</td>
-                        <td>'.$listeUsers[$i]["username"].'</td>
-                        <td>';
-                        if ($listeUsers[$i]["id_group"] == 1){
-                          echo "✅";
-                        } else {
-                          echo "❌";
-                        }
-                        echo '</td>
-                        <td>
-                          <div>
-                            <button class="button-change-infos pure-button" onclick="updateInfosUser(['.urlencode($listeUsers[$i]["id"]).',\''.urlencode($listeUsers[$i]["name"]).'\',\''.urlencode($listeUsers[$i]["surname"]).'\',\''.urlencode($listeUsers[$i]["username"]).'\','.$listeUsers[$i]["id_group"].'])">Modifier</button>
-                            <button class="button-delete pure-button" onclick="deleteUser('.$listeUsers[$i]["id"].','.$_SESSION["user_logged_in"]["id"].')">Supprimer</button>
-                          </div>
-                        </td>
-                      </tr>
-                    ';
-                  }
-                }
-
-                echo '<script>
-                function updateInfosUser(infosUserToModificate){
-                  jQuery.ajax({
-                    type: "POST",
-                    url: "users.php",
-                    data: {infosUserModificate: infosUserToModificate},
-                    success: function(response) {
-                      window.location.replace(window.location.href);
-                    }
-                  });
-                }
-
-                function deleteUser(idUser,idLoggedUser){
-                  if (idUser == idLoggedUser){
-                    throwError("Vous ne pouvez pas supprimer votre propre compte.", 2)
-                  } else{
-                    if (confirm("Etes-vous sûr de vouloir supprimer cet utilisateur ?")) {
-                      jQuery.ajax({
-                        type: "POST",
-                        url: "users.php",
-                        data: {idUserToDelete: idUser},
-                        success: function(response) {
-                          window.location.replace(window.location.href);
-                        }
-                      }); 
-                    }
-                  }
-                }                
-              </script>';
-            
-              if (isset($_POST["infosUserModificate"])){
-                $_SESSION["infosUser"] = array(
-                "id" => urldecode($_POST["infosUserModificate"][0]),
-                "name" => urldecode($_POST["infosUserModificate"][1]),
-                "surname" => urldecode($_POST["infosUserModificate"][2]),
-                "username" => urldecode($_POST["infosUserModificate"][3]),
-                "id_group" => $_POST["infosUserModificate"][4]
-                );
-
-                $_SESSION["modeEditOrCreateUser"] = 1;
-              }
-
-              if (isset($_POST["idUserToDelete"])) {
-                deleteUser($db,$_POST["idUserToDelete"]);
+              foreach ($data_users as $user) {
+                $admin_status = $user["id_group"] == 1 ? "&#x2705;" : "&#x274C;";
+                $interact_moreinfos_status = $_SESSION["edit_user_id"] > 0 ? " disabled" : "";
+                $interact_edit_status = $_SESSION["edit_user_id"] > 0 || $user["id"] == $_SESSION["user_logged_in"]["id"] ? " disabled" : "";
+                $interact_delete_status = $_SESSION["edit_user_id"] > 0 || $user["id"] == $_SESSION["user_logged_in"]["id"] || $user["username"] == "admin" ? " disabled" : "";
+                echo '<tr id="user-'.$user["id"].'">';
+                echo '<td id="user-name-'.$user["id"].'">'.$user["name"].'</td>';
+                echo '<td id="user-surname-'.$user["id"].'">'.$user["surname"].'</td>';
+                echo '<td id="user-username-'.$user["id"].'">'.$user["username"].'</td>';
+                echo '<td id="user-group-'.$user["id"].'">'.$admin_status.'</td>';
+                echo '<td><div class="actions">';
+                echo '<button type="button" class="button-more-infos pure-button"'.$interact_moreinfos_status.' onclick="moreInfos('.$user["id"].')">En savoir plus</button>';
+                echo '<button type="button" class="button-primary pure-button"'.$interact_edit_status.' onclick="edit('.$user["id"].')">Modifier</button>';
+                echo '<button type="button" class="button-error pure-button"'.$interact_delete_status.' onclick="del('.$user["id"].')">Supprimer</button>';
+                echo '</div></td>';
+                echo '</tr>';
               }
               ?>
             </tbody>
-
           </table>
-
-        </div>
-      </section>
+        <?php else : ?>
+          <?php
+          $filtered = array_filter($data_users, function($user) {
+            return $user["id"] == $_GET["user_id"];
+          });
+          $data_user = reset($filtered);
+          ?>
+          <button type="button" class="button-back pure-button" onclick="back()">&#x21A9;</button>
+          <h2 class="content-subhead">Informations sur <?php echo $data_user["username"]; ?></h2>
+          <ul>
+            <?php
+            $user_created_at = (new DateTime())->setTimestamp(strtotime($data_user["created_at"]));
+            $user_last_update = (new DateTime())->setTimestamp(strtotime($data_user["last_update"]));
+            $user_last_connexion = (new DateTime())->setTimestamp(strtotime($data_user["last_connexion"]));
+            ?>
+            <li>Identifiant : #<?php echo $data_user["id"]; ?></li>
+            <li>Nom : <?php echo $data_user["name"]; ?></li>
+            <li>Prénom : <?php echo $data_user["surname"]; ?></li>
+            <li>Nom d'utilisateur : <?php echo $data_user["username"]; ?></li>
+            <li>Date de création du compte : <?php echo $dateFormatter->format($user_created_at); ?></li>
+            <li>Dernière mise à jour du compte : <?php echo $dateFormatter->format($user_last_update); ?></li>
+            <li>Dernière connexion : <?php echo $dateFormatter->format($user_last_connexion); ?></li>
+          </ul>
+        <?php endif; ?>
+      </div>
     </div>
+    <script>
+      function moreInfos(id) {
+        localStorage.setItem("scrollPosition", window.scrollY);
+        const url = new URL(window.location.href);
+        url.searchParams.set("user_id", id);
+        window.location.href = url.toString();
+      }
+
+      function edit(id) {
+        jQuery.ajax({
+          type: "POST",
+          url: "users.php",
+          data: {edit_user: id},
+          success: function(response) {
+            const data = JSON.parse(response);
+            if (data.success) {
+              window.location.href = window.location.href;
+            } 
+          }
+        });
+      }
+
+      function del(id) {
+        if (confirm("Êtes-vous certain de vouloir supprimer ce compte ?\nCette action est irréversible.")) {
+          jQuery.ajax({
+            type: "POST",
+            url: "users.php",
+            data: {delete_user: id},
+            success: function(response) {
+              const data = JSON.parse(response);
+              if (data.success) {
+                window.location.href = window.location.href;
+              } 
+            }
+          });
+        }
+      }
+
+      function back() {
+        const url = new URL(window.location.href);
+        url.searchParams.delete("user_id");
+        window.location.href = url.toString();
+      }
+
+      window.onload = function() {
+        const scrollPosition = localStorage.getItem("scrollPosition");
+        const urlParams = new URLSearchParams(window.location.search);
+        if (scrollPosition !== null && !urlParams.has("user_id")) {
+          window.scrollTo(0, parseInt(scrollPosition));
+          localStorage.removeItem("scrollPosition");
+        }
+      }
+    </script>
     <?php include("../include/footer.php"); ?>
-  
   </div>
   <script src="../js/ui.js"></script>
-  <script src="../js./script.js"></script>
 </body>
 </html>

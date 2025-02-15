@@ -1,23 +1,31 @@
 <?php
-include("./panel/include/db.php");
-include("./include/functions.php");
-include("./include/checksession.php");
-if (!isset($_SESSION["modeLoginOrCreateUser"])){
-  $_SESSION["modeLoginOrCreateUser"] = 1; // Mode Login
-}
-
-if (isset($_SESSION["user_logged_in"]) && $_SESSION["user_logged_in"]["username"] != "invité") {
+include "./panel/include/db.php";
+include "./include/functions.php";
+include "./include/checksession.php";
+if (isUserConnected()) {
   $verifiedUser = false;
-  foreach (getRows($db, "users", "username", "1") as $row) {
+  foreach (getRows($db, "users", "username", "1", 1) as $row) {
     if (in_array($_SESSION["user_logged_in"]["username"], $row)) {
       $verifiedUser = true;
     }
   }
   if ($verifiedUser) {
     header('Location: ./panel/');
+    exit();
   } else {
     header('Location: ./index.php');
+    exit();
   }
+} else if (currentUserInSession()) {
+  throwError("Vous êtes déjà dans une session. Veuillez la quitter pour accéder à la page d'identification.", "./index.php", "msg", true, true);
+}
+if (!isset($_SESSION["login"])){
+  $_SESSION["login"] = 1;
+}
+if (isset($_POST["login_mode"])) {
+  $_SESSION["login"] = $_POST["login_mode"];
+  echo json_encode(["success" => true]);
+  exit();
 }
 ?>
 <!DOCTYPE html>
@@ -25,11 +33,12 @@ if (isset($_SESSION["user_logged_in"]) && $_SESSION["user_logged_in"]["username"
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Accès à la session • web.snt.nsi.xyz</title>
+  <title><?php echo traduction("login_website_title"); ?></title>
   <link rel="stylesheet" href="css/pure-min.css">
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20,400,0,0">
   <link rel="stylesheet" href="css/style.css">
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+  <script src="./js/messages.js"></script>
 </head>
 <body>
   <div id="layout">
@@ -44,134 +53,154 @@ if (isset($_SESSION["user_logged_in"]) && $_SESSION["user_logged_in"]["username"
         <h3 class="h3-login"><?php echo traduction("login_header_h3"); ?></h3>
       </div>
       <div class="content">
-        <h2 class="content-subhead">S'identifier</h2>
+        <h2 id="S'identifier" class="content-subhead">S'identifier</h2>
         <p class="p-content">Rejoignez facilement une session avec le code fourni par votre enseignant, connectez-vous ou créez un compte en tant qu'enseignant pour gérer vos sessions et bien plus.</p>
         <p class="p-content">Le site web est également accessible sans connexion pour une exploration et une découverte rapide et facile.</p>
-        <error></error>
+        <msg></msg>
         <section class="forms">
-          <div class="form">
-            <form method="GET" action="" class="pure-form pure-form-stacked">
-              <fieldset>
-                <legend>Rejoindre une session</legend>
-                <label for="pseudo">Pseudo</label>
-                <input type="text" id="pseudo" name="pseudo" placeholder="Pseudo" pattern="^[^\x22]{0,255}$" title="Guillemets interdits" minlength="3" maxlength="16"><br>
-                <label for="code">Code de la session</label>
-                <input type="text" id="code" name="code" placeholder="Code de la session" pattern="^[^\x22]{0,255}$" title="Guillemets interdits"><br>
+          <?php if ($_SESSION["login"] == 1) : ?>
+            <div class="form">
+              <form method="GET" action="" class="pure-form pure-form-stacked">
+                <fieldset>
+                  <legend>Rejoindre une session</legend>
+                  <div class="form-group">
+                    <label for="pseudo">Pseudo</label>
+                    <input type="text" id="pseudo" name="pseudo" placeholder="Pseudo" required pattern="^[^\x22]+$" minlength="<?php echo PSEUDO_MIN_LENGTH; ?>" maxlength="<?php echo PSEUDO_MAX_LENGTH; ?>" />
+                  </div>
+                  <div class="form-group">
+                    <label for="code">Code de la session</label>
+                    <input type="text" id="code" name="code" placeholder="Code de la session" required pattern="^[^\x22]+$" />
+                  </div>
+                </fieldset>
                 <button type="submit" class="pure-button pure-button-primary-join">Rejoindre la session</button>
-              </fieldset>
-            </form>
-            <?php
-            if (isset($_GET["pseudo"]) && isset($_GET["code"])) {
-              $pseudo = $_GET["pseudo"];
-              $code = strtoupper($_GET["code"]);
-              if (rowsCount($db, "sessions", "code = \"$code\"") == 1) {
-                $id = getRows($db, "sessions", "*", "code = \"$code\"")["id"];
-                if (canJoinSession($pseudo, $id, $db)) {
-                  joinSession($pseudo, $id, $db);
-                  $_SESSION["user_logged_in"] = getRows($db, "users_session", "*", "pseudo = \"$pseudo\" AND id_session = $id");
+              </form>
+              <?php
+              if (isset($_GET["pseudo"]) && isset($_GET["code"])) {
+                $pseudo = $_GET["pseudo"];
+                $code = strtoupper($_GET["code"]);
+                if (rowsCount($db, "sessions", "code = \"$code\"") == 1) {
+                  $id = getRows($db, "sessions", "*", "code = \"$code\"")["id"];
+                  if (canJoinSession($pseudo, $id, $db)) {
+                    joinSession($pseudo, $id, $db);
+                    $_SESSION["user_logged_in"] = getRows($db, "users_session", "*", "pseudo = \"$pseudo\" AND id_session = $id");
+                    throwSuccess("Vous avez rejoint la session avec succès.<br>Bonne chance !", "./index.php", "msg", true, false);
+                  } else {
+                    throwError("Impossible de rejoindre la session.", null, "msg", false, false);
+                  }
+                } else {
+                  throwError("Cette session n'existe pas.", false, "msg", false, false);
+                }
+              }
+              ?>
+            </div>
+            <div class="form">
+              <form method="POST" action="" class="pure-form pure-form-stacked">
+                <fieldset>
+                  <legend>Se connecter</legend>
+                  <div class="form-group">
+                    <label for="username">Nom d'utilisateur</label>
+                    <input type="text" id="username" name="username" placeholder="Nom d'utilisateur" required pattern="^[^\s\xA0\x22\\]+$" minlength="<?php echo USERNAME_MIN_LENGTH; ?>" maxlength="<?php echo USERNAME_MAX_LENGTH; ?>" />
+                  </div>
+                  <div class="form-group">
+                    <label for="stacked-password">Mot de passe</label>
+                    <input type="password" id="stacked-password" name="password" placeholder="Mot de passe" required minlength="1" maxlength="<?php echo PASSWORD_MAX_LENGTH; ?>" />
+                  </div>
+                </fieldset>
+                <button type="submit" class="pure-button pure-button-primary-join">Se connecter</button>
+              </form>
+              <p>Vous êtes professeur ? <br><a id="create-account" href="javascript:login(0)">Créez votre compte !</a></p>
+              <?php
+              if (isset($_POST["username"], $_POST["password"])) {
+                $user_username = strtolower($_POST["username"]);
+                $user_password = $_POST["password"];
+                if (login_success($user_username, $user_password, $db)) {
+                  $_SESSION["user_logged_in"] = getRows($db, "users", "*", "username = \"$user_username\"");
                   echo '<script>window.location.replace(window.location.href);</script>';
                 } else {
-                  throwError("Impossible de rejoindre la session.");
+                  unset($_POST["username"], $_POST["password"]);
+                  throwError("Identifiant ou mot de passe incorrect.", null, "msg", true, false);
                 }
-              } else {
-                throwError("Cette session n'existe pas.");
+              }
+              ?>
+            </div>
+          <?php else : ?>
+            <div class="form">
+              <form method="POST" action="" class="pure-form pure-form-stacked">
+                <fieldset>
+                  <legend>Créer un compte</legend>
+                  <div class="form-group">
+                    <label for="name">Nom</label>
+                    <input type="text" id="name" name="name" placeholder="Nom" required pattern="^[^\xA0\x22\\]+$" minlength="<?php echo NAME_MIN_LENGTH; ?>" maxlength="<?php echo NAME_MAX_LENGTH; ?>" />
+                  </div>
+                  <div class="form-group">
+                    <label for="surname">Prénom</label>
+                    <input type="text" id="surname" name="surname" placeholder="Prénom" required pattern="^[^\xA0\x22\\]+$" minlength="<?php echo NAME_MIN_LENGTH; ?>" maxlength="<?php echo NAME_MAX_LENGTH; ?>" />
+                  </div>
+                  <div class="form-group">
+                    <label for="username">Nom d'utilisateur</label>
+                    <input type="text" id="username" name="username" placeholder="Nom d'utilisateur" required pattern="^[^\s\xA0\x22\\]+$" minlength="<?php echo USERNAME_MIN_LENGTH; ?>" maxlength="<?php echo USERNAME_MAX_LENGTH; ?>" />
+                  </div>
+                  <div class="form-group">
+                    <label for="password">Mot de passe</label>
+                    <input type="password" id="password" name="password" placeholder="Mot de passe" required pattern="^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]+$" title="Le mot de passe doit faire entre 7 et 32 caractères et contenir au moins une lettre et un chiffre." minlength="<?php echo PASSWORD_MIN_LENGTH; ?>" maxlength="<?php echo PASSWORD_MAX_LENGTH; ?>" />
+                  </div>
+                </fieldset>
+                <button type="submit" class="pure-button pure-button-primary-join">Créer un compte</button>
+              </form>
+              <p>Vous avez déjà un compte ? <br><a id="create-account" href="javascript:login(1)">Vous connectez</a></p>
+            </div>
+            <?php
+            if (isset($_POST["name"], $_POST["surname"], $_POST["username"], $_POST["password"])) {
+              $username = strtolower(trim($_POST["username"]));
+              $result = createUser($db, $_POST["name"], $_POST["surname"], $username, $_POST["password"], 0);
+              switch ($result) {
+                case 0:
+                  $_SESSION["user_logged_in"] = getRows($db, "users", "*", "username = \"$username\"");
+                  echo '<script>window.location.replace(window.location.href);</script>';
+                  break;
+                case -1:
+                  throwError("Action impossible.", null, "msg", true, false);
+                  break;
+                case -2:
+                  throwError("Ce nom d'utilisateur est déjà utilisé.", null, "msg", true, false);
+                  break;
+                case -3:
+                  throwError("Les champs ne respectent pas les longueurs requises", null, "msg", true, false);
+                  break;
               }
             }
             ?>
-          </div>
-          <?php if ($_SESSION["modeLoginOrCreateUser"] == 1){
-            echo '<div class="form">
-            <form method="POST" action="" class="pure-form pure-form-stacked">
-              <fieldset>
-                <legend>Se connecter</legend>
-                <label for="username">Nom d\'utilisateur</label>
-                <input type="text" id="username" name="username" placeholder="Nom d\'utilisateur" pattern="^[^\x22]{0,255}$" title="Guillemets interdits" minlength="3" maxlength="16"><br>
-                <label for="stacked-password">Mot de passe</label>
-                <input type="password" id="stacked-password" name="password" placeholder="Mot de passe" pattern="^[^\x22]{0,255}$"><br>
-                <button type="submit" class="pure-button pure-button-primary-join">Se connecter</button>
-              </fieldset>
-            </form>
-            <p>Vous êtes professeur ? <br><a id="create-account" href="javascript:createAccount(0)">Créez votre compte !</a></p>
-            
-
-            </div>';
-
-            if (isset($_POST["username"], $_POST["password"])) {
-              $user_username = strtolower($_POST["username"]);
-              $user_password = $_POST["password"];
-              if (login_success($user_username, $user_password, $db)) {
-                $_SESSION["user_logged_in"] = getRows($db, "users", "*", "username = \"$user_username\"");
-                echo '<script>window.location.replace(window.location.href);</script>';
-              } else {
-                throwError("Identifiant ou mot de passe incorrect.");
-                unset($_POST["username"], $_POST["password"]);
-              }
-            }
-
-          } else {
-            echo '<div class="form">
-            <form method="POST" action="" class="pure-form pure-form-stacked">
-              <fieldset>
-                <legend>Créer un compte</legend>
-                <label for="name">Nom</label>
-                <input type="text" id="name" name="name" placeholder="Nom" required="" pattern="^[^\x22]{0,255}$" title="Guillemets interdits" minlength="3" maxlength="16"><br>
-                <label for="surname">Prénom</label>
-                <input type="text" id="surname" name="surname" placeholder="Prénom" required="" pattern="^[^\x22]{0,255}$" title="Guillemets interdits" minlength="3" maxlength="16"><br>
-                <label for="username">Nom d\'utilisateur</label>
-                <input type="text" id="username" name="username" placeholder="Nom d\'utilisateur" required="" pattern="^[^\s\xA0\x22]{0,255}$" title="Espaces et guillemets interdits" minlength="3" maxlength="16"><br>
-                <label for="stacked-password">Mot de passe</label>
-                <input type="password" id="stacked-password" name="password" placeholder="Mot de passe" required="" pattern="^[^\s\xA0\x22]{0,255}$" title="Espaces et guillemets interdits"><br>
-                <button type="submit" class="pure-button pure-button-primary-join">Créer un compte</button>
-              </fieldset>
-            </form>
-            <p>Vous avez déjà un compte ? <br><a id="create-account" href="javascript:createAccount(1)">Vous connectez</a></p>
-
-            </div>';
-
-            if (isset($_POST["name"], $_POST["surname"], $_POST["username"], $_POST["password"])) {
-              sleep(1);
-              $resultCreateUser = createUser($db, strtoupper($_POST["name"]), $_POST["surname"], $_POST["username"], $_POST["password"], 0);
-              if (! $resultCreateUser){
-              echo '<p style="color: red; font-weight: bolder;">Nom d\'utilisateur déjà existant !</p>';
-              } else {
-                $_SESSION["user_logged_in"] = getRows($db, "users", "*", "username = \"{$_POST["username"]}\"");
-                $_SESSION["modeLoginOrCreateUser"] = 1;
-                echo '<script>window.location.replace(window.location.href);</script>';
-              }
-            }
-          }?>
+          <?php endif; ?>
         </section>
       </div>
     </div>
-    <?php include("./include/footer.php"); ?>
-    <?php
-    if (isset($_SESSION["error-message"])) {
-      throwError($_SESSION["error-message"]);
-      unset($_SESSION["error-message"]);
-    }
-    ?>
-  </div>
-  <script>
-    function createAccount(changeModeLoginOrCreate){
-      jQuery.ajax({
-        type: "POST",
-        url: "login.php",
-        data: {modeLoginOrCreateUser : changeModeLoginOrCreate},
-        success: function(response) {
-          window.location.replace(window.location.href);
-        }
-      });
-    }
-  </script>
-    
-  <?php 
-    if (isset($_POST["modeLoginOrCreateUser"])){
-      $_SESSION["modeLoginOrCreateUser"] = $_POST["modeLoginOrCreateUser"];
-    }
-  ?>
+    <script>
+      function login(mode) {
+        jQuery.ajax({
+            type: "POST",
+            url: "login.php",
+            data: {login_mode: mode},
+            success: function(response) {
+              const data = JSON.parse(response);
+              if (data.success) {
+                sessionStorage.setItem("scrollTo", "S'identifier");
+                window.location.href = window.location.href;
+              } 
+            }
+          });
+      }
 
-  
+      window.onload = function() {
+        const scrollTo = sessionStorage.getItem("scrollTo");
+        if (scrollTo) {
+          document.getElementById(scrollTo).scrollIntoView();
+          sessionStorage.removeItem("scrollTo");
+        }
+      }
+    </script>
+    <?php include "./include/footer.php"; ?>
+  </div>
   <script src="./js/ui.js"></script>
-  <?php include("./include/timer.php"); ?>
+  <?php include "./include/timer.php"; ?>
 </body>
 </html>

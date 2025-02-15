@@ -4,7 +4,7 @@
 /* Le sélecteur "body" est utilisé pour appliquer des styles à l'ensemble du contenu de la page */
 body {
     color: #777;
-    font-family: Roboto;
+    font-family: "Roboto", "Arial", sans-serif;
 }
 
 .pure-img-responsive { /* Ceci est un sélecteur de classe */
@@ -502,7 +502,7 @@ kbd {
     text-shadow: 0 1px 1px rgba(0, 0, 0, 0.2);
 }
 
-
+.button-primary,
 .button-success,
 .button-error,
 .button-warning,
@@ -514,6 +514,10 @@ kbd {
 
 .button-success {
     background: rgb(28, 184, 65);
+}
+
+.button-primary {
+    background: #0078e7;
 }
 
 .button-error {
@@ -548,6 +552,12 @@ kbd {
 .reset-button:focus,
 .reset-button:hover {
     background-color: #3B0D11;
+}
+
+.actions {
+    display: flex;
+    flex-direction: row;
+    gap: 1%;
 }
 
 .create-session-button {
@@ -647,6 +657,7 @@ kbd {
     text-align: center;
     vertical-align: middle;
     border-top: 1px solid #cbcbcb;
+    white-space: nowrap;
 }
 
 .button-kick,
@@ -698,9 +709,9 @@ kbd {
 
 .error-message {
     display: block;
-    unicode-bidi: isolate;
     position: relative;
     padding: 1rem 1rem;
+    margin-top: 1rem;
     margin-bottom: 1rem;
     border: 1px solid transparent;
     border-radius: .25rem;
@@ -709,9 +720,21 @@ kbd {
     border-color: #f5c2c7;
 }
 
+.success-message {
+    display: block;
+    position: relative;
+    padding: 1rem 1rem;
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+    border: 1px solid transparent;
+    border-radius: .25rem;
+    color: #0f5132;
+    background-color: #d1e7dd;
+    border-color: #badbcc;
+}
+
 .info-message {
     display: block;
-    unicode-bidi: isolate;
     position: relative;
     padding: 1rem 1rem;
     margin-top: 1rem;
@@ -839,4 +862,8 @@ textarea {
 .session-code-controls {
     display: flex;
     flex-direction: row;
+}
+
+.form-group {
+    margin-bottom: 10px;
 }

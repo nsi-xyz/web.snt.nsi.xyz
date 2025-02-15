@@ -9,12 +9,10 @@ include("../include/checksession.php");
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="description" content="Le web, également connu sous le nom de World Wide Web (WWW), est un système d'information en ligne qui permet de consulter et de partager des documents et des ressources sur Internet. Sa découverte est au programme de SNT, en classe de seconde en France.">
-  <title><?php echo traduction("stats_website_title"); ?></title>
+  <title><?php echo traduction("myaccount_website_title"); ?></title>
   <link rel="stylesheet" href="../css/pure-min.css">
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20,400,0,0">
   <link rel="stylesheet" href="../css/style.css">
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body>
   <div id="layout">
@@ -24,25 +22,10 @@ include("../include/checksession.php");
     <?php include("./include/nav_panel.php"); ?>
     <div id="main">
       <div class="header">
-        <h1><?php echo traduction("stats_header_h1"); ?></h1>
-        <h2><?php echo traduction("stats_header_h2"); ?></h2>
+        <h1><?php echo traduction("myaccount_header_h1"); ?></h1>
+        <h2><?php echo traduction("myaccount_header_h2"); ?></h2>
       </div>
       <div class="content">
-      <?php
-      if (isset($_GET["session"])) {
-        $code = strtoupper($_GET["session"]);
-        if (rowsCount($db, "sessions", "code = \"$code\"") == 1) {
-          $session = getRows($db, "sessions", "*", "code = \"$code\"");
-          $session_id = $session["id"];
-          $session_id_owner = $session["id_owner"];
-          $session_owner = getRows($db, "users", "username", "id = \"$session_id_owner\"")["username"];
-          $session_users = getRows($db, "users_session", "*", "id_session = \"$session_id\"", 1);
-          include("./include/stats_viewer.php");
-        }
-      } else {
-        include("./include/stats_nosession.php");
-      }
-      ?>
       </div>
     </div>
     <?php include("../include/footer.php"); ?>

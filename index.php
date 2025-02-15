@@ -1,7 +1,7 @@
 <?php
-include("./panel/include/db.php");
-include("./include/functions.php");
-include("./include/checksession.php");
+include "./panel/include/db.php";
+include "./include/functions.php";
+include "./include/checksession.php";
 ?>
 <!DOCTYPE html> <!-- <?php echo traduction("comment_index_welcome"); ?> -->
 <html lang="fr">
@@ -13,6 +13,7 @@ include("./include/checksession.php");
   <link rel="stylesheet" href="css/pure-min.css">
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20,400,0,0">
   <link rel="stylesheet" href="css/style.css">
+  <script src="./js/messages.js"></script>
 </head>
 <body>
   <div id="layout">
@@ -28,6 +29,7 @@ include("./include/checksession.php");
       </div>
       <div class="content">
         <msg></msg>
+        <info></info>
         <h2 class="content-subhead"><?php echo traduction("home_content_subhead1_h2"); ?></h2>
         <p class="p-content"><?php echo traduction("home_content_subhead1_p"); ?></p>
         <h2 class="content-subhead"><?php echo traduction("home_content_subhead2_h2"); ?></h2>
@@ -43,6 +45,11 @@ include("./include/checksession.php");
       </div>
     </div>
     <?php include("./include/footer.php"); ?>
+    <?php if ((strpos(traduction("info_home"), "Missing Translation") === false) && (traduction("info_home") != "")) : ?>
+      <script>
+        throwInfo("<?php echo traduction("info_home"); ?>", "info");
+      </script>
+    <?php endif; ?>
   </div>
   <script src="./js/ui.js"></script>
   <?php include("./include/timer.php"); ?>

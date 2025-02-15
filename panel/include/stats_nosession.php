@@ -4,7 +4,7 @@
 <?php
 $id_user = $_SESSION["user_logged_in"]["id"];
 if (rowsCount($db, "sessions", "id_owner = $id_user AND status = 0") > 0) {
-    $sessions = getRows($db, "sessions", "*", "id_owner = $id_user AND status = 0 ORDER BY date DESC");
+    $sessions = getRows($db, "sessions", "*", "id_owner = $id_user AND status = 0 ORDER BY date DESC", 1);
 } else {
     $sessions = array();
 }

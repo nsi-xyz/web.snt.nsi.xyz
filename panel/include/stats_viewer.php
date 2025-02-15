@@ -6,13 +6,14 @@ usort($data_session, function ($a, $b) {
 });
 
 $data_session_json = json_encode($data_session);
+$longSession = $session["duration"] >= 86400;
+$dateFormat = $longSession ? "H:i:s (d/m/Y)" : "H:i:s";
 ?>
 <?php if (!isset($_GET["user"])) : ?>
     <h2 class="content-subhead">Informations générales de la session</h2>
     <ul>
         <?php
         $session_date = (new DateTime())->setTimestamp(strtotime($session["date"]));
-        $dateFormatter = new IntlDateFormatter('fr_FR', IntlDateFormatter::FULL, IntlDateFormatter::MEDIUM);
         ?>
         <li>Identifiant : #<?php echo $session_id; ?> (<?php echo $_GET["session"]; ?>)</li>
         <li>Hôte de la session : <?php echo $session_owner; ?></li>
@@ -36,7 +37,7 @@ $data_session_json = json_encode($data_session);
             <tr>
                 <th>Pseudo</th>
                 <th colspan="10">Énigmes</th>
-                <th>Heure</th>
+                <th>Date</th>
                 <th>Actions</th>
             </tr>
         </thead>
@@ -49,7 +50,7 @@ $data_session_json = json_encode($data_session);
                     $user_session_puzzle_class = in_array($i, array_column($user_session["puzzles"], 0)) ? "td-resolved" : "td-unresolved";
                     echo '<td id="user-puzzle-'.$i.'-'.$user_session["id"].'" class="'.$user_session_puzzle_class.'">'.str_pad($i, 2, "0", STR_PAD_LEFT).'</td>';
                 }
-                echo '<td id="user-joined-at-'.$user_session["id"].'">'.(new DateTime($user_session["joined_at"]))->format("H:i:s").'</td>';
+                echo '<td id="user-joined-at-'.$user_session["id"].'">'.(new DateTime($user_session["joined_at"]))->format($dateFormat).'</td>';
                 echo '<td><div><button type="button" class="button-more-infos pure-button" onclick="moreInfos('.$user_session["id"].')">En savoir plus</button></div></td>';
                 echo '</tr>';
             }
@@ -88,7 +89,7 @@ $data_session_json = json_encode($data_session);
         <thead>
             <tr>
                 <th>Événement</th>
-                <th>Heure</th>
+                <th>Date</th>
                 <th>Durée depuis le dernier événément</th>
                 <th>Durée depuis l'arrivée</th>
             </tr>
@@ -96,7 +97,7 @@ $data_session_json = json_encode($data_session);
         <tbody>
             <tr>
                 <td>A rejoint</td>
-                <td><?php echo (new DateTime($user_session_infos["joined_at"]))->format("H:i:s"); ?></td>
+                <td><?php echo (new DateTime($user_session_infos["joined_at"]))->format($dateFormat); ?></td>
                 <td>00h00m00s</td>
                 <td>00h00m00s</td>
             </tr>
@@ -106,7 +107,7 @@ $data_session_json = json_encode($data_session);
                 $resolved_at = new DateTime($user_session_infos["puzzles"][$i][1]);
                 echo '<tr>';
                 echo '<td>A réussi l\'énigme '.$user_session_infos["puzzles"][$i][0].'</td>';
-                echo '<td>'.$resolved_at->format("H:i:s").'</td>';
+                echo '<td>'.$resolved_at->format($dateFormat).'</td>';
                 if ($i == 0) {
                     $interval = $joined_at->diff($resolved_at);
                     echo '<td>'.$interval->format("%Hh%Im%Ss").'</td>';
@@ -123,7 +124,7 @@ $data_session_json = json_encode($data_session);
                 $finished_at = new DateTime($user_session_infos["finished_at"]);
                 echo '<tr>';
                 echo '<td>&#x1F389; A terminé</td>';
-                echo '<td>'.$finished_at->format("H:i:s").'</td>';
+                echo '<td>'.$finished_at->format($dateFormat).'</td>';
                 $interval = (new DateTime($user_session_infos["puzzles"][array_key_last($user_session_infos["puzzles"])][1]))->diff($finished_at);
                 echo '<td>'.$interval->format("%Hh%Im%Ss").'</td>';
                 $interval = $joined_at->diff($finished_at);

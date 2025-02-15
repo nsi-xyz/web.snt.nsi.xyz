@@ -9,7 +9,7 @@ include("../include/checksession.php");
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="description" content="Le web, également connu sous le nom de World Wide Web (WWW), est un système d'information en ligne qui permet de consulter et de partager des documents et des ressources sur Internet. Sa découverte est au programme de SNT, en classe de seconde en France.">
-  <title>Accueil • web.snt.nsi.xyz</title>
+  <title><?php echo traduction("panel_website_title"); ?></title>
   <link rel="stylesheet" href="../css/pure-min.css">
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20,400,0,0">
   <link rel="stylesheet" href="../css/style.css">
@@ -22,15 +22,15 @@ include("../include/checksession.php");
     <?php include("./include/nav_panel.php"); ?>
     <div id="main">
       <div class="header">
-        <h1>web.snt.nsi.xyz</h1>
-        <h2>10 énigmes à résoudre pour découvrir le web</h2>
+        <h1><?php echo traduction("panel_header_h1"); ?></h1>
+        <h2><?php echo traduction("panel_header_h2"); ?></h2>
       </div>
       <div class="content">
         <h2 class="content-subhead">Panneau d'administration</h2>
         <p class="p-content">Bienvenue sur le panneau d'administration de web.snt.nsi.xyz !</p>
         <p class="p-content">Ce panneau vous permet de créer des sessions, par exemple pour vos élèves si vous êtes enseignant, de parcourir vos anciennes sessions et d'avoir des statistiques détaillés sur ces dernières.</p>
-        <h2 class="content-subhead">Mon compte</h2>
-        <p class="p-content">Lorsque votre compte est créé, il n'est actuellement pas possible de le modifier ou le supprimer par vous-même.</p>
+        <h2 class="content-subhead">En quelques chiffres</h2>
+        <p class="p-content"></p>
         <h2 class="content-subhead">Gestion des données</h2>
         <p class="p-content">Toutes les données enregistrées le sont de manière sécurisée. Cela concerne les données de votre compte, ou encore les données relatives à vos sessions (pseudos des participants, résultats, etc.). Vous pouvez à tout moment demander la suppression de vos données et celles de vos sessions. Pour exercer ce droit, veuillez nous contacter.</p>
         <h2 class="content-subhead">Nous contacter</h2>
