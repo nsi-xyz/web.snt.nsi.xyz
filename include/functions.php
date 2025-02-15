@@ -230,14 +230,13 @@ function createUser($database, $name, $surname, $username, $password, $id_group)
 
 function updateUser($database, $data_user, $new_data_user){
   $data_user_id = $data_user["id"];
-  $new_data_user["username"] = strtolower(trim($new_data_user["username"]));
-  if ($data_user["username"] == "admin" && isset($new_data_user["username"]) && $new_data_user["username"] != "admin") {
+  if ($data_user["username"] == "admin" && isset($new_data_user["username"]) && strtolower(trim($new_data_user["username"])) != "admin") {
     return -1;
   } else if ($data_user["username"] != "admin") {
     $username_registered_list = getRows($database, "users", "username", "1", 1);
     if (count($username_registered_list) >= 1) {
       for ($i = 0; $i < count($username_registered_list); $i++) {
-        if (in_array($new_data_user["username"], $username_registered_list[$i]) && $data_user["username"] != $username_registered_list[$i]["username"]) {
+        if (in_array(strtolower(trim($new_data_user["username"])), $username_registered_list[$i]) && $data_user["username"] != $username_registered_list[$i]["username"]) {
           return -2;        
         }
       }
@@ -245,7 +244,7 @@ function updateUser($database, $data_user, $new_data_user){
   }
   $new_name = strtoupper(trim($new_data_user["name"]));
   $new_surname = trim($new_data_user["surname"]);
-  $new_username = $data_user["username"] == "admin" ? "admin" : $new_data_user["username"];
+  $new_username = $data_user["username"] == "admin" ? "admin" : strtolower(trim($new_data_user["username"]));
   if (isValidLength($new_name, NAME_MIN_LENGTH, NAME_MAX_LENGTH) && isValidLength($new_surname, NAME_MIN_LENGTH, NAME_MAX_LENGTH) && isValidLength($new_username, USERNAME_MIN_LENGTH, USERNAME_MAX_LENGTH)) {
     updateRow($database, "users", array("name" => $new_name, "surname" => $new_surname, "username" => $new_username, "last_update" => date('Y-m-d H:i:s', time()), "id_group" => $new_data_user["id_group"]), "id = $data_user_id");
     return 0;
