@@ -134,7 +134,7 @@ if (isset($_POST["create"], $_POST["user_name"], $_POST["user_surname"], $_POST[
               </div>
               <div class="form-group">
                 <label for="password">Mot de passe</label>
-                <input type="password" id="password" name="user_password" placeholder="Mot de passe" required pattern="^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]+$" title="Le mot de passe doit faire entre 7 et 32 caractères et contenir au moins une lettre et un chiffre." minlength="<?php echo PASSWORD_MIN_LENGTH; ?>" maxlength="<?php echo PASSWORD_MAX_LENGTH; ?>" />
+                <input type="password" id="password" name="user_password" placeholder="Mot de passe" required title="Un bon mot de passe doit faire entre 7 et 32 caractères, contenir au moins une lettre, un chiffre, et un caractère spécial." minlength="<?php echo PASSWORD_MIN_LENGTH; ?>" maxlength="<?php echo PASSWORD_MAX_LENGTH; ?>" />
               </div>
               <div class="form-group">
               <label for="checkbox-radio-option-one">
