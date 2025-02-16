@@ -95,7 +95,7 @@ if (isset($_POST["create"], $_POST["user_name"], $_POST["user_surname"], $_POST[
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="description" content="Le web, également connu sous le nom de World Wide Web (WWW), est un système d'information en ligne qui permet de consulter et de partager des documents et des ressources sur Internet. Sa découverte est au programme de SNT, en classe de seconde en France.">
-  <title><?php echo traduction("users_global_title"); ?></title>
+  <title><?php echo traduction("users_website_title"); ?></title>
   <link rel="stylesheet" href="../css/pure-min.css">
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20,400,0,0">
   <link rel="stylesheet" href="../css/style.css">
@@ -111,7 +111,7 @@ if (isset($_POST["create"], $_POST["user_name"], $_POST["user_surname"], $_POST[
     <div id="main">
       <div class="header">
         <h1><?php echo traduction("users_header_h1"); ?></h1>
-        <h2><?php echo traduction("users_header_h1"); ?></h2>
+        <h2><?php echo traduction("users_header_h2"); ?></h2>
       </div>
       <div class="content">
         <?php if (!isset($_GET["user_id"])) : ?>
@@ -169,7 +169,7 @@ if (isset($_POST["create"], $_POST["user_name"], $_POST["user_surname"], $_POST[
             <?php endif; ?>
           </form>
           <h2 class="content-subhead">Liste des comptes</h2>
-          <p class="p-content">Liste des comptes actifs</p>
+          <p class="p-content">Liste des comptes actifs.</p>
           <table class="pure-table">
             <thead>
               <tr>

@@ -1,4 +1,4 @@
-<div class="footer">
+<div id="footer">
   <p class="footer-content"><?php echo traduction("footer_description_line_1"); ?></p>
   <p class="footer-content"><?php echo traduction("footer_description_line_2"); ?></p>
   <p class="footer-content"><?php echo traduction("footer_version"); ?> <?php echo VERSION; ?></p>

@@ -1,16 +1,13 @@
 <?php
 $users_session_users_list = getRows($db, "users_session", "pseudo, joined_at", "id_session = $id_session");
-if (!isset($_SESSION["sort-by"])) {
-    $_SESSION["sort-by"] = "Date";
-}
-if (isset($_GET["sort-by"])) {
-    $_SESSION["sort-by"] = urldecode($_GET["sort-by"]);
-}
 ?>
+<?php if (!isset($_GET["display"])) : ?>
 <h2 class="content-subhead">Ma session</h2>
 <p class="p-content">Gestion et informations sur votre session.</p>
+<a class="link" href="#" onclick="window.open('./session.php?display=0', 'session', 'width=800,height=600'); return false;">Afficher dans une nouvelle fenêtre</a>
 <h3 class="content-subhead">Code de session</h3>
 <p class="p-content">Code de la session à partager aux participants :</p>
+<?php endif; ?>
 <div class="session-code-controls">
     <button class="session-code-rezize-button" onclick="resizeCode('-')"><img class="session-code-zoom-icon" src="../assets/dezoom_nixxdsgn.png" title="Zoom • Réduire"></button>
     <p class="session-code-code">Zoom du code : <span id="zoom-value">100%</span></p>
@@ -22,10 +19,11 @@ if (isset($_GET["sort-by"])) {
             <img id="session-code-copy-icon" src="../assets/copy_anggara.png" title="Copier le code dans le presse-papier">
     </button>
  </div>
+ <?php if (!isset($_GET["display"])) : ?>
 <h3 class="content-subhead">Participants à la session</h3>
-<p></p>
 <p class="p-content">La mise à jour du tableau en temps réel peut prendre jusqu'à 10 secondes. Actualiser la page permet une mise à jour immédiate.</p>
-<form method="GET" action="" class="pure-form">
+<?php endif; ?>
+<form method="POST" action="" class="pure-form">
     <fieldset>
         <label for="sorting-type">Trier par</label>
         <select id="sorting-type" name="sort-by">
@@ -47,10 +45,13 @@ if (isset($_GET["sort-by"])) {
     </thead>
     <tbody id="users-session-list"></tbody>
 </table>
+<?php if (!isset($_GET["display"])) : ?>
 <h3 class="content-subhead">Gestion de ma session</h3>
-<p class="p-content">Fin de la session dans : <timer>#ToDo</timer></p>
+<?php endif; ?>
+<p class="p-content">Fin de la session dans : <timer>?</timer></p>
+<?php if (!isset($_GET["display"])) : ?>
 <button class ="stop-button" type="button" onclick="stop(<?php echo $id_session; ?>, 1)">Forcer l'arrêt de la session</button>
-
+<?php endif; ?>
 <script>
     let longSession = <?php echo $session["duration"] >= 86400 ? 1 : 0; ?>;
 

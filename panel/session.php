@@ -20,7 +20,6 @@ if (isset($_POST["stop_session"], $_POST["force"])) {
   echo json_encode(["success" => true, "redir" => "./stats.php?session=$code_session"]);
   exit();
 }
-
 if (isset($_POST["kick_id"], $_POST["kick_session"], $_POST["kick_pseudo"])) {
   $user_session_id = $_POST["kick_id"];
   $user_id_session = $_POST["kick_session"];
@@ -34,7 +33,13 @@ if (isset($_POST["kick_id"], $_POST["kick_session"], $_POST["kick_pseudo"])) {
   }
   exit();
 }
-
+if (!isset($_SESSION["sort-by"])) {
+  $_SESSION["sort-by"] = "Date";
+}
+if (isset($_POST["sort-by"])) {
+  $_SESSION["sort-by"] = urldecode($_POST["sort-by"]);
+  redirect(null, true);
+}
 ?>
 <!DOCTYPE html>
 <html lang="fr">
@@ -52,10 +57,13 @@ if (isset($_POST["kick_id"], $_POST["kick_session"], $_POST["kick_pseudo"])) {
 </head>
 <body>
   <div id="layout">
+    <?php if (!isset($_GET["display"])) : ?>
+      <?php ?>
     <a href="#menu" id="menuLink" class="menu-link">
       <span></span>
     </a>
     <?php include("./include/nav_panel.php"); ?>
+    <?php endif; ?>
     <div id="main">
       <div class="header">
         <h1><?php echo traduction("session_header_h1"); ?></h1>
@@ -76,6 +84,12 @@ if (isset($_POST["kick_id"], $_POST["kick_session"], $_POST["kick_pseudo"])) {
   <?php include("../include/timer.php"); ?>
   <script>
     const currentPuzzle = null;
+    const urlParams = new URLSearchParams(window.location.search);
+    const display_reduced = urlParams.has("display");
+    if (display_reduced) {
+      document.getElementById("layout").style.paddingLeft = 0;
+      document.getElementById("footer").style.backgroundColor = "#FFF";
+    }
   </script>
   <script src="../js/ui.js"></script>
 </body>
