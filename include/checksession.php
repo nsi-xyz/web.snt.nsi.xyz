@@ -2,7 +2,7 @@
 $dateFormatter = new IntlDateFormatter('fr_FR', IntlDateFormatter::FULL, IntlDateFormatter::MEDIUM);
 $collator = collator_create('fr_FR');
 // Constantes globales.
-define("VERSION", "2.10.3");
+define("VERSION", "2.10.4");
 define("NAME_MIN_LENGTH", 2);
 define("NAME_MAX_LENGTH", 24);
 define("PSEUDO_MIN_LENGTH", 3);
@@ -11,6 +11,12 @@ define("USERNAME_MIN_LENGTH", 3);
 define("USERNAME_MAX_LENGTH", 16);
 define("PASSWORD_MIN_LENGTH", 7);
 define("PASSWORD_MAX_LENGTH", 32);
+define("PHPPATTERN_NAME", "/^(?![\-' ])(?!.*[\-']{3})(?!.* {2})[A-Za-zÀ-ÖØ-öø-ÿ' \-]+(?<![\-' ])$/u");
+define("HTMLPATTERN_NAME", "^(?![\-' ])(?!.*[\-']{3})(?!.* {2})[A-Za-zÀ-ÖØ-öø-ÿ' \-]+(?<![\-' ])$");
+define("PHPPATTERN_USERNAME", "/^[a-z][a-z0-9]*([.\-][a-z0-9]+)*$/");
+define("HTMLPATTERN_USERNAME", "^[a-z][a-z0-9]*([.\-][a-z0-9]+)*$");
+define("PHPPATTERN_PSEUDO", "/^(?![\-' .])(?!.*[\-'.]{3})(?!.* {2})(?!.*\.\.)(?!.*[\-']$)[A-Za-zÀ-ÖØ-öø-ÿ' .\-]+[.]?$/u");
+define("HTMLPATTERN_PSEUDO", "^(?![\-' .])(?!.*[\-'.]{3})(?!.* {2})(?!.*\.\.)(?!.*[\-']$)[A-Za-zÀ-ÖØ-öø-ÿ' .\-]+[.]?$");
 define("SESSDURATION", 10800);
 define("COOKIEAUTHDURATION", 604800);
 define("COOKIE7", array(

@@ -61,6 +61,9 @@ if ((isset($_POST["apply"], $_POST["user_name"], $_POST["user_surname"], $_POST[
     case -3:
       throwError("Les champs ne respectent pas les longueurs requises", null, "msg", true, true);
       break;
+    case -4:
+      throwError("Les champs utilisent des caractères non autorisés.", null, "msg", true, true);
+      break;
   }
 } else if (isset($_POST["reset_password"]) && !isset($_POST["cancel"])) {
   $_SESSION["edit_user_id"] = 0;
@@ -85,6 +88,9 @@ if (isset($_POST["create"], $_POST["user_name"], $_POST["user_surname"], $_POST[
       break;
     case -3:
       throwError("Les champs ne respectent pas les longueurs requises", null, "msg", true, true);
+      break;
+    case -4:
+      throwError("Les champs utilisent des caractères non autorisés.", null, "msg", true, true);
       break;
   }
 }
@@ -122,15 +128,15 @@ if (isset($_POST["create"], $_POST["user_name"], $_POST["user_surname"], $_POST[
               <h3 class="content-subhead">Créer un nouveau compte</h3>
               <div class="form-group">
                 <label for="name">Nom</label>
-                <input type="text" id="name" name="user_name" placeholder="Nom" required pattern="^^[^\xA0\x22\\]+$" minlength="<?php echo NAME_MIN_LENGTH; ?>" maxlength="<?php echo NAME_MAX_LENGTH; ?>" />
+                <input type="text" id="name" name="user_name" placeholder="Nom" required pattern="<?php echo HTMLPATTERN_NAME; ?>" minlength="<?php echo NAME_MIN_LENGTH; ?>" maxlength="<?php echo NAME_MAX_LENGTH; ?>" />
               </div>
               <div class="form-group">
                 <label for="surname">Prénom</label>
-                <input type="text" id="surname" name="user_surname" placeholder="Prénom" required pattern="^[^\xA0\x22\\]+$" minlength="<?php echo NAME_MIN_LENGTH; ?>" maxlength="<?php echo NAME_MAX_LENGTH; ?>" />
+                <input type="text" id="surname" name="user_surname" placeholder="Prénom" required pattern="<?php echo HTMLPATTERN_NAME; ?>" minlength="<?php echo NAME_MIN_LENGTH; ?>" maxlength="<?php echo NAME_MAX_LENGTH; ?>" />
               </div>
               <div class="form-group">
                 <label for="username">Nom d'utilisateur</label>
-                <input type="text" id="username" name="user_username" placeholder="Nom d'utilisateur" required pattern="^[^\s\xA0\x22\\]+$" minlength="<?php echo USERNAME_MIN_LENGTH; ?>" maxlength="<?php echo USERNAME_MAX_LENGTH; ?>" />
+                <input type="text" id="username" name="user_username" placeholder="Nom d'utilisateur" required pattern="<?php echo HTMLPATTERN_USERNAME; ?>" minlength="<?php echo USERNAME_MIN_LENGTH; ?>" maxlength="<?php echo USERNAME_MAX_LENGTH; ?>" />
               </div>
               <div class="form-group">
                 <label for="password">Mot de passe</label>
@@ -146,16 +152,16 @@ if (isset($_POST["create"], $_POST["user_name"], $_POST["user_surname"], $_POST[
               <h3 class="content-subhead">Modifier un compte</h3>
               <div class="form-group">
                 <label for="name">Nom</label>
-                <input type="text" id="name" name="user_name" placeholder="Nom" required pattern="^[^\xA0\x22\\]+$" value="<?php echo $data_user["name"]; ?>" minlength="<?php echo NAME_MIN_LENGTH; ?>" maxlength="<?php echo NAME_MAX_LENGTH; ?>" />
+                <input type="text" id="name" name="user_name" placeholder="Nom" required pattern="<?php echo HTMLPATTERN_NAME; ?>" value="<?php echo $data_user["name"]; ?>" minlength="<?php echo NAME_MIN_LENGTH; ?>" maxlength="<?php echo NAME_MAX_LENGTH; ?>" />
               </div>
               <div class="form-group">
                 <label for="surname">Prénom</label>
-                <input type="text" id="surname" name="user_surname" placeholder="Prénom" required pattern="^[^\xA0\x22\\]+$" value="<?php echo $data_user["surname"]; ?>" minlength="<?php echo NAME_MIN_LENGTH; ?>" maxlength="<?php echo NAME_MAX_LENGTH; ?>" />
+                <input type="text" id="surname" name="user_surname" placeholder="Prénom" required pattern="<?php echo HTMLPATTERN_NAME; ?>" value="<?php echo $data_user["surname"]; ?>" minlength="<?php echo NAME_MIN_LENGTH; ?>" maxlength="<?php echo NAME_MAX_LENGTH; ?>" />
               </div>
               <?php if ($data_user["username"] != "admin") : ?>
                 <div class="form-group">
                   <label for="username">Nom d'utilisateur</label>
-                  <input type="text" id="username" name="user_username" placeholder="Nom d'utilisateur" required pattern="^[^\s\xA0\x22\\]+$" value="<?php echo $data_user["username"]; ?>" minlength="<?php echo USERNAME_MIN_LENGTH; ?>" maxlength="<?php echo USERNAME_MAX_LENGTH; ?>" />
+                  <input type="text" id="username" name="user_username" placeholder="Nom d'utilisateur" required pattern="<?php echo HTMLPATTERN_USERNAME; ?>" value="<?php echo $data_user["username"]; ?>" minlength="<?php echo USERNAME_MIN_LENGTH; ?>" maxlength="<?php echo USERNAME_MAX_LENGTH; ?>" />
                 </div>
                 <div class="form-group">
                 <label for="checkbox-radio-option-one">

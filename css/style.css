@@ -812,6 +812,7 @@ textarea {
     display: flex;
     justify-content: center;
     align-items: center;
+    position: relative;
 }
 
 .session-code-button {
@@ -867,4 +868,25 @@ textarea {
 
 .form-group {
     margin-bottom: 12.5px;
+}
+
+.tooltip {
+    visibility: hidden;
+    background-color: black;
+    color: white;
+    text-align: center;
+    padding: 5px 10px;
+    border-radius: 5px;
+    position: absolute;
+    top: -40px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 14px;
+    opacity: 0;
+    transition: opacity 0.3s ease-in-out;
+}
+
+.tooltip.show {
+    visibility: visible;
+    opacity: 1;
 }

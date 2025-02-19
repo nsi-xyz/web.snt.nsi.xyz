@@ -1,9 +1,29 @@
 <?php
-include("./include/db.php");
-include("../include/functions.php");
-include("../include/checksession.php");
+include "./include/db.php";
+include "../include/functions.php";
+include "../include/checksession.php";
 $user_id = $_SESSION["user_logged_in"]["id"];
 $data_user = getRows($db, "users", "id, name, surname, username, created_at, last_update, last_connexion, id_group", "id = $user_id");
+if (isset($_POST["apply_infos"], $_POST["name"], $_POST["surname"], $_POST["username"])) {
+  $result = updateUser($db, $data_user, array("name" => $_POST["name"], "surname" => $_POST["surname"], "username" => $_POST["username"], "id_group" => $_SESSION["user_logged_in"]["id_group"]));
+  switch ($result) {
+    case 0:
+      throwSuccess("Informations mises à jour avec succès.", null, "msg", true, true);
+      break;
+    case -1:
+      throwError("Action impossible.", null, "msg", true, true);
+      break;
+    case -2:
+      throwError("Ce nom d'utilisateur est déjà utilisé.", null, "msg", true, true);
+      break;
+    case -3:
+      throwError("Les champs ne respectent pas les longueurs requises.", null, "msg", true, true);
+      break;
+    case -4:
+      throwError("Les champs utilisent des caractères non autorisés.", null, "msg", true, true);
+      break;
+  }
+}
 ?>
 <!DOCTYPE html>
 <html lang="fr">
@@ -15,6 +35,7 @@ $data_user = getRows($db, "users", "id, name, surname, username, created_at, las
   <link rel="stylesheet" href="../css/pure-min.css">
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20,400,0,0">
   <link rel="stylesheet" href="../css/style.css">
+  <script src="../js/messages.js"></script>
 </head>
 <body>
   <div id="layout">
@@ -31,22 +52,23 @@ $data_user = getRows($db, "users", "id, name, surname, username, created_at, las
         <h2 class="content-subhead">Mon compte</h2>
         <p class="p-content">Gestion de votre compte.</p>
         <h3 class="content-subhead">Mes informations</h3>
+        <msg></msg>
         <section class="forms">
           <div class="form">
             <form method="POST" action="" class="pure-form pure-form-stacked">
               <legend>Mes informations personnelles</legend>
               <div class="form-group">
                 <label for="name">Nom</label>
-                <input type="text" id="name" name="name" placeholder="Nom" required pattern="^[^\xA0\x22\\]+$" value="<?php echo $data_user["name"]; ?>" minlength="<?php echo NAME_MIN_LENGTH; ?>" maxlength="<?php echo NAME_MAX_LENGTH; ?>" />
+                <input type="text" id="name" name="name" placeholder="Nom" required pattern="<?php echo HTMLPATTERN_NAME; ?>" value="<?php echo $data_user["name"]; ?>" minlength="<?php echo NAME_MIN_LENGTH; ?>" maxlength="<?php echo NAME_MAX_LENGTH; ?>" />
               </div>
               <div class="form-group">
                 <label for="surname">Prénom</label>
-                <input type="text" id="surname" name="surname" placeholder="Prénom" required pattern="^[^\xA0\x22\\]+$" value="<?php echo $data_user["surname"]; ?>" minlength="<?php echo NAME_MIN_LENGTH; ?>" maxlength="<?php echo NAME_MAX_LENGTH; ?>" />
+                <input type="text" id="surname" name="surname" placeholder="Prénom" required pattern="<?php echo HTMLPATTERN_NAME; ?>" value="<?php echo $data_user["surname"]; ?>" minlength="<?php echo NAME_MIN_LENGTH; ?>" maxlength="<?php echo NAME_MAX_LENGTH; ?>" />
               </div>
               <?php if ($data_user["username"] != "admin") : ?>
                 <div class="form-group">
                   <label for="username">Nom d'utilisateur</label>
-                  <input type="text" id="username" name="username" placeholder="Nom d'utilisateur" required pattern="^[^\s\xA0\x22\\]+$" value="<?php echo $data_user["username"]; ?>" minlength="<?php echo USERNAME_MIN_LENGTH; ?>" maxlength="<?php echo USERNAME_MAX_LENGTH; ?>" />
+                  <input type="text" id="username" name="username" placeholder="Nom d'utilisateur" required pattern="<?php echo HTMLPATTERN_USERNAME; ?>" value="<?php echo $data_user["username"]; ?>" minlength="<?php echo USERNAME_MIN_LENGTH; ?>" maxlength="<?php echo USERNAME_MAX_LENGTH; ?>" />
                 </div>
               <?php endif; ?>
               <button class ="button-success pure-button" name="apply_infos" type="submit">Appliquer</button>
@@ -74,7 +96,9 @@ $data_user = getRows($db, "users", "id, name, surname, username, created_at, las
         <h3 class="content-subhead">Danger Zone</h3>
         <p class="p-content">Ces actions sont irréversibles.</p>
         <button class ="button-warning pure-button" name="delete_sessions" type="submit">Supprimer toutes mes sessions</button>
-        <button class ="button-error pure-button" name="delete_account" type="submit">Supprimer mon compte</button>
+        <?php if ($data_user["username"] != "admin") : ?>
+          <button class ="button-error pure-button" name="delete_account" type="submit">Supprimer mon compte</button>
+        <?php endif; ?>
       </div>
     </div>
     <?php include("../include/footer.php"); ?>

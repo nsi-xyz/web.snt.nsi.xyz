@@ -213,6 +213,8 @@ function createUser($database, $name, $surname, $username, $password, $id_group)
   $username = strtolower(trim($username));
   if ($username == "admin") {
     return -1;
+  } else if (!isValidString($name, PHPPATTERN_NAME) || !isValidString($surname, PHPPATTERN_NAME) || !isValidString($username, PHPPATTERN_USERNAME)) {
+    return -4;
   } else {
     for ($i = 0; $i < count($username_registered_list); $i++) {
       if (in_array($username, $username_registered_list[$i])) {
@@ -232,6 +234,8 @@ function updateUser($database, $data_user, $new_data_user){
   $data_user_id = $data_user["id"];
   if ($data_user["username"] == "admin" && isset($new_data_user["username"]) && strtolower(trim($new_data_user["username"])) != "admin") {
     return -1;
+  } else if (!isValidString($new_data_user["name"], PHPPATTERN_NAME) || !isValidString($new_data_user["surname"], PHPPATTERN_NAME) || (isset($new_data_user["username"]) && !isValidString($new_data_user["username"], PHPPATTERN_USERNAME))) {
+    return -4;
   } else if ($data_user["username"] != "admin") {
     $username_registered_list = getRows($database, "users", "username", "1", 1);
     if (count($username_registered_list) >= 1) {
@@ -473,4 +477,8 @@ function resetPassword($database, $data_user) {
   $new_password = generatePassword();
   updateRow($database, "users", array("password" => password_hash($new_password, PASSWORD_DEFAULT), "last_update" => date('Y-m-d H:i:s', time())), "id = $user_id");
   throwSuccess("Mot de passe de <strong>".$user_username."</strong> mis à jour avec succès.<br>Le nouveau mot de passe est : <strong><code>".$new_password."</code></strong>, retenez-le bien !", null, "msg", true, true);
+}
+
+function isValidString($string, $pattern) {
+  return preg_match($pattern, $string);
 }

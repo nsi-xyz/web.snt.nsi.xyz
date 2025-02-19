@@ -4,7 +4,7 @@ $users_session_users_list = getRows($db, "users_session", "pseudo, joined_at", "
 <?php if (!isset($_GET["display"])) : ?>
 <h2 class="content-subhead">Ma session</h2>
 <p class="p-content">Gestion et informations sur votre session.</p>
-<a class="link" href="#" onclick="window.open('./session.php?display=0', 'session', 'width=800,height=600'); return false;">Afficher dans une nouvelle fenêtre</a>
+<a class="link" href="#" onclick="window.open('./session.php?display=0', 'session', 'width=800,height=600'); return false;">Afficher dans une nouvelle fenêtre réduite</a>
 <h3 class="content-subhead">Code de session</h3>
 <p class="p-content">Code de la session à partager aux participants :</p>
 <?php endif; ?>
@@ -18,6 +18,7 @@ $users_session_users_list = getRows($db, "users_session", "pseudo, joined_at", "
             <span id="session-code-code"><?php echo $session["code"]; ?></span>
             <img id="session-code-copy-icon" src="../assets/copy_anggara.png" title="Copier le code dans le presse-papier">
     </button>
+    <span class="tooltip" id="tooltip">Code copié !</span>
  </div>
  <?php if (!isset($_GET["display"])) : ?>
 <h3 class="content-subhead">Participants à la session</h3>
@@ -250,12 +251,13 @@ $users_session_users_list = getRows($db, "users_session", "pseudo, joined_at", "
 
     function copyToClipboard() {
         let codeElement = document.getElementById("session-code-code");
-        const code = codeElement.innerText;
+        const code = codeElement.textContent; 
+        let tooltip = document.getElementById("tooltip");
         navigator.clipboard.writeText(code).then(() => {
-            codeElement.innerText = "Code copié !";
+            tooltip.classList.add("show"); 
             setTimeout(() => {
-                codeElement.innerText = code;
-            }, 1000)
+                tooltip.classList.remove("show"); 
+            }, 1000);
         });
     }
 

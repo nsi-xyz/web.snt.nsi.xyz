@@ -65,11 +65,11 @@ if (isset($_POST["login_mode"])) {
                   <legend>Rejoindre une session</legend>
                   <div class="form-group">
                     <label for="pseudo">Pseudo</label>
-                    <input type="text" id="pseudo" name="pseudo" placeholder="Pseudo" required pattern="^[^\x22]+$" minlength="<?php echo PSEUDO_MIN_LENGTH; ?>" maxlength="<?php echo PSEUDO_MAX_LENGTH; ?>" />
+                    <input type="text" id="pseudo" name="pseudo" placeholder="Pseudo" required pattern="<?php echo HTMLPATTERN_PSEUDO; ?>" minlength="<?php echo PSEUDO_MIN_LENGTH; ?>" maxlength="<?php echo PSEUDO_MAX_LENGTH; ?>" />
                   </div>
                   <div class="form-group">
                     <label for="code">Code de la session</label>
-                    <input type="text" id="code" name="code" placeholder="Code de la session" required pattern="^[^\x22]+$" />
+                    <input type="text" id="code" name="code" placeholder="Code de la session" required minlength="1" />
                   </div>
                 </fieldset>
                 <button type="submit" class="pure-button pure-button-primary-join">Rejoindre la session</button>
@@ -78,9 +78,9 @@ if (isset($_POST["login_mode"])) {
               if (isset($_GET["pseudo"]) && isset($_GET["code"])) {
                 $pseudo = $_GET["pseudo"];
                 $code = strtoupper($_GET["code"]);
-                if (rowsCount($db, "sessions", "code = \"$code\"") == 1) {
+                if (isValidString($code, "/^[A-Z0-9]+$/") && rowsCount($db, "sessions", "code = \"$code\"") == 1) {
                   $id = getRows($db, "sessions", "*", "code = \"$code\"")["id"];
-                  if (canJoinSession($pseudo, $id, $db)) {
+                  if (isValidString($pseudo, PHPPATTERN_PSEUDO) && canJoinSession($pseudo, $id, $db)) {
                     joinSession($pseudo, $id, $db);
                     $_SESSION["user_logged_in"] = getRows($db, "users_session", "*", "pseudo = \"$pseudo\" AND id_session = $id");
                     throwSuccess("Vous avez rejoint la session avec succès.<br>Bonne chance !", "./index.php", "msg", true, false);
@@ -99,7 +99,7 @@ if (isset($_POST["login_mode"])) {
                   <legend>Se connecter</legend>
                   <div class="form-group">
                     <label for="username">Nom d'utilisateur</label>
-                    <input type="text" id="username" name="username" placeholder="Nom d'utilisateur" required pattern="^[^\s\xA0\x22\\]+$" minlength="<?php echo USERNAME_MIN_LENGTH; ?>" maxlength="<?php echo USERNAME_MAX_LENGTH; ?>" />
+                    <input type="text" id="username" name="username" placeholder="Nom d'utilisateur" required minlength="1" maxlength="<?php echo USERNAME_MAX_LENGTH; ?>" />
                   </div>
                   <div class="form-group">
                     <label for="stacked-password">Mot de passe</label>
@@ -113,7 +113,7 @@ if (isset($_POST["login_mode"])) {
               if (isset($_POST["username"], $_POST["password"])) {
                 $user_username = strtolower($_POST["username"]);
                 $user_password = $_POST["password"];
-                if (login_success($user_username, $user_password, $db)) {
+                if (isValidString($user_username, PHPPATTERN_USERNAME) && login_success($user_username, $user_password, $db)) {
                   $_SESSION["user_logged_in"] = getRows($db, "users", "*", "username = \"$user_username\"");
                   echo '<script>window.location.replace(window.location.href);</script>';
                 } else {
@@ -130,15 +130,15 @@ if (isset($_POST["login_mode"])) {
                   <legend>Créer un compte</legend>
                   <div class="form-group">
                     <label for="name">Nom</label>
-                    <input type="text" id="name" name="name" placeholder="Nom" required pattern="^[^\xA0\x22\\]+$" minlength="<?php echo NAME_MIN_LENGTH; ?>" maxlength="<?php echo NAME_MAX_LENGTH; ?>" />
+                    <input type="text" id="name" name="name" placeholder="Nom" required pattern="<?php echo HTMLPATTERN_NAME; ?>" minlength="<?php echo NAME_MIN_LENGTH; ?>" maxlength="<?php echo NAME_MAX_LENGTH; ?>" />
                   </div>
                   <div class="form-group">
                     <label for="surname">Prénom</label>
-                    <input type="text" id="surname" name="surname" placeholder="Prénom" required pattern="^[^\xA0\x22\\]+$" minlength="<?php echo NAME_MIN_LENGTH; ?>" maxlength="<?php echo NAME_MAX_LENGTH; ?>" />
+                    <input type="text" id="surname" name="surname" placeholder="Prénom" required pattern="<?php echo HTMLPATTERN_NAME; ?>" minlength="<?php echo NAME_MIN_LENGTH; ?>" maxlength="<?php echo NAME_MAX_LENGTH; ?>" />
                   </div>
                   <div class="form-group">
                     <label for="username">Nom d'utilisateur</label>
-                    <input type="text" id="username" name="username" placeholder="Nom d'utilisateur" required pattern="^[^\s\xA0\x22\\]+$" minlength="<?php echo USERNAME_MIN_LENGTH; ?>" maxlength="<?php echo USERNAME_MAX_LENGTH; ?>" />
+                    <input type="text" id="username" name="username" placeholder="Nom d'utilisateur" required pattern="<?php echo HTMLPATTERN_USERNAME; ?>" minlength="<?php echo USERNAME_MIN_LENGTH; ?>" maxlength="<?php echo USERNAME_MAX_LENGTH; ?>" />
                   </div>
                   <div class="form-group">
                     <label for="password">Mot de passe</label>
@@ -166,6 +166,9 @@ if (isset($_POST["login_mode"])) {
                   break;
                 case -3:
                   throwError("Les champs ne respectent pas les longueurs requises", null, "msg", true, false);
+                  break;
+                case -4:
+                  throwError("Les champs utilisent des caractères non autorisés.", null, "msg", true, false);
                   break;
               }
             }
