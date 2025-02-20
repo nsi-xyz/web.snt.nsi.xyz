@@ -62,7 +62,7 @@ if (isset($_POST["sort-by"])) {
     <a href="#menu" id="menuLink" class="menu-link">
       <span></span>
     </a>
-    <?php include("./include/nav_panel.php"); ?>
+    <?php include "./include/nav_panel.php"; ?>
     <?php endif; ?>
     <div id="main">
       <div class="header">
@@ -72,18 +72,17 @@ if (isset($_POST["sort-by"])) {
       <div class="content">
         <?php
         if ($session_in_progress) {
-          include("./include/session_manage.php");
+          include "./include/session_manage.php";
         } else {
-          include("./include/session_create.php");
+          include "./include/session_create.php";
         }
         ?>
       </div>
     </div>
-    <?php include("../include/footer.php"); ?>
+    <?php include "../include/footer.php"; ?>
   </div>
-  <?php include("../include/timer.php"); ?>
+  <?php include "../include/timer.php"; ?>
   <script>
-    const currentPuzzle = null;
     const urlParams = new URLSearchParams(window.location.search);
     const display_reduced = urlParams.has("display");
     if (display_reduced) {

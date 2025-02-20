@@ -103,9 +103,6 @@ if (isset($_POST["apply_infos"], $_POST["name"], $_POST["surname"], $_POST["user
     </div>
     <?php include("../include/footer.php"); ?>
   </div>
-  <script>
-    const currentPuzzle = null;
-  </script>
   <script src="../js/ui.js"></script>
 </body>
 </html>

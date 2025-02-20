@@ -117,10 +117,10 @@ if (isset($_POST["id_trad"], $_POST["delete_trad"])) {
   <script>
     function editTrad(key) {
       const url = new URL(window.location.href);
-      url.searchParams.set('selection', key);
+      url.searchParams.set("selection", key);
       localStorage.setItem("scrollPosition", window.scrollY);
-      document.querySelectorAll('.key-item').forEach(item => {
-        item.classList.remove('selected');
+      document.querySelectorAll(".key-item").forEach(item => {
+        item.classList.remove("selected");
       });
       const selectedItem = document.querySelector(`.key-button-item[data-key="${key}"]`).parentElement;
       selectedItem.classList.add('selected');

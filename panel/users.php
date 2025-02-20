@@ -215,7 +215,7 @@ if (isset($_POST["create"], $_POST["user_name"], $_POST["user_surname"], $_POST[
           });
           $data_user = reset($filtered);
           ?>
-          <button type="button" class="button-back pure-button" onclick="back()">&#x21A9;</button>
+          <button title="Retour" type="button" class="button-top pure-button" onclick="back()">&#x21A9;</button>
           <h2 class="content-subhead">Informations sur <?php echo $data_user["username"]; ?></h2>
           <ul>
             <?php

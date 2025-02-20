@@ -106,7 +106,11 @@ if (isset($_COOKIE["LOGGEDIN"])) {
   }
 }
 if (in_array("panel", explode("/", $_SERVER['PHP_SELF'])) && !isUserConnected()) {
-  throwError(traduction("error_not_authorized_message"), "../login.php", "msg", true, true);
+  $session_code = isset($_GET["session"]) ? $_GET["session"] : null;
+  $sessionExists = rowsCount($db, "sessions", "code = \"$session_code\"") == 1;
+  if (!$sessionExists || !isset($_GET["share"]) || !in_array("stats.php", explode("/", $_SERVER['PHP_SELF']))) {
+    throwError(traduction("error_not_authorized_message"), "../login.php", "msg", true, true);
+  }
 }
 if ((isUserConnected() && sessionInProgress($db, $_SESSION["user_logged_in"]["id"])) || (currentUserInSession())) {
   if (currentUserInSession()) {

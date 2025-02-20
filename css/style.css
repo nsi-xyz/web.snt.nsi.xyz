@@ -680,14 +680,19 @@ kbd {
     background: rgb(66, 184, 221);
 }
 
-.button-back {
+.button-top {
     margin-top: 3%;
+    border-radius: 8px;
 }
 
 .button-kick,
 .button-delete {
     background: rgb(202, 60, 60);
     color: #FFF;
+}
+
+.btn-popup {
+    position: relative;
 }
 
 .infos-users{
@@ -812,6 +817,10 @@ textarea {
     display: flex;
     justify-content: center;
     align-items: center;
+    position: relative;
+}
+
+.share-div {
     position: relative;
 }
 

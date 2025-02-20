@@ -323,6 +323,18 @@ function stopSession($database, $id_session) {
   updateRow($database, "sessions", array("status" => 0), "id = $id_session");
 }
 
+function deleteSession($database, $id_session) {
+  delRow($database, "users_session_logs", "id_session = $id_session");
+  delRow($database, "users_session", "id_session = $id_session");
+  delRow($database, "sessions", "id = $id_session");
+}
+
+function deleteAllSessions($database, $id_owner) {
+  delRow($database, "users_session_logs", "id_session IN (SELECT id FROM sessions WHERE id_owner = $id_owner");
+  delRow($database, "users_session", "id_session IN (SELECT id FROM sessions WHERE id_owner = $id_owner)");
+  delRow($database, "sessions", "id_owner = $id_owner");
+}
+
 function canJoinSession($pseudo, $id_session, $database) {
   $status = getRows($database, "sessions", "*", "id = $id_session")["status"];
   $sessionIsOpen = $status == 1 ? true : false;
