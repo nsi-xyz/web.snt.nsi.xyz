@@ -13,6 +13,7 @@ include("../include/checksession.php");
   <link rel="stylesheet" href="../css/pure-min.css">
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20,400,0,0">
   <link rel="stylesheet" href="../css/style.css">
+  <script src="../js/messages.js"></script>
 </head>
 <body>
   <div id="layout">
@@ -26,6 +27,7 @@ include("../include/checksession.php");
         <h2><?php echo traduction("panel_header_h2"); ?></h2>
       </div>
       <div class="content">
+        <msg></msg>
         <h2 class="content-subhead">Panneau d'administration</h2>
         <p class="p-content">Bienvenue sur le panneau d'administration de web.snt.nsi.xyz !</p>
         <p class="p-content">Ce panneau vous permet de créer des sessions, par exemple pour vos élèves si vous êtes enseignant, de parcourir vos anciennes sessions et d'avoir des statistiques détaillés sur ces dernières.</p>

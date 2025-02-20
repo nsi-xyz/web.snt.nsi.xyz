@@ -51,6 +51,9 @@ if (isset($_SESSION["id_session_delete"])) {
             $session_id_owner = $session["id_owner"];
             $session_owner = getRows($db, "users", "username", "id = \"$session_id_owner\"")["username"];
             $session_users = getRows($db, "users_session", "*", "id_session = \"$session_id\"", 1);
+            if (isUserConnected() && $_SESSION["user_logged_in"]["id"] != $session_id_owner && $_SESSION["user_logged_in"]["id_group"] == 0) {
+              throwError(traduction("error_not_authorized_message"), "./index.php", "msg", true, false);
+            }
             include "./include/stats_viewer.php";
           }
         } else {
