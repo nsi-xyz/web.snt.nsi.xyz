@@ -24,6 +24,45 @@ if (isset($_POST["apply_infos"], $_POST["name"], $_POST["surname"], $_POST["user
       break;
   }
 }
+if (isset($_POST["apply_password"], $_POST["password_current"], $_POST["password_new"], $_POST["password_new_confirm"])) {
+  $result = updateUserPassword($db, $_SESSION["user_logged_in"]["id"], $_POST["password_current"], $_POST["password_new"], $_POST["password_new_confirm"]);
+  switch ($result) {
+    case 0:
+      throwSuccess("Mot de passe mis à jour avec succès.", null, "msg", true, true);
+      break;
+    case -1:
+      throwError("La confirmation du mot de passe ne correspond pas.", null, "msg", true, true);
+      break;
+    case -2:
+      throwError("Le nouveau mot de passe ne respecte pas la longueur requise.", null, "msg", true, true);
+      break;
+    case -3:
+      throwError("Le mot de passe actuel est incorrect.", null, "msg", true, true);
+      break;
+  }
+}
+if (isset($_POST["delete_account"])) {
+  $_SESSION["delete_account"] = $_POST["delete_account"];
+  echo json_encode(["success" => true]);
+  exit();
+}
+if (isset($_POST["delete_sessions"])) {
+  $_SESSION["delete_sessions"] = $_POST["delete_sessions"];
+  echo json_encode(["success" => true]);
+  exit();
+}
+if (isset($_SESSION["delete_account"])) {
+  unset($_SESSION["delete_account"]);
+  $user_id = $_SESSION["user_logged_in"]["id"];
+  delRow($db, "users", "id = $user_id");
+  logout("../login.php", 1);
+}
+if (isset($_SESSION["delete_sessions"])) {
+  unset($_SESSION["delete_sessions"]);
+  $user_id = $_SESSION["user_logged_in"]["id"];
+  deleteAllSessions($db, $user_id);
+  throwSuccess("Toutes vos sessions ont été supprimées avec succès.", null, "msg", true, true);
+}
 ?>
 <!DOCTYPE html>
 <html lang="fr">
@@ -35,6 +74,7 @@ if (isset($_POST["apply_infos"], $_POST["name"], $_POST["surname"], $_POST["user
   <link rel="stylesheet" href="../css/pure-min.css">
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20,400,0,0">
   <link rel="stylesheet" href="../css/style.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
   <script src="../js/messages.js"></script>
 </head>
 <body>
@@ -79,15 +119,15 @@ if (isset($_POST["apply_infos"], $_POST["name"], $_POST["surname"], $_POST["user
               <legend>Mon mot de passe</legend>
               <div class="form-group">
                 <label for="password_current">Mot de passe actuel</label>
-                <input type="password" id="password_current" name="password_current" placeholder="Mot de passe" required pattern="^[^\xA0\x22\\]+$" minlength="<?php echo NAME_MIN_LENGTH; ?>" maxlength="<?php echo NAME_MAX_LENGTH; ?>" />
+                <input type="password" id="password_current" name="password_current" placeholder="Mot de passe" required minlength="1" maxlength="<?php echo PASSWORD_MAX_LENGTH; ?>" />
               </div>
               <div class="form-group">
                 <label for="password_new">Nouveau mot de passe</label>
-                <input type="password" id="passord_new" name="passord_new" placeholder="Mot de passe" required pattern="^[^\xA0\x22\\]+$" minlength="<?php echo NAME_MIN_LENGTH; ?>" maxlength="<?php echo NAME_MAX_LENGTH; ?>" />
+                <input type="password" id="password_new" name="password_new" placeholder="Mot de passe" required title="Un bon mot de passe doit faire entre 7 et 32 caractères, contenir au moins une lettre, un chiffre, et un caractère spécial." minlength="<?php echo PASSWORD_MIN_LENGTH; ?>" maxlength="<?php echo PASSWORD_MAX_LENGTH; ?>" />
               </div>
               <div class="form-group">
                 <label for="password_new_confirm">Confirmer le nouveau mot de passe</label>
-                <input type="password" id="password_new_confirm" name="password_new_confirm" placeholder="Mot de passe" required pattern="^[^\s\xA0\x22\\]+$" minlength="<?php echo USERNAME_MIN_LENGTH; ?>" maxlength="<?php echo USERNAME_MAX_LENGTH; ?>" />
+                <input type="password" id="password_new_confirm" name="password_new_confirm" placeholder="Mot de passe" required />
               </div>
               <button class ="button-success pure-button" name="apply_password" type="submit">Appliquer</button>
             </form>
@@ -95,14 +135,47 @@ if (isset($_POST["apply_infos"], $_POST["name"], $_POST["surname"], $_POST["user
         </section>
         <h3 class="content-subhead">Danger Zone</h3>
         <p class="p-content">Ces actions sont irréversibles.</p>
-        <button class ="button-warning pure-button" name="delete_sessions" type="submit">Supprimer toutes mes sessions</button>
+        <button class ="button-warning pure-button" onclick="delSessions()" type="button">Supprimer toutes mes sessions</button>
         <?php if ($data_user["username"] != "admin") : ?>
-          <button class ="button-error pure-button" name="delete_account" type="submit">Supprimer mon compte</button>
+          <button class ="button-error pure-button" onclick="delAccount()" type="button">Supprimer mon compte</button>
         <?php endif; ?>
       </div>
     </div>
     <?php include("../include/footer.php"); ?>
   </div>
+  <script>
+    function delSessions() {
+      if (confirm("Êtes-vous certain de vouloir supprimer toutes vos sessions ?\nCette action est irréversible.")) {
+        jQuery.ajax({
+          type: "POST",
+          url: "myaccount.php",
+          data: {delete_sessions: 0},
+          success: function(response) {
+            const data = JSON.parse(response);
+            if (data.success) {
+              window.location.href = window.location.href;
+            } 
+          }
+        });
+      }
+    }
+
+    function delAccount() {
+      if (confirm("Êtes-vous certain de vouloir supprimer votre compte ? Vos sessions ne seront pas supprimées.\nCette action est irréversible.")) {
+        jQuery.ajax({
+          type: "POST",
+          url: "myaccount.php",
+          data: {delete_account: 0},
+          success: function(response) {
+            const data = JSON.parse(response);
+            if (data.success) {
+              window.location.href = window.location.href;
+            } 
+          }
+        });
+      }
+    }
+  </script>
   <script src="../js/ui.js"></script>
 </body>
 </html>

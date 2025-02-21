@@ -257,6 +257,21 @@ function updateUser($database, $data_user, $new_data_user){
   }
 }
 
+function updateUserPassword($database, $id_user, $password, $password_new, $password_new_confirm) {
+  if ($password_new != $password_new_confirm) {
+    return -1;
+  }
+  if (!isValidLength($password_new, PASSWORD_MIN_LENGTH, PASSWORD_MAX_LENGTH)) {
+    return -2;
+  }
+  $password_current_hash = getRows($database, "users", "password", "id = $id_user")["password"];
+  if (!password_verify($password, $password_current_hash)) {
+    return -3;
+  }
+  updateRow($database, "users", array("password" => password_hash($password_new, PASSWORD_DEFAULT), "last_update" => date('Y-m-d H:i:s', time())), "id = $id_user");
+  return 0;
+}
+
 function deleteUser($database, $data_user){
   $data_user_id = $data_user["id"];
   if ($data_user_id == $_SESSION["user_logged_in"]["id"]) {
@@ -330,7 +345,7 @@ function deleteSession($database, $id_session) {
 }
 
 function deleteAllSessions($database, $id_owner) {
-  delRow($database, "users_session_logs", "id_session IN (SELECT id FROM sessions WHERE id_owner = $id_owner");
+  delRow($database, "users_session_logs", "id_session IN (SELECT id FROM sessions WHERE id_owner = $id_owner)");
   delRow($database, "users_session", "id_session IN (SELECT id FROM sessions WHERE id_owner = $id_owner)");
   delRow($database, "sessions", "id_owner = $id_owner");
 }
