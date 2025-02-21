@@ -2,7 +2,7 @@
 $dateFormatter = new IntlDateFormatter('fr_FR', IntlDateFormatter::FULL, IntlDateFormatter::MEDIUM);
 $collator = collator_create('fr_FR');
 // Constantes globales.
-define("VERSION", "2.10.6");
+define("VERSION", "2.11");
 define("NAME_MIN_LENGTH", 2);
 define("NAME_MAX_LENGTH", 24);
 define("PSEUDO_MIN_LENGTH", 3);
