@@ -29,7 +29,7 @@
     $is_admin = $_SESSION["user_logged_in"]["id_group"] == 1;
     ?>
     <?php if ($is_admin) : ?>
-    <li class="<?php echo $selected_sessions_class; ?>"><a href="./sessions.php" class="pure-menu-link">&#x1F5C2;&#xFE0F; Parcourir les sessions</a></li>
+    <li class="<?php echo $selected_sessions_class; ?>"><a href="./sessions.php" class="pure-menu-link">&#x1F5C2;&#xFE0F; Explorateur de sessions</a></li>
     <li class="<?php echo $selected_users_class; ?>"><a href="./users.php" class="pure-menu-link">&#x2699;&#xFE0F; Gestion des comptes</a></li>
     <li class="<?php echo $selected_trads_class; ?>"><a href="./trads.php" class="pure-menu-link">&#x1F5C3;&#xFE0F; Gestion des traductions</a></li>
     <?php endif; ?>
