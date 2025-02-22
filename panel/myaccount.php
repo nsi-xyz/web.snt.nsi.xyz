@@ -53,6 +53,9 @@ if (isset($_POST["delete_sessions"])) {
 }
 if (isset($_SESSION["delete_account"])) {
   unset($_SESSION["delete_account"]);
+  if ($_SESSION["user_logged_in"]["username"] == "admin") {
+    throwError("Action impossible", null, "msg", true, true);
+  }
   $user_id = $_SESSION["user_logged_in"]["id"];
   delRow($db, "users", "id = $user_id");
   logout("../login.php", 1);
