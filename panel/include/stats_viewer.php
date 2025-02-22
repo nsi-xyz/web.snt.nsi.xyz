@@ -21,7 +21,7 @@ $dateFormat = $longSession ? "H:i:s (d/m/Y)" : "H:i:s";
     <?php
     $session_date = (new DateTime())->setTimestamp(strtotime($session["date"]));
     ?>
-    <li>Identifiant : #<?php echo $session_id; ?> (<?php echo $_GET["session"]; ?>)</li>
+    <li>Identifiant : #<?php echo $session_id; ?> (<?php echo $session_code; ?>)</li>
     <li>Hôte de la session : <?php echo $session_owner; ?></li>
     <li>Date de création : <?php echo $dateFormatter->format($session_date); ?></li>
     <li>Date de fermeture : <?php echo $dateFormatter->format($session_date->modify("+".$session["duration"]." seconds")); ?></li>
@@ -150,16 +150,27 @@ function moreInfos(user_id) {
 
 function back() {
   const url = new URL(window.location.href);
+  const page = url.pathname.split("/")[url.pathname.split("/").length - 1];
   if (url.searchParams.has("user")) {
     url.searchParams.delete("user");
   } else {
-    url.searchParams.delete("session");
+    if (page == "stats.php") {
+      url.searchParams.delete("session");
+    } else {
+      url.searchParams.delete("viewstats");
+    }
   }
   window.location.href = url.toString();
 }
 
 function share(button) {
   const url = new URL(window.location.href);
+  const page = url.pathname.split("/")[url.pathname.split("/").length - 1];
+  if (page == "sessions.php") {
+    url.pathname = url.pathname.replace("sessions.php", "stats.php");
+    url.searchParams.delete("viewstats");
+    url.searchParams.set("session", "<?php echo $session_code; ?>");
+  }
   url.searchParams.set("share", "0");
   let tooltip = document.getElementById("tooltip");
   navigator.clipboard.writeText(url.toString()).then(() => {
@@ -175,9 +186,11 @@ function share(button) {
 
 function del(id) {
   if (confirm("Êtes-vous certain de vouloir supprimer cette session ? Toutes les données qui lui sont associées seront supprimées définitivement.\nCette action est irréversible.")) {
+    const url = new URL(window.location.href);
+    const page = url.pathname.split("/")[url.pathname.split("/").length - 1];
     jQuery.ajax({
       type: "POST",
-      url: "stats.php",
+      url: page,
       data: {delete_session: id},
       success: function(response) {
         const data = JSON.parse(response);
@@ -201,26 +214,26 @@ data_session.forEach(user => {
     }
   });
 });
-const max = Math.max(...puzzle_stats);
-const max_indices = puzzle_stats
-  .map((value, index) => (value == max ? index + 1 : -1))
-  .filter(index => index != -1);
-const min = Math.min(...puzzle_stats);
-const min_indices = puzzle_stats
-  .map((value, index) => (value == min ? index + 1 : -1))
-  .filter(index => index != -1);
-if (max == min && max > 0) {
-  document.getElementById("best").innerText = max_indices + " (réussie par " + max + " participants)";
-  document.getElementById("worst").innerText = "Aucune";
-} else if (max == min && max <= 0) {
-  document.getElementById("best").innerText = "Aucune";
-  document.getElementById("worst").innerText = min_indices + " (réussie par " + min + " participants)";
-} else {
-  document.getElementById("best").innerText = max_indices + " (réussie par " + max + " participants)";
-  document.getElementById("worst").innerText = min_indices + " (réussie par " + min + " participants)";
-}
 
 if (!(new URLSearchParams(window.location.search)).has("user")) {
+  const max = Math.max(...puzzle_stats);
+  const max_indices = puzzle_stats
+  .map((value, index) => (value == max ? index + 1 : -1))
+  .filter(index => index != -1);
+  const min = Math.min(...puzzle_stats);
+  const min_indices = puzzle_stats
+  .map((value, index) => (value == min ? index + 1 : -1))
+  .filter(index => index != -1);
+  if (max == min && max > 0) {
+    document.getElementById("best").innerText = max_indices + " (réussie par " + max + " participants)";
+    document.getElementById("worst").innerText = "Aucune";
+  } else if (max == min && max <= 0) {
+    document.getElementById("best").innerText = "Aucune";
+    document.getElementById("worst").innerText = min_indices + " (réussie par " + min + " participants)";
+  } else {
+    document.getElementById("best").innerText = max_indices + " (réussie par " + max + " participants)";
+    document.getElementById("worst").innerText = min_indices + " (réussie par " + min + " participants)";
+  }
   const ctx = document.getElementById("puzzle-success-stats");
   new Chart(ctx, {
     type: "bar",

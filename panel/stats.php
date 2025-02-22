@@ -48,6 +48,7 @@ if (isset($_SESSION["id_session_delete"])) {
           if (rowsCount($db, "sessions", "code = \"$code\"") == 1) {
             $session = getRows($db, "sessions", "*", "code = \"$code\"");
             $session_id = $session["id"];
+            $session_code = $session["code"];
             $session_id_owner = $session["id_owner"];
             $session_owner = getRows($db, "users", "username", "id = \"$session_id_owner\"")["username"];
             $session_users = getRows($db, "users_session", "*", "id_session = \"$session_id\"", 1);
