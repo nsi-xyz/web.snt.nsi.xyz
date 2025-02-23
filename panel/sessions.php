@@ -88,7 +88,7 @@ if (isset($_SESSION["id_session_delete"])) {
             </div>
             <button type="submit" class="button-primary pure-button" style="margin-top: 12.5px;">Rechercher</button>
           </form>
-          <h3 class="content-subhead">Résultats</h3>
+          <h3 class="content-subhead">Résultats (<?php echo count($data_sessions); ?>)</h3>
           <?php if (count($data_sessions) > 0) : ?>
             <table class="pure-table">
               <thead>

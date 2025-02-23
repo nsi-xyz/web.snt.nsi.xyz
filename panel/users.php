@@ -13,6 +13,11 @@ if (isset($_POST["delete_user"])) {
   echo json_encode(["success" => true]);
   exit();
 }
+if (isset($_POST["delete_sessions"])) {
+  $_SESSION["delete_sessions_id"] = $_POST["delete_sessions"];
+  echo json_encode(["success" => true]);
+  exit();
+}
 if (isset($_SESSION["delete_user_id"])) {
   $filtered = array_filter($data_users, function ($user) {
     return $user["id"] == $_SESSION["delete_user_id"];
@@ -30,6 +35,12 @@ if (isset($_SESSION["delete_user_id"])) {
       throwError("Action impossible.", null, "msg", true, true);
       break;
   }
+}
+if (isset($_SESSION["delete_sessions_id"])) {
+  $user_id = $_SESSION["delete_sessions_id"];
+  unset($_SESSION["delete_sessions_id"]);
+  deleteAllSessions($db, $user_id);
+  throwSuccess("Toutes ses sessions ont été supprimées avec succès.", null, "msg", true, true);
 }
 if (!isset($_SESSION["edit_user_id"])) {
   $_SESSION["edit_user_id"] = 0;
@@ -216,7 +227,9 @@ if (isset($_POST["create"], $_POST["user_name"], $_POST["user_surname"], $_POST[
           $data_user = reset($filtered);
           ?>
           <button title="Retour" type="button" class="button-top pure-button" onclick="back()">&#x21A9;</button>
-          <h2 class="content-subhead">Informations sur <?php echo $data_user["username"]; ?></h2>
+          <msg></msg>
+          <h2 class="content-subhead">Informations supplémentaires sur <?php echo $data_user["username"]; ?></h2>
+          <h3 class="content-subhead">Informations</h3>
           <ul>
             <?php
             $user_created_at = (new DateTime())->setTimestamp(strtotime($data_user["created_at"]));
@@ -231,6 +244,18 @@ if (isset($_POST["create"], $_POST["user_name"], $_POST["user_surname"], $_POST[
             <li>Dernière mise à jour du compte : <?php echo $dateFormatter->format($user_last_update); ?></li>
             <li>Dernière connexion : <?php echo formatRelativeTime($user_last_connexion); ?> (<?php echo $dateFormatter->format($user_last_connexion); ?>)</li>
           </ul>
+          <h3 class="content-subhead">Sessions</h3>
+          <ul>
+            <?php
+            $user_id = $data_user["id"];
+            $session_in_progress = sessionInProgress($db, $user_id);
+            $session_id = $session_in_progress ? getRows($db, "sessions", "id", "id_owner = $user_id AND status = 1")["id"] : null;
+            ?>
+            <li>Session en cours : <?php echo $session_in_progress ? "&#x2705; (<a class=\"link\" target=\"_blank\" href=\"./sessions.php?viewstats=$session_id\">Y accéder &#x1F517;</a>)" : "&#x274C;" ?></li>
+            <li>Nombre de sessions : <?php echo rowsCount($db, "sessions", "id_owner = $user_id"); ?></li>
+          </ul>
+          <a href="./sessions.php?host=<?php echo $data_user["username"]; ?>" target="_blank"><button class ="button-primary pure-button" type="button">Voir ses sessions &#x1F517;</button></a>
+          <button class ="button-warning pure-button" onclick="delSessions(<?php echo $user_id; ?>)" type="button">Supprimer toutes ses sessions</button>
         <?php endif; ?>
       </div>
     </div>
@@ -276,6 +301,22 @@ if (isset($_POST["create"], $_POST["user_name"], $_POST["user_surname"], $_POST[
         const url = new URL(window.location.href);
         url.searchParams.delete("user_id");
         window.location.href = url.toString();
+      }
+
+      function delSessions(id) {
+        if (confirm("Êtes-vous certain de vouloir supprimer toutes ses sessions ?\nCette action est irréversible.")) {
+          jQuery.ajax({
+            type: "POST",
+            url: "users.php",
+            data: {delete_sessions: id},
+            success: function(response) {
+              const data = JSON.parse(response);
+              if (data.success) {
+                window.location.href = window.location.href;
+              } 
+            }
+          });
+        }
       }
 
       window.onload = function() {
