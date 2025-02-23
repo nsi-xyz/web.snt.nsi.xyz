@@ -229,7 +229,7 @@ if (isset($_POST["create"], $_POST["user_name"], $_POST["user_surname"], $_POST[
             <li>Nom d'utilisateur : <?php echo $data_user["username"]; ?></li>
             <li>Date de création du compte : <?php echo $dateFormatter->format($user_created_at); ?></li>
             <li>Dernière mise à jour du compte : <?php echo $dateFormatter->format($user_last_update); ?></li>
-            <li>Dernière connexion : <?php echo $dateFormatter->format($user_last_connexion); ?></li>
+            <li>Dernière connexion : <?php echo formatRelativeTime($user_last_connexion); ?> (<?php echo $dateFormatter->format($user_last_connexion); ?>)</li>
           </ul>
         <?php endif; ?>
       </div>

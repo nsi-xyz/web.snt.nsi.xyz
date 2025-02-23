@@ -509,3 +509,21 @@ function resetPassword($database, $data_user) {
 function isValidString($string, $pattern) {
   return preg_match($pattern, $string);
 }
+
+function formatRelativeTime($datetime) {
+  $now = new DateTime();
+  $interval = $now->diff($datetime);
+  if ($interval->y > 0) {
+    return "Il y a ".$interval->y." an".($interval->y > 1 ? "s" : "");
+  } elseif ($interval->m > 0) {
+    return "Il y a ".$interval->m." mois";
+  } elseif ($interval->d > 0) {
+    return "Il y a ".$interval->d." jour".($interval->d > 1 ? "s" : "");
+  } elseif ($interval->h > 0) {
+    return "Il y a ".$interval->h." heure".($interval->h > 1 ? "s" : "");
+  } elseif ($interval->i > 0) {
+    return "Il y a ".$interval->i." minute".($interval->i > 1 ? "s" : "");
+  } else {
+    return "Il y a ".$interval->s." seconde".($interval->s > 1 ? "s" : "");
+  }
+}

@@ -177,7 +177,7 @@ $users_session_users_list = getRows($db, "users_session", "pseudo, joined_at", "
     }
 
     function kickUser(id, id_session, pseudo) {
-        if (confirm(`Êtes-vous sûr de vouloir exclure ${pseudo} ?`)) {
+        if (confirm(`Êtes-vous sûr de vouloir exclure ${pseudo} ?\nSa progression sera définitivement supprimée.`)) {
             jQuery.ajax({
                 type: "POST",
                 url: "session.php",

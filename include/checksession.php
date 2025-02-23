@@ -2,7 +2,7 @@
 $dateFormatter = new IntlDateFormatter('fr_FR', IntlDateFormatter::FULL, IntlDateFormatter::MEDIUM);
 $collator = collator_create('fr_FR');
 // Constantes globales.
-define("VERSION", "2.12");
+define("VERSION", "2.12.1");
 define("NAME_MIN_LENGTH", 2);
 define("NAME_MAX_LENGTH", 24);
 define("PSEUDO_MIN_LENGTH", 3);
@@ -123,10 +123,26 @@ if ((isUserConnected() && sessionInProgress($db, $_SESSION["user_logged_in"]["id
   $session_date = getRows($db, "sessions", "date", "id = \"$id_session\"")["date"];
   $session_duration = getRows($db, "sessions", "duration", "id = \"$id_session\"")["duration"];
   $session_date_end = new DateTime(date("Y-m-d H:i:s", strtotime($session_date) + $session_duration));
-  $is_session_expired = $time_now > $session_date_end->modify("+1 second"); // Marge de 1 seconde pour éventuellement laisser le temps à session.php de stoper la session.
+  $session_is_expired = $time_now > $session_date_end->modify("+1 second"); // Marge de 1 seconde pour éventuellement laisser le temps à session.php de stopper la session.
   $session_is_open = getRows($db, "sessions", "*", "id = $id_session")["status"] == 1 ? true : false;
-  if ($session_is_open && $is_session_expired) {
+  if ($session_is_open && $session_is_expired) {
     stopSession($db, $id_session);
+  }
+}
+if (currentUserInSession()) {
+  $id_session = $_SESSION["user_logged_in"]["id_session"];
+  $pseudo = $_SESSION["user_logged_in"]["pseudo"];
+  if (rowsCount($db, "users_session", "id_session = $id_session AND pseudo = \"$pseudo\"") == 0) {
+    logout("/logout.php?reset");
+  }
+}
+if (isUserConnected()) {
+  $user_id = $_SESSION["user_logged_in"]["id"];
+  $time_now = new DateTime();
+  $last_connexion_saved = new DateTime(getRows($db, "users", "last_connexion", "id = $user_id")["last_connexion"]);
+  $interval = $time_now->diff($last_connexion_saved);
+  if ($interval->days*24*60*60 + $interval->h*60*60 + $interval->i*60 + $interval->s > 60) {
+    updateRow($db, "users", array("last_connexion" => date('Y-m-d H:i:s', time())), "id = $user_id");
   }
 }
 if (!isset($_SESSION["time_session_start"])) {
