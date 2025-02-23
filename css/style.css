@@ -187,7 +187,7 @@ body {
         background-color: #42b8dd;
     }
 
-    @media screen and (min-height: 570px) and (min-width: 768px) {
+    @media screen and (min-height: 700px) and (min-width: 768px) {
         .menu-bottom {
             list-style: none;
             position: fixed;
@@ -196,14 +196,14 @@ body {
         }
      }
 
-     @media screen and (min-height: 570px) and (max-width: 768px) {
+     @media screen and (min-height: 700px) and (max-width: 768px) {
         .menu-bottom {
             list-style: none;
             width: 250px;
         }
      }
 
-    @media screen and (max-height: 570px) {
+    @media screen and (max-height: 700px) {
         .menu-bottom {
             list-style: none;
             width: 250px;
