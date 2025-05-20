@@ -45,14 +45,17 @@ if (isset($_POST["id_trad"], $_POST["delete_trad"])) {
     <?php include("./include/nav_panel.php"); ?>
     <div id="main">
       <div class="header">
-        <h1>web.snt.nsi.xyz</h1>
-        <h2>10 énigmes à résoudre pour découvrir le web</h2>
+        <h1><?php echo traduction("trads_header_h1"); ?></h1>
+        <h2><?php echo traduction("trads_header_h2"); ?></h2>
       </div>
       <div class="content">
-        <h2 class="content-subhead">Panneau d'édition des traductions (bêta)</h2>
-        <p class="p-content">Ce panneau permet de créer et d'éditer des traductions utilisées partout sur le site.</p>
-        <h2 class="content-subhead">Obtenir une clé de traduction</h2>
-        <p class="p-content">Pour afficher les clés des traductions au lieu de leur valeur, définissez la langue du site sur <span class="p-code">debug</span>.</p>
+        <h2 class="content-subhead"><?php echo traduction("trads_content_subhead1_h2"); ?></h2>
+        <p class="p-content"><?php echo traduction("trads_content_subhead1_p"); ?></p>
+        <h2 class="content-subhead"><?php echo traduction("trads_content_subhead2_h2"); ?></h2>
+        <?php
+        $lang = $_SESSION["locale"];
+        ?>
+        <p class="p-content"><?php echo traduction("trads_content_subhead2_p"); ?> <a href="<?php echo $lang == "fr" ? "./trads.php?lang=debug" : "./trads.php?lang=fr"; ?>"><span class="p-code"><?php echo $lang == "fr" ? "debug" : "fr"; ?></span></a>.</p>
       </div>
       <div class="trad-box">
         <form method="GET" action="" class="pure-form">
@@ -75,7 +78,7 @@ if (isset($_POST["id_trad"], $_POST["delete_trad"])) {
         </form>
         <div class="box">
           <div class="key-box">
-            <h3>Clés de traduction</h3>
+            <h3><?php echo traduction("trads_research_keys_title"); ?></h3>
             <ul class="key-list">
               <?php
               if (isset($_GET["key"])) {
@@ -86,14 +89,14 @@ if (isset($_POST["id_trad"], $_POST["delete_trad"])) {
                     }
                   }
                 } else {
-                  echo "Aucune clé ne correspond à votre recherche.";
+                  echo traduction("trads_research_notrads_message");
                 }
               }
               ?>
             </ul>
           </div>
           <div class="value-box">
-            <h3>Éditeur</h3>
+            <h3><?php echo traduction("trads_research_value_title"); ?></h3>
             <textarea id="new-trad" rows="30" cols="70"><?php
             if (isset($_GET["key"], $_GET["selection"]) && $trads_id != null && in_array($_GET["selection"], $trads_id)) {
               echo htmlspecialchars($trads_research[$_GET["selection"]]);
