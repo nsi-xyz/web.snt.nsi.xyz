@@ -102,8 +102,13 @@ if (isset($_POST["login_mode"])) {
                     <input type="text" id="username" name="username" placeholder="Nom d'utilisateur" required minlength="1" maxlength="<?php echo USERNAME_MAX_LENGTH; ?>" />
                   </div>
                   <div class="form-group">
-                    <label for="stacked-password">Mot de passe</label>
-                    <input type="password" id="stacked-password" name="password" placeholder="Mot de passe" required minlength="1" maxlength="<?php echo PASSWORD_MAX_LENGTH; ?>" />
+                    <label for="password">Mot de passe</label>
+                    <input type="password" id="password" name="password" placeholder="Mot de passe" required minlength="1" maxlength="<?php echo PASSWORD_MAX_LENGTH; ?>" />
+                  </div>
+                  <div class="form-group">
+                    <label for="stay-connected" class="pure-checkbox">
+                      <input id="stay-connected" name="stay-connected" type="checkbox" /> Rester connecté
+                    </label>
                   </div>
                 </fieldset>
                 <button type="submit" class="pure-button pure-button-primary-join">Se connecter</button>
@@ -115,6 +120,9 @@ if (isset($_POST["login_mode"])) {
                 $user_password = $_POST["password"];
                 if (isValidString($user_username, PHPPATTERN_USERNAME) && login_success($user_username, $user_password, $db)) {
                   $_SESSION["user_logged_in"] = getRows($db, "users", "*", "username = \"$user_username\"");
+                  if (isset($_POST["stay-connected"])) {
+                    $_SESSION["stay_connected"] = true;
+                  }
                   echo '<script>window.location.replace(window.location.href);</script>';
                 } else {
                   unset($_POST["username"], $_POST["password"]);

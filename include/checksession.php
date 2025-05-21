@@ -83,18 +83,18 @@ $_SESSION["locale"] = "fr";
 if ($_SESSION["locale"] != "debug") {
   $rows = getRows($db, "traductions_".$_SESSION["locale"], "*", "1");
   foreach ($rows as $row) {
-    $messages[$row['trad']] = $row['value'];
+    $messages[$row["trad"]] = $row["value"];
   }
 }
 if (!isset($_SERVER["HTTPS"]) && $_SERVER["HTTP_HOST"] != "localhost") {
-  header('Location: https://web.snt.nsi.xyz'.$_SERVER['PHP_SELF']);
-  exit;
+  header('Location: https://web.snt.nsi.xyz'.$_SERVER["PHP_SELF"]);
+  exit();
 }
 if (!isset($_SESSION["user_logged_in"]) && !isset($_COOKIE["LOGGEDIN"])) {
   $_SESSION["user_logged_in"]["username"] = "invité";
 }
 if (isset($_SESSION["user_logged_in"]["username"]) && $_SESSION["user_logged_in"]["username"] != "invité") {
-  if (!isset($_COOKIE["LOGGEDIN"])) {
+  if (!isset($_COOKIE["LOGGEDIN"]) && isset($_SESSION["stay_connected"])) {
     setcookie("LOGGEDIN", $_SESSION["user_logged_in"]["username"]."_".urlencode($_SESSION["user_logged_in"]["password"]), time() + COOKIEAUTHDURATION, "/");
   }
 }
