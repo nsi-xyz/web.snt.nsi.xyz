@@ -27,12 +27,13 @@ if (isset($_SESSION["delete_user_id"])) {
   switch ($result) {
     case 0:
       unset($_SESSION["delete_user_id"]);
-      throwSuccess("Compte supprimé avec succès.", null, "msg", true, true);
+      throwSuccess(traduction("success_account_deleted_message"), null, "msg", true, true);
       break;
     case -1:
     case -2:
+    case -3:
       unset($_SESSION["delete_user_id"]);
-      throwError("Action impossible.", null, "msg", true, true);
+      throwError(traduction("error_account_cannot_be_deleted_message"), null, "msg", true, true);
       break;
   }
 }
@@ -40,31 +41,35 @@ if (isset($_SESSION["delete_sessions_id"])) {
   $user_id = $_SESSION["delete_sessions_id"];
   unset($_SESSION["delete_sessions_id"]);
   deleteAllSessions($db, $user_id);
-  throwSuccess("Toutes ses sessions ont été supprimées avec succès.", null, "msg", true, true);
+  throwSuccess(traduction("success_all_sessions_deleted_message"), null, "msg", true, true);
 }
 if (!isset($_SESSION["edit_user_id"])) {
   $_SESSION["edit_user_id"] = 0;
 } else if ($_SESSION["edit_user_id"] > 0) {
+  if ($_SESSION["edit_user_id"] == $_SESSION["user_logged_in"]["id"]) {
+    $_SESSION["edit_user_id"] = 0;
+    redirect("./myaccount.php", true);
+  }
   $filtered = array_filter($data_users, function ($user) {
     return $user["id"] == $_SESSION["edit_user_id"];
   });
   $data_user = reset($filtered);
   $admin_status = $data_user["id_group"] == 1 ? " checked" : "";
+  if ($_SESSION["user_logged_in"]["username"] != "admin" && $data_user["id_group"] == 1) {
+    $_SESSION["edit_user_id"] = 0;
+    throwError(traduction("error_account_cannot_be_edited_message"), null, "msg", true, true);
+  }
 }
 if ((isset($_POST["apply"], $_POST["user_name"], $_POST["user_surname"], $_POST["user_username"]) || (isset($_POST["apply"], $_POST["user_name"], $_POST["user_surname"] ) && $_SESSION["edit_user_id"] > 0 && $data_user["username"] == "admin")) && !isset($_POST["reset_password"], $_POST["cancel"])) {
-  if ($data_user["username"] == "admin") {
-    $result = updateUser($db, $data_user, array("name" => $_POST["user_name"], "surname" => $_POST["user_surname"], "id_group" => 1));
-  } else {
-    $id_group = isset($_POST["user_id_group"]) ? 1 : 0;
-    $result = updateUser($db, $data_user, array("name" => $_POST["user_name"], "surname" => $_POST["user_surname"], "username" => $_POST["user_username"], "id_group" => $id_group));
-  }
+  $id_group = isset($_POST["user_id_group"]) ? 1 : 0;
+  $result = updateUser($db, $data_user, array("name" => $_POST["user_name"], "surname" => $_POST["user_surname"], "username" => $_POST["user_username"], "id_group" => $id_group));
   switch ($result) {
     case 0:
       $_SESSION["edit_user_id"] = 0;
       throwSuccess("Compte mis à jour avec succès.", null, "msg", true, true);
       break;
     case -1:
-      throwError("Action impossible.", null, "msg", true, true);
+      throwError(traduction("error_account_cannot_be_edited_message"), null, "msg", true, true);
       break;
     case -2:
       throwError("Ce nom d'utilisateur est déjà utilisé.", null, "msg", true, true);
@@ -153,11 +158,13 @@ if (isset($_POST["create"], $_POST["user_name"], $_POST["user_surname"], $_POST[
                 <label for="password">Mot de passe</label>
                 <input type="password" id="password" name="user_password" placeholder="Mot de passe" required title="Un bon mot de passe doit faire entre 7 et 32 caractères, contenir au moins une lettre, un chiffre, et un caractère spécial." minlength="<?php echo PASSWORD_MIN_LENGTH; ?>" maxlength="<?php echo PASSWORD_MAX_LENGTH; ?>" />
               </div>
-              <div class="form-group">
-              <label for="checkbox-radio-option-one">
-                <input type="checkbox" name="user_id_group" id="checkbox-radio-option-one" value="" /> Administrateur
-              </label>
-              </div>
+              <?php if ($_SESSION["user_logged_in"]["username"] == "admin") : ?>
+                <div class="form-group">
+                  <label for="checkbox-radio-option-one">
+                    <input type="checkbox" name="user_id_group" id="checkbox-radio-option-one" value="" /> Administrateur
+                  </label>
+                </div>
+              <?php endif; ?>
               <button class ="button-success pure-button" name="create" type="submit">Créer</button>
             <?php else : ?>
               <h3 class="content-subhead">Modifier un compte</h3>
@@ -169,15 +176,15 @@ if (isset($_POST["create"], $_POST["user_name"], $_POST["user_surname"], $_POST[
                 <label for="surname">Prénom</label>
                 <input type="text" id="surname" name="user_surname" placeholder="Prénom" required pattern="<?php echo HTMLPATTERN_NAME; ?>" value="<?php echo $data_user["surname"]; ?>" minlength="<?php echo NAME_MIN_LENGTH; ?>" maxlength="<?php echo NAME_MAX_LENGTH; ?>" />
               </div>
-              <?php if ($data_user["username"] != "admin") : ?>
+              <div class="form-group">
+                <label for="username">Nom d'utilisateur</label>
+                <input type="text" id="username" name="user_username" placeholder="Nom d'utilisateur" required pattern="<?php echo HTMLPATTERN_USERNAME; ?>" value="<?php echo $data_user["username"]; ?>" minlength="<?php echo USERNAME_MIN_LENGTH; ?>" maxlength="<?php echo USERNAME_MAX_LENGTH; ?>" />
+              </div>
+              <?php if ($_SESSION["user_logged_in"]["username"] == "admin") : ?>
                 <div class="form-group">
-                  <label for="username">Nom d'utilisateur</label>
-                  <input type="text" id="username" name="user_username" placeholder="Nom d'utilisateur" required pattern="<?php echo HTMLPATTERN_USERNAME; ?>" value="<?php echo $data_user["username"]; ?>" minlength="<?php echo USERNAME_MIN_LENGTH; ?>" maxlength="<?php echo USERNAME_MAX_LENGTH; ?>" />
-                </div>
-                <div class="form-group">
-                <label for="checkbox-radio-option-one">
-                  <input type="checkbox" name="user_id_group" id="checkbox-radio-option-one" value=""<?php echo $admin_status; ?> /> Administrateur
-                </label>
+                  <label for="checkbox-radio-option-one">
+                    <input type="checkbox" name="user_id_group" id="checkbox-radio-option-one" value=""<?php echo $admin_status; ?> /> Administrateur
+                  </label>
                 </div>
               <?php endif; ?>
               <button class ="button-success pure-button" name="apply" type="submit">Appliquer</button>
@@ -202,8 +209,8 @@ if (isset($_POST["create"], $_POST["user_name"], $_POST["user_surname"], $_POST[
               foreach ($data_users as $user) {
                 $admin_status = $user["id_group"] == 1 ? "&#x2705;" : "&#x274C;";
                 $interact_moreinfos_status = $_SESSION["edit_user_id"] > 0 ? " disabled" : "";
-                $interact_edit_status = $_SESSION["edit_user_id"] > 0 || $user["id"] == $_SESSION["user_logged_in"]["id"] ? " disabled" : "";
-                $interact_delete_status = $_SESSION["edit_user_id"] > 0 || $user["id"] == $_SESSION["user_logged_in"]["id"] || $user["username"] == "admin" ? " disabled" : "";
+                $interact_edit_status = $_SESSION["edit_user_id"] > 0 || ($user["id_group"] == 1 && $_SESSION["user_logged_in"]["username"] != "admin") ? " disabled" : "";
+                $interact_delete_status = $_SESSION["edit_user_id"] > 0 || ($user["id_group"] == 1 && $_SESSION["user_logged_in"]["username"] != "admin") || $user["username"] == "admin" ? " disabled" : "";
                 echo '<tr id="user-'.$user["id"].'">';
                 echo '<td id="user-name-'.$user["id"].'">'.$user["name"].'</td>';
                 echo '<td id="user-surname-'.$user["id"].'">'.$user["surname"].'</td>';
@@ -211,8 +218,8 @@ if (isset($_POST["create"], $_POST["user_name"], $_POST["user_surname"], $_POST[
                 echo '<td id="user-group-'.$user["id"].'">'.$admin_status.'</td>';
                 echo '<td><div class="actions">';
                 echo '<button type="button" class="button-more-infos pure-button"'.$interact_moreinfos_status.' onclick="moreInfos('.$user["id"].')">En savoir plus</button>';
-                echo '<button type="button" class="button-primary pure-button"'.$interact_edit_status.' onclick="edit('.$user["id"].')">Modifier</button>';
-                echo '<button type="button" class="button-error pure-button"'.$interact_delete_status.' onclick="del('.$user["id"].')">Supprimer</button>';
+                echo '<button type="button" class="button-primary pure-button"'.$interact_edit_status.' onclick="'.($_SESSION["user_logged_in"]["id"] == $user["id"] ? 'window.location.href=\'./myaccount.php\'' : 'edit('.$user['id'].')').'">Modifier</button>';
+                echo '<button type="button" class="button-error pure-button"'.$interact_delete_status.' onclick="'.($_SESSION["user_logged_in"]["id"] == $user["id"] ? 'window.location.href=\'./myaccount.php\'' : 'del('.$user['id'].')').'">Supprimer</button>';
                 echo '</div></td>';
                 echo '</tr>';
               }
@@ -240,8 +247,8 @@ if (isset($_POST["create"], $_POST["user_name"], $_POST["user_surname"], $_POST[
             <li>Nom : <?php echo $data_user["name"]; ?></li>
             <li>Prénom : <?php echo $data_user["surname"]; ?></li>
             <li>Nom d'utilisateur : <?php echo $data_user["username"]; ?></li>
-            <li>Date de création du compte : <?php echo $dateFormatter->format($user_created_at); ?></li>
-            <li>Dernière mise à jour du compte : <?php echo $dateFormatter->format($user_last_update); ?></li>
+            <li>Date de création du compte : <?php echo formatRelativeTime($user_created_at); ?> (<?php echo $dateFormatter->format($user_created_at); ?>)</li>
+            <li>Dernière mise à jour du compte : <?php echo formatRelativeTime($user_last_update); ?> (<?php echo $dateFormatter->format($user_last_update); ?>)</li>
             <li>Dernière connexion : <?php echo formatRelativeTime($user_last_connexion); ?> (<?php echo $dateFormatter->format($user_last_connexion); ?>)</li>
           </ul>
           <h3 class="content-subhead">Sessions</h3>

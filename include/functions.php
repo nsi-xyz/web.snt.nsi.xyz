@@ -278,6 +278,8 @@ function deleteUser($database, $data_user){
     return -1;
   } else if ($data_user["username"] == "admin") {
     return -2;
+  } else if ($_SESSION["user_logged_in"]["username"] != "admin" && $data_user["id_group"] == 1) {
+    return -3;
   }
   delRow($database, "users", "id = $data_user_id");
   return 0;
