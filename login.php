@@ -53,9 +53,11 @@ if (isset($_POST["login_mode"])) {
         <h3 class="h3-login"><?php echo traduction("login_header_h3"); ?></h3>
       </div>
       <div class="content">
-        <h2 id="S'identifier" class="content-subhead">S'identifier</h2>
-        <p class="p-content">Rejoignez facilement une session avec le code fourni par votre enseignant, connectez-vous ou créez un compte en tant qu'enseignant pour gérer vos sessions et bien plus.</p>
-        <p class="p-content">Le site web est également accessible sans connexion pour une exploration et une découverte rapide et facile.</p>
+        <h2 id="S'identifier" class="content-subhead"><?php echo traduction("login_content_subhead1_h2"); ?></h2>
+        <p class="p-content"><?php echo traduction("login_content_subhead1_p1"); ?></p>
+        <p class="p-content"><?php echo traduction("login_content_subhead1_p2"); ?></p>
+        <h2 class="content-subhead"><?php echo traduction("login_content_subhead2_h2"); ?></h2>
+        <p class="p-content"><?php echo traduction("login_content_subhead2_p"); ?></p>
         <msg></msg>
         <section class="forms">
           <?php if ($_SESSION["login"] == 1) : ?>

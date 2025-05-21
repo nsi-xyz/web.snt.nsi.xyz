@@ -209,8 +209,8 @@ if (isset($_POST["create"], $_POST["user_name"], $_POST["user_surname"], $_POST[
               foreach ($data_users as $user) {
                 $admin_status = $user["id_group"] == 1 ? "&#x2705;" : "&#x274C;";
                 $interact_moreinfos_status = $_SESSION["edit_user_id"] > 0 ? " disabled" : "";
-                $interact_edit_status = $_SESSION["edit_user_id"] > 0 || ($user["id_group"] == 1 && $_SESSION["user_logged_in"]["username"] != "admin") ? " disabled" : "";
-                $interact_delete_status = $_SESSION["edit_user_id"] > 0 || ($user["id_group"] == 1 && $_SESSION["user_logged_in"]["username"] != "admin") || $user["username"] == "admin" ? " disabled" : "";
+                $interact_edit_status = $_SESSION["edit_user_id"] > 0 || ($user["id_group"] == 1 && $_SESSION["user_logged_in"]["username"] != "admin" && $_SESSION["user_logged_in"]["username"] != $user["username"]) ? " disabled" : "";
+                $interact_delete_status = $_SESSION["edit_user_id"] > 0 || ($user["id_group"] == 1 && $_SESSION["user_logged_in"]["username"] != "admin" && $_SESSION["user_logged_in"]["username"] != $user["username"]) || $user["username"] == "admin" ? " disabled" : "";
                 echo '<tr id="user-'.$user["id"].'">';
                 echo '<td id="user-name-'.$user["id"].'">'.$user["name"].'</td>';
                 echo '<td id="user-surname-'.$user["id"].'">'.$user["surname"].'</td>';
