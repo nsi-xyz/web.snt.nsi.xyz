@@ -32,6 +32,7 @@ if (isset($_SESSION["delete_user_id"])) {
     case -1:
     case -2:
     case -3:
+    case -4:
       unset($_SESSION["delete_user_id"]);
       throwError(traduction("error_account_cannot_be_deleted_message"), null, "msg", true, true);
       break;
@@ -40,8 +41,11 @@ if (isset($_SESSION["delete_user_id"])) {
 if (isset($_SESSION["delete_sessions_id"])) {
   $user_id = $_SESSION["delete_sessions_id"];
   unset($_SESSION["delete_sessions_id"]);
-  deleteAllSessions($db, $user_id);
-  throwSuccess(traduction("success_all_sessions_deleted_message"), null, "msg", true, true);
+  if (isUserSillAdmin($db)) {
+    deleteAllSessions($db, $user_id);
+    throwSuccess(traduction("success_all_sessions_deleted_message"), null, "msg", true, true);
+  }
+  throwError(traduction("unauthorized_action_message"), null, "msg", true, true);
 }
 if (!isset($_SESSION["edit_user_id"])) {
   $_SESSION["edit_user_id"] = 0;
@@ -69,6 +73,7 @@ if ((isset($_POST["apply"], $_POST["user_name"], $_POST["user_surname"], $_POST[
       throwSuccess("Compte mis à jour avec succès.", null, "msg", true, true);
       break;
     case -1:
+    case -5:
       throwError(traduction("error_account_cannot_be_edited_message"), null, "msg", true, true);
       break;
     case -2:
@@ -83,7 +88,10 @@ if ((isset($_POST["apply"], $_POST["user_name"], $_POST["user_surname"], $_POST[
   }
 } else if (isset($_POST["reset_password"]) && !isset($_POST["cancel"])) {
   $_SESSION["edit_user_id"] = 0;
-  resetPassword($db, $data_user);
+  if (isUserSillAdmin($db)) {
+    resetPassword($db, $data_user);
+  }
+  throwError(traduction("unauthorized_action_message"), null, "msg", true, true);
 } else if (isset($_POST["cancel"])) {
   $_SESSION["edit_user_id"] = 0;
   header("Location: users.php");
@@ -97,6 +105,7 @@ if (isset($_POST["create"], $_POST["user_name"], $_POST["user_surname"], $_POST[
       throwSuccess("Compte créé avec succès.", null, "msg", true, true);
       break;
     case -1:
+    case -5:
       throwError("Action impossible.", null, "msg", true, true);
       break;
     case -2:
@@ -280,8 +289,13 @@ if (isset($_POST["create"], $_POST["user_name"], $_POST["user_surname"], $_POST[
           url: "users.php",
           data: {edit_user: id},
           success: function(response) {
-            const data = JSON.parse(response);
-            if (data.success) {
+            try {
+              const data = JSON.parse(response);
+              if (data.success) {
+                window.location.href = window.location.href;
+              }
+            } catch (e) {
+              alert("Action non autorisée.");
               window.location.href = window.location.href;
             } 
           }
@@ -295,10 +309,15 @@ if (isset($_POST["create"], $_POST["user_name"], $_POST["user_surname"], $_POST[
             url: "users.php",
             data: {delete_user: id},
             success: function(response) {
-              const data = JSON.parse(response);
-              if (data.success) {
+              try {
+                const data = JSON.parse(response);
+                if (data.success) {
+                  window.location.href = window.location.href;
+                }
+              } catch (e) {
+                alert("Action non autorisée.");
                 window.location.href = window.location.href;
-              } 
+              }
             }
           });
         }
@@ -317,10 +336,15 @@ if (isset($_POST["create"], $_POST["user_name"], $_POST["user_surname"], $_POST[
             url: "users.php",
             data: {delete_sessions: id},
             success: function(response) {
-              const data = JSON.parse(response);
-              if (data.success) {
+              try {
+                const data = JSON.parse(response);
+                if (data.success) {
+                  window.location.href = window.location.href;
+                }
+              } catch (e) {
+                alert("Action non autorisée.");
                 window.location.href = window.location.href;
-              } 
+              }
             }
           });
         }

@@ -193,12 +193,17 @@ function del(id) {
       url: page,
       data: {delete_session: id},
       success: function(response) {
-        const data = JSON.parse(response);
-        if (data.success) {
-          const url = new URL(window.location.href);
-          url.searchParams.delete("session");
-          window.location.href = url.toString();
-        } 
+        try {
+          const data = JSON.parse(response);
+          if (data.success) {
+            const url = new URL(window.location.href);
+            url.searchParams.delete("session");
+            window.location.href = url.toString();
+          } 
+        } catch (e) {
+          alert("Action non autorisée.");
+          window.location.href = window.location.href;
+        }
       }
     });
   }

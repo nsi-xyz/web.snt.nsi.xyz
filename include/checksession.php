@@ -2,7 +2,7 @@
 $dateFormatter = new IntlDateFormatter('fr_FR', IntlDateFormatter::FULL, IntlDateFormatter::MEDIUM);
 $collator = collator_create('fr_FR');
 // Constantes globales.
-define("VERSION", "2.12.6");
+define("VERSION", "2.13");
 define("NAME_MIN_LENGTH", 2);
 define("NAME_MAX_LENGTH", 24);
 define("PSEUDO_MIN_LENGTH", 3);
@@ -105,11 +105,20 @@ if (isset($_COOKIE["LOGGEDIN"])) {
     $_SESSION["user_logged_in"] = getRows($db, "users", "*", "username = \"$cookie_username\"");
   }
 }
-if (in_array("panel", explode("/", $_SERVER['PHP_SELF'])) && !isUserConnected()) {
+checkSessionAuthenticity($db);
+if (isUserConnected()) {
+  $isAdmin = isUserSillAdmin($db);
+  $_SESSION["user_logged_in"]["id_group"] = $isAdmin ? 1 : 0;
+}
+if (in_array("panel", explode("/", $_SERVER['PHP_SELF']))) {
   $session_code = isset($_GET["session"]) ? $_GET["session"] : null;
   $sessionExists = rowsCount($db, "sessions", "code = \"$session_code\"") == 1;
-  if (!$sessionExists || !isset($_GET["share"]) || !in_array("stats.php", explode("/", $_SERVER['PHP_SELF']))) {
-    throwError(traduction("error_not_authorized_message"), "../login.php", "msg", true, true);
+  if (!isUserConnected()) {
+    if (!$sessionExists || !isset($_GET["share"]) || !in_array("stats.php", explode("/", $_SERVER['PHP_SELF']))) {
+      throwError(traduction("error_not_authorized_message"), "../login.php", "msg", true, true);
+    }
+  } else if ((in_array(basename($_SERVER["PHP_SELF"]), array("sessions.php", "users.php", "trads.php")) && $_SESSION["user_logged_in"]["id_group"] != 1) && (!$sessionExists && !isset($_GET["share"]) && basename($_SERVER["PHP_SELF"]) != "stats.php")) {
+    throwError(traduction("error_not_authorized_message"), "./index.php", "msg", true, true);
   }
 }
 if ((isUserConnected() && sessionInProgress($db, $_SESSION["user_logged_in"]["id"])) || (currentUserInSession())) {

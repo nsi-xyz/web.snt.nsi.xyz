@@ -56,7 +56,7 @@ if (isset($_POST["login_mode"])) {
         <h2 id="S'identifier" class="content-subhead"><?php echo traduction("login_content_subhead1_h2"); ?></h2>
         <p class="p-content"><?php echo traduction("login_content_subhead1_p1"); ?></p>
         <p class="p-content"><?php echo traduction("login_content_subhead1_p2"); ?></p>
-        <h2 class="content-subhead"><?php echo traduction("login_content_subhead2_h2"); ?></h2>
+        <h3 class="content-subhead"><?php echo traduction("login_content_subhead2_h3"); ?></h3>
         <p class="p-content"><?php echo traduction("login_content_subhead2_p"); ?></p>
         <msg></msg>
         <section class="forms">

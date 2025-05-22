@@ -215,6 +215,8 @@ function createUser($database, $name, $surname, $username, $password, $id_group)
     return -1;
   } else if (!isValidString($name, PHPPATTERN_NAME) || !isValidString($surname, PHPPATTERN_NAME) || !isValidString($username, PHPPATTERN_USERNAME)) {
     return -4;
+  } else if (!isUserSillAdmin($database)) {
+    return -5;
   } else {
     for ($i = 0; $i < count($username_registered_list); $i++) {
       if (in_array($username, $username_registered_list[$i])) {
@@ -232,6 +234,9 @@ function createUser($database, $name, $surname, $username, $password, $id_group)
 
 function updateUser($database, $data_user, $new_data_user){
   $data_user_id = $data_user["id"];
+  if (!isUserSillAdmin($database)) {
+    return -5;
+  }
   if ($data_user["username"] == "admin" && isset($new_data_user["username"]) && strtolower(trim($new_data_user["username"])) != "admin") {
     return -1;
   } else if (!isValidString($new_data_user["name"], PHPPATTERN_NAME) || !isValidString($new_data_user["surname"], PHPPATTERN_NAME) || (isset($new_data_user["username"]) && !isValidString($new_data_user["username"], PHPPATTERN_USERNAME))) {
@@ -268,6 +273,9 @@ function updateUserPassword($database, $id_user, $password, $password_new, $pass
   if (!password_verify($password, $password_current_hash)) {
     return -3;
   }
+  if (!isUserSillAdmin($database)) {
+    return -4;
+  }
   updateRow($database, "users", array("password" => password_hash($password_new, PASSWORD_DEFAULT), "last_update" => date('Y-m-d H:i:s', time())), "id = $id_user");
   return 0;
 }
@@ -280,6 +288,8 @@ function deleteUser($database, $data_user){
     return -2;
   } else if ($_SESSION["user_logged_in"]["username"] != "admin" && $data_user["id_group"] == 1) {
     return -3;
+  } else if (!isUserSillAdmin($database)) {
+    return -4;
   }
   delRow($database, "users", "id = $data_user_id");
   return 0;
@@ -378,6 +388,28 @@ function currentUserInSession() {
 
 function isUserConnected(){
   return isset($_SESSION["user_logged_in"]["username"]) && $_SESSION["user_logged_in"]["username"] != "invité";
+}
+
+function isUserSillAdmin($database) {
+  if (isUserConnected()) {
+    $user_id = $_SESSION["user_logged_in"]["id"];
+    return getRows($database, "users", "id_group", "id = $user_id")["id_group"] == 1;
+  }
+  return false;
+}
+
+function isUserStillConnected($database) {
+  if (isUserConnected()) {
+    $user_id = $_SESSION["user_logged_in"]["id"];
+    return rowsCount($database, "users", "id = $user_id") == 1;
+  }
+  return false;
+}
+
+function checkSessionAuthenticity($database) {
+  if (isUserConnected() && !isUserStillConnected($database)) {
+    logout("/login.php", 1);
+  }
 }
 
 /**
