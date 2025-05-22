@@ -15,6 +15,16 @@ $dateFormat = $longSession ? "H:i:s (d/m/Y)" : "H:i:s";
     <button title="Partager" type="button" class="btn-popup button-top pure-button" onclick="share(this)"><img src="../assets/share_moogun.png" alt="Partager" width="16" height="16"></button>
     <span id="tooltip" class="tooltip">Lien de partage copié !</span>
     <button title="Supprimer" type="button" class="button-top pure-button" onclick="del(<?php echo $session_id; ?>)"><img src="../assets/delete_freepik.png" alt="Supprimer" width="16" height="16"></button>
+    <?php if ($session["status"] == 0) : ?>
+      <span class="tag-session-closed">&#128308; Session fermée</span>
+    <?php else : ?>
+      <span class="tag-session-opened">&#128994; Session ouverte</span>
+      <?php if ($_SESSION["user_logged_in"]["id_group"] == 1 && basename($_SERVER["PHP_SELF"]) == "sessions.php") : ?>
+        <button title="Forcer l'arrêt" type="button" class="button-top pure-button" onclick="stop(<?php echo $session_id; ?>)">&#128721; Forcer l'arrêt</button>
+      <?php elseif (basename($_SERVER["PHP_SELF"]) == "stats.php") : ?>
+        <button title="Accéder au tableau de bord" type="button" class="button-top pure-button" onclick="window.location.href='session.php'">&#128223; Accéder au tableau de bord</button>
+      <?php endif; ?>
+    <?php endif; ?>
   <?php endif; ?>
   <h2 class="content-subhead">Informations générales de la session</h2>
   <ul>
@@ -192,6 +202,31 @@ function del(id) {
       type: "POST",
       url: page,
       data: {delete_session: id},
+      success: function(response) {
+        try {
+          const data = JSON.parse(response);
+          if (data.success) {
+            const url = new URL(window.location.href);
+            url.searchParams.delete("session");
+            window.location.href = url.toString();
+          } 
+        } catch (e) {
+          alert("Action non autorisée.");
+          window.location.href = window.location.href;
+        }
+      }
+    });
+  }
+}
+
+function stop(id) {
+  if (confirm("Êtes-vous certain de vouloir forcer l'arrêt de cette session ?\nCette action est irréversible.")) {
+    const url = new URL(window.location.href);
+    const page = url.pathname.split("/")[url.pathname.split("/").length - 1];
+    jQuery.ajax({
+      type: "POST",
+      url: page,
+      data: {stop_session: id},
       success: function(response) {
         try {
           const data = JSON.parse(response);

@@ -8,7 +8,9 @@ $date_max = isset($_GET["date_max"]) && isValidString($_GET["date_max"], "/^\d{4
 $date_min = isset($_GET["date_min"]) && isValidString($_GET["date_min"], "/^\d{4}-\d{2}-\d{2}$/") ? $_GET["date_min"] : null;
 $date_max_default = $date_max == null ? date('Y-m-d', strtotime("+1 day")) : $date_max;
 $date_min_default = $date_min == null ? "2006-05-02" : $date_min;
-$data_sessions = getRows($db, "sessions", "*", "code", 1, "\"%$code%\" AND id_owner IN (SELECT id FROM users WHERE username LIKE \"%$host%\") AND date < \"$date_max_default\" AND date > \"$date_min_default\"");
+$status = isset($_GET["status"]) ? 1 : 0;
+$status_filter = $status ? "AND status = 1" : "";
+$data_sessions = getRows($db, "sessions", "*", "code", 1, "\"%$code%\" AND id_owner IN (SELECT id FROM users WHERE username LIKE \"%$host%\") AND date < \"$date_max_default\" AND date > \"$date_min_default\" $status_filter ORDER BY date DESC");
 if (isset($_POST["delete_session"])) {
   $_SESSION["id_session_delete"] = $_POST["delete_session"];
   echo json_encode(["success" => true]);
@@ -20,6 +22,21 @@ if (isset($_SESSION["id_session_delete"])) {
   $params = array_diff_key($_GET, ["viewstats" => ""]);
   $url = strtok($_SERVER["REQUEST_URI"], "?").(empty($params) ? "" : "?" . http_build_query($params));
   throwSuccess("La session a été supprimée avec succès.", $url, "msg", true, true);
+}
+if (isset($_POST["stop_session"])) {
+  $_SESSION["id_session_stop"] = $_POST["stop_session"];
+  echo json_encode(["success" => true]);
+  exit();
+}
+if (isset($_SESSION["id_session_stop"])) {
+  $id_session = $_SESSION["id_session_stop"];
+  unset($_SESSION["id_session_stop"]);
+  $session = getRows($db, "sessions", "*", "id = $id_session");
+  $interval = (new DateTime($session["date"]))->diff(new DateTime());
+  $new_duration = $interval->days*24*60*60 + $interval->h*60*60 + $interval->i*60 + $interval->s;
+  updateRow($db, "sessions", array("duration" => $new_duration), "id = $id_session");
+  stopSession($db, $id_session);
+  throwSuccess("La session a été fermée avec succès.", null, "msg", true, true);
 }
 ?>
 <!DOCTYPE html>
@@ -86,6 +103,9 @@ if (isset($_SESSION["id_session_delete"])) {
                 <input type="date" id="date_min" name="date_min" class="pure-u-23-24" value="<?php echo $date_min; ?>" />
               </div>
             </div>
+            <label for="status" class="pure-checkbox">
+              <input id="status" name="status" type="checkbox" <?php echo $status == 1 ? "checked" : ""; ?> /> Uniquement les sessions en cours
+            </label>
             <button type="submit" class="button-primary pure-button" style="margin-top: 12.5px;">Rechercher</button>
           </form>
           <h3 class="content-subhead">Résultats (<?php echo count($data_sessions); ?>)</h3>
@@ -94,6 +114,7 @@ if (isset($_SESSION["id_session_delete"])) {
               <thead>
                 <tr>
                   <th>Code</th>
+                  <th>Statut</th>
                   <th>Hôte</th>
                   <th>Date</th>
                   <th>Actions</th>
@@ -104,8 +125,10 @@ if (isset($_SESSION["id_session_delete"])) {
                 foreach ($data_sessions as $session) {
                   $session_id_owner = $session["id_owner"];
                   $session_host = getRows($db, "users", "username", "id = $session_id_owner")["username"];
+                  $session_status = $session["status"] == 1 ? "&#128994; En cours..." : "&#128308; Fermée";
                   echo '<tr id="session-'.$session["id"].'">';
                   echo '<td id="session-code-'.$session["id"].'">'.$session["code"].'</td>';
+                  echo '<td id="session-status-'.$session["id"].'">'.$session_status.'</td>';
                   echo '<td id="session-host-'.$session["id"].'">'.$session_host.'</td>';
                   echo '<td id="session-date-'.$session["id"].'">'.(new DateTime($session["date"]))->format("d/m/Y (H:i:s)").'</td>';
                   echo '<td><div class="actions">';

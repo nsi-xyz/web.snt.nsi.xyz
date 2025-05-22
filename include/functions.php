@@ -213,9 +213,9 @@ function createUser($database, $name, $surname, $username, $password, $id_group)
   $username = strtolower(trim($username));
   if ($username == "admin") {
     return -1;
-  } else if (!isValidString($name, PHPPATTERN_NAME) || !isValidString($surname, PHPPATTERN_NAME) || !isValidString($username, PHPPATTERN_USERNAME)) {
+  } elseif (!isValidString($name, PHPPATTERN_NAME) || !isValidString($surname, PHPPATTERN_NAME) || !isValidString($username, PHPPATTERN_USERNAME)) {
     return -4;
-  } else if (!isUserSillAdmin($database)) {
+  } elseif (!isUserSillAdmin($database)) {
     return -5;
   } else {
     for ($i = 0; $i < count($username_registered_list); $i++) {
@@ -239,9 +239,9 @@ function updateUser($database, $data_user, $new_data_user){
   }
   if ($data_user["username"] == "admin" && isset($new_data_user["username"]) && strtolower(trim($new_data_user["username"])) != "admin") {
     return -1;
-  } else if (!isValidString($new_data_user["name"], PHPPATTERN_NAME) || !isValidString($new_data_user["surname"], PHPPATTERN_NAME) || (isset($new_data_user["username"]) && !isValidString($new_data_user["username"], PHPPATTERN_USERNAME))) {
+  } elseif (!isValidString($new_data_user["name"], PHPPATTERN_NAME) || !isValidString($new_data_user["surname"], PHPPATTERN_NAME) || (isset($new_data_user["username"]) && !isValidString($new_data_user["username"], PHPPATTERN_USERNAME))) {
     return -4;
-  } else if ($data_user["username"] != "admin") {
+  } elseif ($data_user["username"] != "admin") {
     $username_registered_list = getRows($database, "users", "username", "1", 1);
     if (count($username_registered_list) >= 1) {
       for ($i = 0; $i < count($username_registered_list); $i++) {
@@ -284,11 +284,11 @@ function deleteUser($database, $data_user){
   $data_user_id = $data_user["id"];
   if ($data_user_id == $_SESSION["user_logged_in"]["id"]) {
     return -1;
-  } else if ($data_user["username"] == "admin") {
+  } elseif ($data_user["username"] == "admin") {
     return -2;
-  } else if ($_SESSION["user_logged_in"]["username"] != "admin" && $data_user["id_group"] == 1) {
+  } elseif ($_SESSION["user_logged_in"]["username"] != "admin" && $data_user["id_group"] == 1) {
     return -3;
-  } else if (!isUserSillAdmin($database)) {
+  } elseif (!isUserSillAdmin($database)) {
     return -4;
   }
   delRow($database, "users", "id = $data_user_id");
@@ -549,13 +549,13 @@ function formatRelativeTime($datetime) {
   $interval = $now->diff($datetime);
   if ($interval->y > 0) {
     return "Il y a ".$interval->y." an".($interval->y > 1 ? "s" : "");
-  } else if ($interval->m > 0) {
+  } elseif ($interval->m > 0) {
     return "Il y a ".$interval->m." mois";
-  } else if ($interval->d > 0) {
+  } elseif ($interval->d > 0) {
     return "Il y a ".$interval->d." jour".($interval->d > 1 ? "s" : "");
-  } else if ($interval->h > 0) {
+  } elseif ($interval->h > 0) {
     return "Il y a ".$interval->h." heure".($interval->h > 1 ? "s" : "");
-  } else if ($interval->i > 0) {
+  } elseif ($interval->i > 0) {
     return "Il y a ".$interval->i." minute".($interval->i > 1 ? "s" : "");
   } else {
     return "Il y a ".$interval->s." seconde".($interval->s > 1 ? "s" : "");
