@@ -31,22 +31,24 @@ include("../include/checksession.php");
         <h2 class="content-subhead">Panneau d'administration</h2>
         <p class="p-content">Bienvenue sur le panneau d'administration de web.snt.nsi.xyz !</p>
         <p class="p-content">Ce panneau vous permet de créer des sessions, par exemple pour vos élèves si vous êtes enseignant, de parcourir vos anciennes sessions et d'avoir des statistiques détaillés sur ces dernières.</p>
-        <h2 class="content-subhead">En quelques chiffres</h2>
-        <p class="p-content">web.snt.nsi.xyz c'est :</p>
-        <ul>
-          <?php
-          $sessions_nbr = rowsCount($db, "sessions", "1");
-          $users_nbr = rowsCount($db, "users", "1");
-          $puzzles_resolved_nbr = rowsCount($db, "users_session_logs", "1");
-          ?>
-          <li><strong><?php echo $sessions_nbr; ?></strong> sessions créées</li>
-          <li><strong><?php echo $users_nbr; ?></strong> utilisateurs inscrits</li>
-          <li><strong><?php echo $puzzles_resolved_nbr; ?></strong> énigmes résolues</li>
-        </ul>
+        <?php if ($_SESSION["user_logged_in"]["id_group"] == 1) : ?>
+          <h2 class="content-subhead">En quelques chiffres</h2>
+          <p class="p-content">web.snt.nsi.xyz c'est :</p>
+          <ul>
+            <?php
+            $sessions_nbr = rowsCount($db, "sessions", "1");
+            $users_nbr = rowsCount($db, "users", "1");
+            $puzzles_resolved_nbr = rowsCount($db, "users_session_logs", "1");
+            ?>
+            <li><strong><?php echo $sessions_nbr; ?></strong> sessions créées</li>
+            <li><strong><?php echo $users_nbr; ?></strong> utilisateurs inscrits</li>
+            <li><strong><?php echo $puzzles_resolved_nbr; ?></strong> énigmes résolues</li>
+          </ul>
+        <?php endif; ?>
         <h2 class="content-subhead">Gestion des données</h2>
         <p class="p-content">Toutes les données enregistrées le sont de manière sécurisée. Cela concerne les données de votre compte, ou encore les données relatives à vos sessions (pseudos des participants, résultats, etc.). Vous pouvez à tout moment demander la suppression de vos données et celles de vos sessions. Pour exercer ce droit, veuillez nous contacter.</p>
         <h2 class="content-subhead">Nous contacter</h2>
-        <p class="p-content">Pour contacter un administrateur du site, utilisez le formulaire de contact sur <a class="link" href="https://nsi.xyz/nous-contacter/" target="_blank">nsi.xyz</a>.</p>
+        <p class="p-content">Pour contacter un administrateur du site (laisser un avis, signaler un bug, suggérer des fonctionnalités, ou autres), utilisez le <a class="link" href="<?php echo traduction("external_contact_link"); ?>" target="_blank">formulaire de contact</a>.</p>
       </div>
     </div>
     <?php include("../include/footer.php"); ?>

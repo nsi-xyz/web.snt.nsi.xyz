@@ -50,7 +50,7 @@ if (isset($_SESSION["id_session_delete"])) {
             $session_id = $session["id"];
             $session_code = $session["code"];
             $session_id_owner = $session["id_owner"];
-            $session_owner = getRows($db, "users", "username", "id = \"$session_id_owner\"")["username"];
+            $session_owner = rowsCount($db, "users", "id = $session_id_owner") == 1 ? getRows($db, "users", "username", "id = \"$session_id_owner\"")["username"] : "<i>deleted_user_".$session_id_owner."</i>";
             $session_users = getRows($db, "users_session", "*", "id_session = \"$session_id\"", 1);
             if (isUserConnected() && $_SESSION["user_logged_in"]["id"] != $session_id_owner && !isset($_GET["share"]) && $_SESSION["user_logged_in"]["id_group"] == 0) {
               throwError(traduction("error_not_authorized_message"), "./index.php", "msg", true, false);

@@ -4,13 +4,14 @@ include "../include/functions.php";
 include "../include/checksession.php";
 $code = isset($_GET["code"]) && isValidString($_GET["code"], "/^[A-Z0-9]+$/") ? $_GET["code"] : "";
 $host = isset($_GET["host"]) && isValidString($_GET["host"], PHPPATTERN_USERNAME) ? $_GET["host"] : "";
+$host_filter = $host != "" ? "AND id_owner IN (SELECT id FROM users WHERE username LIKE \"%$host%\")" : "";
 $date_max = isset($_GET["date_max"]) && isValidString($_GET["date_max"], "/^\d{4}-\d{2}-\d{2}$/") ? $_GET["date_max"] : null;
 $date_min = isset($_GET["date_min"]) && isValidString($_GET["date_min"], "/^\d{4}-\d{2}-\d{2}$/") ? $_GET["date_min"] : null;
 $date_max_default = $date_max == null ? date('Y-m-d', strtotime("+1 day")) : $date_max;
 $date_min_default = $date_min == null ? "2006-05-02" : $date_min;
 $status = isset($_GET["status"]) ? 1 : 0;
 $status_filter = $status ? "AND status = 1" : "";
-$data_sessions = getRows($db, "sessions", "*", "code", 1, "\"%$code%\" AND id_owner IN (SELECT id FROM users WHERE username LIKE \"%$host%\") AND date < \"$date_max_default\" AND date > \"$date_min_default\" $status_filter ORDER BY date DESC");
+$data_sessions = getRows($db, "sessions", "*", "code", 1, "\"%$code%\" AND date < \"$date_max_default\" AND date > \"$date_min_default\" $status_filter $host_filter ORDER BY date DESC");
 if (isset($_POST["delete_session"])) {
   $_SESSION["id_session_delete"] = $_POST["delete_session"];
   echo json_encode(["success" => true]);
@@ -75,7 +76,7 @@ if (isset($_SESSION["id_session_stop"])) {
               $session_id = $session["id"];
               $session_code = $session["code"];
               $session_id_owner = $session["id_owner"];
-              $session_owner = getRows($db, "users", "username", "id = \"$session_id_owner\"")["username"];
+              $session_owner = rowsCount($db, "users", "id = $session_id_owner") == 1 ? getRows($db, "users", "username", "id = \"$session_id_owner\"")["username"] : "<i>deleted_user_".$session_id_owner."</i>";
               $session_users = getRows($db, "users_session", "*", "id_session = \"$session_id\"", 1);
               include "./include/stats_viewer.php";
             }
@@ -124,7 +125,7 @@ if (isset($_SESSION["id_session_stop"])) {
                 <?php
                 foreach ($data_sessions as $session) {
                   $session_id_owner = $session["id_owner"];
-                  $session_host = getRows($db, "users", "username", "id = $session_id_owner")["username"];
+                  $session_host = rowsCount($db, "users", "id = $session_id_owner") == 1 ? getRows($db, "users", "username", "id = $session_id_owner")["username"] : "<i>deleted_user_".$session_id_owner."</i>";
                   $session_status = $session["status"] == 1 ? "&#128994; En cours..." : "&#128308; Fermée";
                   echo '<tr id="session-'.$session["id"].'">';
                   echo '<td id="session-code-'.$session["id"].'">'.$session["code"].'</td>';
