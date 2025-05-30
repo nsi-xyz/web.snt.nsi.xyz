@@ -12,25 +12,18 @@
     </ul>
   </div>
 </div>
-<?php if (isset($_SESSION["message"])) : ?>
+<?php if ($message = FlashMessenger::get()) : ?>
   <script>
-    document.addEventListener("DOMContentLoaded", function() {
+    document.addEventListener("DOMContentLoaded", function () {
       <?php
-      switch ($_SESSION["message"][1]) {
-        case "success":
-          echo 'throwSuccess("'.$_SESSION["message"][0].'", "'.$_SESSION["message"][2].'");';
-          unset($_SESSION["message"]);
-          break;
-        case "error":
-          echo 'throwError("'.$_SESSION["message"][0].'", "'.$_SESSION["message"][2].'");';
-          unset($_SESSION["message"]);
-          break;
-        case "info":
-          echo 'throwInfo("'.$_SESSION["message"][0].'", "'.$_SESSION["message"][2].'");';
-          unset($_SESSION["message"]);
-          break;
-      }
+        echo match ($message[1]) {
+          "success" => 'throwSuccess("'.addslashes($message[0]).'", "'.$message[2].'");',
+          "error"   => 'throwError("'.addslashes($message[0]).'", "'.$message[2].'");',
+          "info"    => 'throwInfo("'.addslashes($message[0]).'", "'.$message[2].'");',
+          default   => '',
+        };
+        FlashMessenger::clear();
       ?>
-  });
+    });
   </script>
 <?php endif; ?>

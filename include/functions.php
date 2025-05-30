@@ -63,23 +63,35 @@ function tickPuzzle($database, $puzzleID = null) {
  */
 function logout($redir, $reset = 0) {
   if (isset($_COOKIE["LOGGEDIN"])) {
-    setcookie("LOGGEDIN", "", time() - COOKIEAUTHDURATION, "/");
+    setcookie("LOGGEDIN", "", time() - AUTHCOOKIE_DURATION, "/");
   }
   if ($reset) {
     $cookies = array(COOKIE7, COOKIE8, COOKIECHOCOLAT, COOKIECHOCOLATINE, COOKIEHAZLENUT, COOKIESESSION, COOKIEPUBLICITAIRE, COOKIEGOOGLE, COOKIEFACEBOOK, COOKIEAMAZON);
     for ($i = 0; $i <= 9; $i++) {
       $cookie = $cookies[$i];
       if (isset($_COOKIE[$cookie["name"]])) {
-        setcookie($cookie["name"], $cookie["value"], time() - SESSDURATION, "/");
+        setcookie($cookie["name"], $cookie["value"], time() - GAMESESSION_DURATION, "/");
       }
     }
     if (isset($_COOKIE["PHPSESSID"])) {
-      setcookie("PHPSESSID", "", time() - SESSDURATION, "/");
+      setcookie("PHPSESSID", "", time() - GAMESESSION_DURATION, "/");
     }
   }
   session_unset();
   session_destroy();
   header("Location: $redir");
+  exit();
+}
+
+function redirect($url = null, $in_header = true) {
+  if ($url == null) {
+    $url = $_SERVER["REQUEST_URI"];
+  }
+  if ($in_header) {
+    header("Location: ".$url);
+  } else {
+    echo '<script>window.location.replace("'. $url .'");</script>';
+  }
   exit();
 }
 
@@ -215,7 +227,7 @@ function createUser($database, $name, $surname, $username, $password, $id_group)
     return -1;
   } elseif (!isValidString($name, PHPPATTERN_NAME) || !isValidString($surname, PHPPATTERN_NAME) || !isValidString($username, PHPPATTERN_USERNAME)) {
     return -4;
-  } elseif (!isUserSillAdmin($database)) {
+  } elseif (!isUserSillAdmin($database) && isUserConnected()) {
     return -5;
   } else {
     for ($i = 0; $i < count($username_registered_list); $i++) {
@@ -314,7 +326,7 @@ function login_success($username, $password, $database) {
 }
 
 function sessionInProgress($database, $user_id) {
-  $sessions = getRows($database, "sessions", "status", "id_owner = $user_id", 1);
+  $sessions = getRows($database, "sessions", "status", "host_id = $user_id", 1);
   foreach ($sessions as $value) {
     if (in_array(1, $value)) {
       return true;
@@ -420,13 +432,16 @@ function checkSessionAuthenticity($database) {
  * @return string
  */
 function generateRandomCode($length = 8) {
-  $charForCode = ["ACDEFGHJKMNPQRTUVWYZ","1234679"];
-  $codeResult = "";
-  for ($i = 0; $i < $length; $i++) {
-    $listTypeChar = $charForCode[random_int(0, 1)];
-    $codeResult = $codeResult.$listTypeChar[rand(0, strlen($listTypeChar) - 1)];
-  }
-  return $codeResult;
+    $letters = "ACDEFGHJKMNPQRTUVWYZ";
+    $digits = "1234679";
+    $code = $letters[random_int(0, strlen($letters) - 1)];
+    $code .= $digits[random_int(0, strlen($digits) - 1)];
+    $allChars = $letters . $digits;
+    for ($i = 2; $i < $length; $i++) {
+        $code .= $allChars[random_int(0, strlen($allChars) - 1)];
+    }
+    $code = str_shuffle($code);
+    return $code;
 }
 
 /**
@@ -504,18 +519,6 @@ function getSessionData($database, $id) {
 function isValidLength($string, $min, $max) {
   $length = strlen($string);
   return $length >= $min && $length <= $max;
-}
-
-function redirect($url = null, $in_header = true) {
-  if ($url == null) {
-    $url = $_SERVER["REQUEST_URI"];
-  }
-  if ($in_header) {
-    header("Location: ".$url);
-  } else {
-    echo '<script>window.location.replace("'. $url .'");</script>';
-  }
-  exit();
 }
 
 function generatePassword($length = 12) {

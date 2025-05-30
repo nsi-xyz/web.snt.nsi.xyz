@@ -1,24 +1,13 @@
 <?php
-include "./panel/include/db.php";
+require_once './include/bootstrap.php';
 include "./include/functions.php";
 include "./include/checksession.php";
-if (isUserConnected()) {
-  $verifiedUser = false;
-  foreach (getRows($db, "users", "username", "1", 1) as $row) {
-    if (in_array($_SESSION["user_logged_in"]["username"], $row)) {
-      $verifiedUser = true;
-    }
-  }
-  if ($verifiedUser) {
+  if ($session->currentUserIsUser()) {
     header('Location: ./panel/');
     exit();
-  } else {
-    header('Location: ./index.php');
-    exit();
+  } elseif ($session->currentUserIsPlayer()) {
+    throwError("Vous êtes déjà dans une session. Veuillez la quitter pour accéder à la page d'identification.", "./index.php", "msg", true, true);
   }
-} else if (currentUserInSession()) {
-  throwError("Vous êtes déjà dans une session. Veuillez la quitter pour accéder à la page d'identification.", "./index.php", "msg", true, true);
-}
 if (!isset($_SESSION["login"])){
   $_SESSION["login"] = 1;
 }
@@ -120,10 +109,11 @@ if (isset($_POST["login_mode"])) {
               if (isset($_POST["username"], $_POST["password"])) {
                 $user_username = strtolower($_POST["username"]);
                 $user_password = $_POST["password"];
-                if (isValidString($user_username, PHPPATTERN_USERNAME) && login_success($user_username, $user_password, $db)) {
-                  $_SESSION["user_logged_in"] = getRows($db, "users", "*", "username = \"$user_username\"");
+                if (isValidString($user_username, PHPPATTERN_USERNAME) && $userRepository->canLogin($user_username, $user_password)) {
+                  $user = $userRepository->getByUsername($user_username);
+                  $session->setCurrentUser($user);
                   if (isset($_POST["stay-connected"])) {
-                    $_SESSION["stay_connected"] = true;
+                    $session->setStayConnected(true);
                   }
                   echo '<script>window.location.replace(window.location.href);</script>';
                 } else {

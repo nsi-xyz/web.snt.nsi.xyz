@@ -1,17 +1,18 @@
 <?php
+include "../include/bootstrap.php";
 include "./include/db.php";
 include "../include/functions.php";
 include "../include/checksession.php";
 $code = isset($_GET["code"]) && isValidString($_GET["code"], "/^[A-Z0-9]+$/") ? $_GET["code"] : "";
 $host = isset($_GET["host"]) && isValidString($_GET["host"], PHPPATTERN_USERNAME) ? $_GET["host"] : "";
-$host_filter = $host != "" ? "AND id_owner IN (SELECT id FROM users WHERE username LIKE \"%$host%\")" : "";
+$host_filter = $host != "" ? "AND host_id IN (SELECT id FROM users WHERE username LIKE \"%$host%\")" : "";
 $date_max = isset($_GET["date_max"]) && isValidString($_GET["date_max"], "/^\d{4}-\d{2}-\d{2}$/") ? $_GET["date_max"] : null;
 $date_min = isset($_GET["date_min"]) && isValidString($_GET["date_min"], "/^\d{4}-\d{2}-\d{2}$/") ? $_GET["date_min"] : null;
 $date_max_default = $date_max == null ? date('Y-m-d', strtotime("+1 day")) : $date_max;
 $date_min_default = $date_min == null ? "2006-05-02" : $date_min;
 $status = isset($_GET["status"]) ? 1 : 0;
 $status_filter = $status ? "AND status = 1" : "";
-$data_sessions = getRows($db, "sessions", "*", "code", 1, "\"%$code%\" AND date < \"$date_max_default\" AND date > \"$date_min_default\" $status_filter $host_filter ORDER BY date DESC");
+$data_sessions = getRows($db, "sessions", "*", "code", 1, "\"%$code%\" AND created_at < \"$date_max_default\" AND created_at > \"$date_min_default\" $status_filter $host_filter ORDER BY created_at DESC");
 if (isset($_POST["delete_session"])) {
   $_SESSION["id_session_delete"] = $_POST["delete_session"];
   echo json_encode(["success" => true]);
@@ -33,7 +34,7 @@ if (isset($_SESSION["id_session_stop"])) {
   $id_session = $_SESSION["id_session_stop"];
   unset($_SESSION["id_session_stop"]);
   $session = getRows($db, "sessions", "*", "id = $id_session");
-  $interval = (new DateTime($session["date"]))->diff(new DateTime());
+  $interval = (new DateTime($session["created_at"]))->diff(new DateTime());
   $new_duration = $interval->days*24*60*60 + $interval->h*60*60 + $interval->i*60 + $interval->s;
   updateRow($db, "sessions", array("duration" => $new_duration), "id = $id_session");
   stopSession($db, $id_session);
@@ -75,7 +76,7 @@ if (isset($_SESSION["id_session_stop"])) {
               $session = getRows($db, "sessions", "*", "id = $id");
               $session_id = $session["id"];
               $session_code = $session["code"];
-              $session_id_owner = $session["id_owner"];
+              $session_id_owner = $session["host_id"];
               $session_owner = rowsCount($db, "users", "id = $session_id_owner") == 1 ? getRows($db, "users", "username", "id = \"$session_id_owner\"")["username"] : "<i>deleted_user_".$session_id_owner."</i>";
               $session_users = getRows($db, "users_session", "*", "id_session = \"$session_id\"", 1);
               include "./include/stats_viewer.php";
@@ -124,14 +125,14 @@ if (isset($_SESSION["id_session_stop"])) {
               <tbody id="sessions-list">
                 <?php
                 foreach ($data_sessions as $session) {
-                  $session_id_owner = $session["id_owner"];
+                  $session_id_owner = $session["host_id"];
                   $session_host = rowsCount($db, "users", "id = $session_id_owner") == 1 ? getRows($db, "users", "username", "id = $session_id_owner")["username"] : "<i>deleted_user_".$session_id_owner."</i>";
                   $session_status = $session["status"] == 1 ? "&#128994; En cours..." : "&#128308; Fermée";
                   echo '<tr id="session-'.$session["id"].'">';
                   echo '<td id="session-code-'.$session["id"].'">'.$session["code"].'</td>';
                   echo '<td id="session-status-'.$session["id"].'">'.$session_status.'</td>';
                   echo '<td id="session-host-'.$session["id"].'">'.$session_host.'</td>';
-                  echo '<td id="session-date-'.$session["id"].'">'.(new DateTime($session["date"]))->format("d/m/Y (H:i:s)").'</td>';
+                  echo '<td id="session-date-'.$session["id"].'">'.(new DateTime($session["created_at"]))->format("d/m/Y (H:i:s)").'</td>';
                   echo '<td><div class="actions">';
                   echo '<button type="button" class="button-more-infos pure-button" onclick="viewStats('.$session["id"].')">Voir les statistiques</button>';
                   echo '</div></td>';

@@ -1,4 +1,5 @@
 <?php
+include "../include/bootstrap.php";
 include("./include/db.php");
 include("../include/functions.php");
 include("../include/checksession.php");
