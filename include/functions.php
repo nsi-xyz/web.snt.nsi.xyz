@@ -215,7 +215,7 @@ function createUser($database, $name, $surname, $username, $password, $id_group)
     return -1;
   } elseif (!isValidString($name, PHPPATTERN_NAME) || !isValidString($surname, PHPPATTERN_NAME) || !isValidString($username, PHPPATTERN_USERNAME)) {
     return -4;
-  } elseif (!isUserSillAdmin($database)) {
+  } elseif (!isUserSillAdmin($database) && isUserConnected()) {
     return -5;
   } else {
     for ($i = 0; $i < count($username_registered_list); $i++) {
@@ -234,7 +234,7 @@ function createUser($database, $name, $surname, $username, $password, $id_group)
 
 function updateUser($database, $data_user, $new_data_user){
   $data_user_id = $data_user["id"];
-  if (!isUserSillAdmin($database)) {
+  if (!isUserSillAdmin($database) && $_SESSION["user_logged_in"]["username"] != $data_user["username"]) {
     return -5;
   }
   if ($data_user["username"] == "admin" && isset($new_data_user["username"]) && strtolower(trim($new_data_user["username"])) != "admin") {
