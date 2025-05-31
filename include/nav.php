@@ -43,14 +43,14 @@ $p_h = (in_array($p, array("index.php", "help.php", "login.php"))) ? "." : "..";
         ?>
 <?php           
 for ($i = 1; $i < 10; $i++) {
-    $emoji = in_array($i, $_SESSION["resolvedPuzzles"]) ? "&#x1F7E2;" : "&#x1F7E0;";
-    $resolved = in_array($i, $_SESSION["resolvedPuzzles"]) ? "resolved" : "unresolved";
+    $emoji = in_array($i, $_SESSION["puzzles_solved"]) ? "&#x1F7E2;" : "&#x1F7E0;";
+    $resolved = in_array($i, $_SESSION["puzzles_solved"]) ? "resolved" : "unresolved";
     $class = $i == $currentPuzzle ? "pure-menu-item menu-item-divided pure-menu-selected-".$resolved : "pure-menu-item-".$resolved;
     echo '            <li class="'.$class.'"><a href=".'.$p_i.'/puzzles/puzzle'.$i.'.php" class="pure-menu-link">'.$emoji.' '.traduction("nav_puzzle").' 0'.$i.'</a></li>
 ';
 }
 $d = $i != 10 ? "0" : "";
-if (!isset($_SESSION["puzzle10"])) {
+if (!$_SESSION["puzzle10"]) {
   $indicators = array(traduction("comment_puzzle10_clue1"), traduction("comment_puzzle10_clue2"), traduction("comment_puzzle10_clue3"), traduction("comment_puzzle10_clue4"), traduction("comment_puzzle10_clue5"), traduction("comment_puzzle10_clue6"), traduction("comment_puzzle10_clue7"), traduction("comment_puzzle10_clue8"), traduction("comment_puzzle10_clue9"));
   $commentary = $currentPuzzle != NULL ? $indicators[$currentPuzzle - 1] : traduction("comment_puzzle10_not_clue");
   echo '            <li class="pure-menu-item"><a href="#" id="alert" class="pure-menu-link-hidden">&#x26AB; '.traduction("nav_puzzle").' 10</a><!--'.$commentary.'--></li>
@@ -60,8 +60,8 @@ var warn = document.getElementById("alert");
 
 warn.addEventListener("click", function() {alert("'.traduction("puzzle_message_hidden_puzzle10").'");});</script>';
 } else {
-  $emoji = in_array($i, $_SESSION["resolvedPuzzles"]) ? "&#x1F7E2;" : "&#x1F7E0;";
-  $resolved = in_array(10, $_SESSION["resolvedPuzzles"]) ? "resolved" : "unresolved";
+  $emoji = in_array($i, $_SESSION["puzzles_solved"]) ? "&#x1F7E2;" : "&#x1F7E0;";
+  $resolved = in_array(10, $_SESSION["puzzles_solved"]) ? "resolved" : "unresolved";
   $class = $currentPuzzle == 10 ? "pure-menu-item menu-item-divided pure-menu-selected-".$resolved : "pure-menu-item-".$resolved;
   echo '            <li class="'.$class.'"><a href=".'.$p_i.'/puzzles/puzzle10.php" class="pure-menu-link">'.$emoji.' Énigme web 10</a></li>
 ';

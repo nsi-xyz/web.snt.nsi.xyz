@@ -1,7 +1,7 @@
 <?php
+require_once './include/bootstrap.php';
 include("./panel/include/db.php");
 include("./include/functions.php");
-include("./include/checksession.php");
 ?>
 <!-- Ceci est un commentaire HTML. Le code que vous voyez ci-dessous est le code de la page "help" -->
 <!-- Vous avez donc compris comment afficher la source d'une page HTML, vous devez cherchez les réponses aux énigmes dans  sources des pages des énigmes-->

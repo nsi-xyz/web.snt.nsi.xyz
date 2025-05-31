@@ -1,11 +1,11 @@
 <?php
+require_once '../include/bootstrap.php';
 include("../panel/include/db.php");
 include("../include/functions.php");
-include("../include/checksession.php");
 $tick = false;
 if (!isset($_COOKIE[COOKIE7["name"]])) {
     $tick = true;
-    setcookie(COOKIE7["name"], "", time() - SESSDURATION, "/");
+    setcookie(COOKIE7["name"], "", time() - GAMESESSION_DURATION, "/");
 }
 ?>
 <!DOCTYPE html>

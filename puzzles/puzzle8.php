@@ -1,13 +1,13 @@
 <?php
+require_once '../include/bootstrap.php';
 include("../panel/include/db.php");
 include("../include/functions.php");
-include("../include/checksession.php");
 if (!isset($_SESSION["target_value_8"])) {
     $puzzle8_target_seed = str_pad(rand(0, 99999999), 8, "0", STR_PAD_LEFT);
     $_SESSION["target_value_8"] = $puzzle8_target_seed."42";
 } elseif (isset($_COOKIE[COOKIE8["name"]])) {
     if ($_COOKIE[COOKIE8["name"]] == $_SESSION["target_value_8"]) {
-        setcookie(COOKIE8["name"], "", time() - SESSDURATION, "/");
+        setcookie(COOKIE8["name"], "", time() - GAMESESSION_DURATION, "/");
     }
 }
 ?>

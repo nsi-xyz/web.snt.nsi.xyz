@@ -10,7 +10,7 @@
                 echo '<td class="td-'.$class.'" onclick="location.href=\''.$path.'/puzzles/puzzle'.$i.'.php\'">'.sprintf("%02d", $i).'</td>
               ';
               }
-              if (isset($_SESSION["puzzle10"])) {
+              if ($_SESSION["puzzle10"]) {
               $class = puzzleIsResolved(10) ? "resolved" : "unresolved";
               echo '<td class="td-'.$class.'" onclick="location.href=\''.$path.'/puzzles/puzzle10.php\'">10</td>
               ';
@@ -21,4 +21,4 @@
               ?></tr>
           </tbody>
 </table>
-<?php echo count($_SESSION["resolvedPuzzles"]) == 10 ? traduction("puzzle_message_gg") : "" ?>
+<?php echo count($_SESSION["puzzles_solved"]) == 10 ? traduction("puzzle_message_gg") : "" ?>

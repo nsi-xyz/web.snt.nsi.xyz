@@ -1,7 +1,7 @@
 <?php
+require_once '../include/bootstrap.php';
 include("../panel/include/db.php");
 include("../include/functions.php");
-include("../include/checksession.php");
 ?>
 <!DOCTYPE html>
 <html lang="fr">

@@ -1,7 +1,7 @@
 <?php
+require_once '../include/bootstrap.php';
 include("../panel/include/db.php");
 include("../include/functions.php");
-include("../include/checksession.php");
 include("../include/dataget.php");
 $header_attributes = array("margin", "color", "text-align", "padding", "border-bottom");
 if (!isset($_SESSION["magic_word_4"])) {

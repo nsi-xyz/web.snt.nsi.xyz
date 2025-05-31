@@ -1,7 +1,6 @@
 <?php
 require_once './include/bootstrap.php';
 include "./include/functions.php";
-include "./include/checksession.php";
   if ($session->currentUserIsUser()) {
     header('Location: ./panel/');
     exit();

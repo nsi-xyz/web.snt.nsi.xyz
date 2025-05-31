@@ -2,7 +2,6 @@
 require_once './include/bootstrap.php';
 include "./panel/include/db.php";
 include "./include/functions.php";
-include "./include/checksession.php";
 ?>
 <!DOCTYPE html> <!-- <?= $translator->getMessage('comment_index_welcome'); ?> -->
 <html lang="fr">

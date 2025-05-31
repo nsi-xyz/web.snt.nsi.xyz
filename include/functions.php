@@ -22,7 +22,7 @@ function puzzleIsResolved($puzzleID = null) {
   if ($puzzleID == null) {
     $puzzleID = getCurrentPuzzleID();
   }
-  return in_array($puzzleID, $_SESSION["resolvedPuzzles"]) ? true : false;
+  return in_array($puzzleID, $_SESSION["puzzles_solved"]) ? true : false;
 }
 
 /**

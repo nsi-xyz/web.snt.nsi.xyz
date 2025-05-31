@@ -1,7 +1,7 @@
 <?php
+require_once '../include/bootstrap.php';
 include("../panel/include/db.php");
 include("../include/functions.php");
-include("../include/checksession.php");
 include("../include/dataget.php");
 if (!isset($_SESSION["magic_word_10"])) {
     $_SESSION["magic_word_10"] = getMysteryColor();
