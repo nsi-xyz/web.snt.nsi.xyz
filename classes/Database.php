@@ -1,5 +1,4 @@
 <?php
-
 class Database {
     private PDO $pdo;
 
@@ -76,11 +75,32 @@ class Database {
         return $rows ?: null;
     }
 
+    public function updateRow(string $table, array $data, string $condition): void {
+        $setParts = [];
+        $params = [];
+        foreach ($data as $column => $value) {
+            $paramName = ':' . $column;
+            $setParts[] = "`$column` = $paramName";
+            $params[$paramName] = $value;
+        }
+        $setClause = implode(', ', $setParts);
+        $sql = "UPDATE `$table` SET $setClause WHERE $condition";
+        $stmt = $this->pdo->prepare($sql);
+        $stmt->execute($params);
+    }
 
     public function getPermissionsByGroupId(int $groupId): array {
-        $sql = "SELECT permission_name FROM group_permissions WHERE group_id = :group_id";
+        $sql = "SELECT permission_key FROM group_permissions WHERE group_id = :group_id";
         $stmt = $this->pdo->prepare($sql);
         $stmt->execute(['group_id' => $groupId]);
+        $rows = $stmt->fetchAll(PDO::FETCH_COLUMN);
+        return $rows ?: [];
+    }
+
+    public function getEventsByPlayer(string $playerPseudo, int $playerGameSessionId): array {
+        $sql = "SELECT * FROM game_session_players WHERE pseudo = :pseudo AND game_session_id = :game_session_id";
+        $stmt = $this->pdo->prepare($sql);
+        $stmt->execute(['pseudo' => $playerPseudo, 'game_session_id' => $playerGameSessionId]);
         $rows = $stmt->fetchAll(PDO::FETCH_COLUMN);
         return $rows ?: [];
     }

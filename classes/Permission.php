@@ -1,5 +1,4 @@
 <?php
-
 class Permission {
     public const USER_CREATE = 'user.create';
     public const USER_DELETE = 'user.delete';

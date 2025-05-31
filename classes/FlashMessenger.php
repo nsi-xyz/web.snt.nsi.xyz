@@ -1,5 +1,4 @@
 <?php
-
 class FlashMessenger {
     public static function success(string $message, string $tag = 'msg'): void {
         $_SESSION['message'] = [$message, 'success', $tag];

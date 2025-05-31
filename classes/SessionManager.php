@@ -7,11 +7,13 @@ class SessionManager {
     private Database $database;
     private CookieManager $cookieManager;
     private UserRepository $userRepository;
+    private GameSessionRepository $gameSessionRepository;
 
     public function __construct(Database $database) {
         $this->database = $database;
         $this->cookieManager = new CookieManager();
         $this->userRepository = new UserRepository($this->database);
+        $this->gameSessionRepository = new GameSessionRepository($this->database);
     }
 
     public function start(): void {
@@ -69,6 +71,12 @@ class SessionManager {
                 $this->setCurrentUser(new Guest());
             } elseif (!$user->equals($userDb)) {
                 $this->setCurrentUser($userDb);
+            }
+        }
+        if ($this->currentUserIsPlayer()) {
+            $player = $this->getCurrentUser();
+            if (!$this->gameSessionRepository->isOpen($player->getGameSession()->getId())) {
+                $this->setCurrentUser(new Guest());
             }
         }
     }

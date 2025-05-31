@@ -1,5 +1,4 @@
 <?php
-
 class Redirector {
     public static function to(string $url = null, bool $inHeader = true): void {
         if ($url === null) {

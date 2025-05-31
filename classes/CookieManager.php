@@ -1,7 +1,5 @@
 <?php
-
 class CookieManager {
-
     public function exists(string $name): bool {
         return isset($_COOKIE[$name]);
     }

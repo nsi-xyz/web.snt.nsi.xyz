@@ -1,7 +1,7 @@
 <?php
 // Version
 define('VERSION', '3.0-SNAPSHOT');
-define('DEFAULT_LOCALE', 'fr');
+define('DEFAULT_LOCALE', 'fr_FR');
 
 // Field lengths
 define('NAME_MIN_LENGTH', 2);

@@ -1,5 +1,4 @@
 <?php
-
 class Translator {
     private Database $database;
     private ?User $actor;
@@ -16,8 +15,8 @@ class Translator {
     }
 
     public function setLocale(string $locale): void {
-        //$this->dateFormatter = new IntlDateFormatter(DEFAULT_LOCALE . '_' . strtoupper(DEFAULT_LOCALE), IntlDateFormatter::FULL, IntlDateFormatter::MEDIUM);
-        //$this->collator = collator_create(DEFAULT_LOCALE . '_' . strtoupper(DEFAULT_LOCALE));
+        $this->dateFormatter = new IntlDateFormatter(DEFAULT_LOCALE, IntlDateFormatter::FULL, IntlDateFormatter::MEDIUM);
+        $this->collator = collator_create(DEFAULT_LOCALE);
         if ($locale === 'debug') {
             $this->debugMode = true;
             $this->messages = [];
@@ -29,7 +28,8 @@ class Translator {
     }
 
     private function load(): void {
-        $rows = $this->database->getRows("traductions_{$this->locale}");
+        $rows = $this->database->getRowByCustomAttribut('translations', 'lang', $this->locale);
+        if ($rows === null) return;
         foreach ($rows as $row) {
             $this->messages[$row['trad']] = $row['value'];
         }
@@ -40,7 +40,7 @@ class Translator {
             return $key;
         }
         if (!isset($this->messages[$key])) {
-            return "Missing Translation ($key, " . strtoupper($this->locale) . ")";
+            return "Missing Translation ($key, " . $this->locale . ")";
         }
         $message = $this->messages[$key];
         $message = preg_replace_callback('/{{(.*?)}}/', function ($matches) {

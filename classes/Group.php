@@ -1,5 +1,4 @@
 <?php
-
 class Group {
     private int $id;
     private string $name;
