@@ -9,6 +9,7 @@ require_once __DIR__ . '/../classes/UserRepository.php';
 require_once __DIR__ . '/../classes/SessionManager.php';
 require_once __DIR__ . '/../classes/Translator.php';
 require_once __DIR__ . '/../classes/ControlAccess.php';
+require_once __DIR__ . '/../classes/Page.php';
 require_once __DIR__ . '/../classes/GameSessionAutoCloser.php';
 require_once __DIR__ . '/../classes/PuzzleProgression.php';
 $session = new SessionManager($db);

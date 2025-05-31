@@ -30,7 +30,7 @@ class User {
         return $this->toArray() === $other->toArray() && $this->getGroup()->equals($other->getGroup());
     }
 
-    private function toArray(): array {
+    public function toArray(): array {
         return [
             'id' => $this->id,
             'name' => $this->name,
@@ -66,6 +66,18 @@ class User {
 
     public function getHashedPassword(): string {
         return $this->hashedPassword;
+    }
+
+    public function getCreatedAt(): string {
+        return $this->createdAt;
+    }
+
+    public function getLastUpdate(): string {
+        return $this->lastUpdate;
+    }
+
+    public function getLastConnexion(): string {
+        return $this->lastConnexion;
     }
 
     public function getGroupId(): int {

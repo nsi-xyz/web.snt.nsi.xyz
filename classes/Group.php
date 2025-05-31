@@ -37,6 +37,10 @@ class Group {
         return $this->hierarchyLevel;
     }
 
+    public function isRoot(): bool {
+        return $this->hierarchyLevel === 0;
+    }
+
     public function getPermissions(): array {
         return $this->permissions;
     }

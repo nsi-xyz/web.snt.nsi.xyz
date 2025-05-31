@@ -17,6 +17,7 @@ CREATE TABLE group_permissions (
 CREATE TABLE users (
     id INT AUTO_INCREMENT PRIMARY KEY,
     name VARCHAR(100) NOT NULL,
+    surname VARCHAR(100) NOT NULL,
     username VARCHAR(100) NOT NULL UNIQUE,
     password VARCHAR(255) NOT NULL,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
@@ -55,3 +56,6 @@ CREATE TABLE translations (
     lang VARCHAR(10) NOT NULL,
     UNIQUE (translation_key, lang)
 );
+
+INSERT INTO `groups` (`id`, `name`, `hierarchy_level`) VALUES ('1', 'root', '0');
+INSERT INTO `users` (`id`, `name`, `surname`, `username`, `password`, `created_at`, `last_update`, `last_connexion`, `group_id`) VALUES ('1', 'ADMIN', 'Admin', 'admin', '', current_timestamp(), current_timestamp(), current_timestamp(), '1');

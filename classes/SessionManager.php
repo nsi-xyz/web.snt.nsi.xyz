@@ -1,6 +1,8 @@
 <?php
 require_once __DIR__ . '/CookieManager.php';
 require_once __DIR__ . '/UserRepository.php';
+require_once __DIR__ . '/GameSessionRepository.php';
+require_once __DIR__ . '/PlayerRepository.php';
 require_once __DIR__ . '/Guest.php';
 
 class SessionManager {
@@ -8,12 +10,14 @@ class SessionManager {
     private CookieManager $cookieManager;
     private UserRepository $userRepository;
     private GameSessionRepository $gameSessionRepository;
+    private PlayerRepository $playerRepository;
 
     public function __construct(Database $database) {
         $this->database = $database;
         $this->cookieManager = new CookieManager();
         $this->userRepository = new UserRepository($this->database);
         $this->gameSessionRepository = new GameSessionRepository($this->database);
+        $this->playerRepository = new PlayerRepository($this->database);
     }
 
     public function start(): void {
@@ -49,7 +53,7 @@ class SessionManager {
         }
     }
 
-    private function initCurrentUser(): void {
+    public function initCurrentUser(): void {
         $authCookieExists = $this->authCookieExists();
         if ($this->getCurrentUser() === null && !$authCookieExists) {
             $this->setCurrentUser(new Guest());
@@ -75,7 +79,7 @@ class SessionManager {
         }
         if ($this->currentUserIsPlayer()) {
             $player = $this->getCurrentUser();
-            if (!$this->gameSessionRepository->isOpen($player->getGameSession()->getId())) {
+            if (!$this->gameSessionRepository->isOpen($player->getGameSession()->getId()) || !$this->playerRepository->isPlayerInGameSession($player)) {
                 $this->setCurrentUser(new Guest());
             }
         }

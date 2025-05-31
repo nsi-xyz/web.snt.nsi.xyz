@@ -23,4 +23,24 @@ class PlayerRepository {
         }
         return null;
     }
+
+    public function getPlayers(int $gameSessionId): array {
+        $players = [];
+        $playersGameSessionRows = $this->database->getRowsByUniqueSet('game_session_players', ['pseudo'], "game_session_id = $gameSessionId");
+        if ($playersGameSessionRows === null) return $players;
+        foreach ($playersGameSessionRows as $playersGameSessionRow) {
+            $players[] = $this->getByPseudoId($playersGameSessionRow['pseudo'], $gameSessionId);
+        }
+        return $players;
+    }
+
+    public function isPlayerInGameSession(Player $player): bool {
+        $players = $this->getPlayers($player->getGameSessionId());
+        foreach ($players as $existingPlayer) {
+            if ($existingPlayer->getPseudo() === $player->getPseudo() && $existingPlayer->getGameSessionId() === $player->getGameSessionId()) {
+                return true;
+            }
+        }
+        return false;
+    }
 }

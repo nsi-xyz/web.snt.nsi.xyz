@@ -4,10 +4,11 @@ require_once __DIR__ . '/Translator.php';
 require_once __DIR__ . '/GameSessionRepository.php';
 require_once __DIR__ . '/FlashMessenger.php';
 require_once __DIR__ . '/Redirector.php';
+require_once __DIR__ . '/Page.php';
 
 class ControlAccess {
     public static function handlePanelAccess(SessionManager $session, Translator $translator, GameSessionRepository $gameSessionRepository): void {
-        $currentPage = basename($_SERVER['PHP_SELF']);
+        $currentPage = Page::getCurrentPage();
         $inPanel = str_contains($_SERVER['PHP_SELF'], 'panel');
         $sessionCode = $_GET['session'] ?? null;
         $sessionExists = $sessionCode && $gameSessionRepository->exists($sessionCode);

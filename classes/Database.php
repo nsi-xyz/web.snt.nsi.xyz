@@ -75,6 +75,15 @@ class Database {
         return $rows ?: null;
     }
 
+    public function getRowsByUniqueSet(string $table, array $set, string $condition): ?array {
+        $attributes = implode(', ', $set);
+        $sql = "SELECT DISTINCT $attributes FROM $table WHERE $condition";
+        $stmt = $this->pdo->prepare($sql);
+        $stmt->execute();
+        $rows = $stmt->fetchAll();
+        return $rows ?: null;
+    }
+
     public function updateRow(string $table, array $data, string $condition): void {
         $setParts = [];
         $params = [];

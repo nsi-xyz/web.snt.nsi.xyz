@@ -19,6 +19,23 @@ class UserRepository {
         return 0;
     }
 
+    public function update(User $user, array $fieldsToUpdate) {
+        $this->clearFieldsToUpdate($user, $fieldsToUpdate);
+        if ($this->actor !== null) {
+            ControlAction::ensureCanUpdateUser($this->actor, $user, $fieldsToUpdate);
+        }
+        $this->database->updateRow('users', $fieldsToUpdate, "id = {$user->getId()}");
+    }
+
+    private function clearFieldsToUpdate(User $user, array &$fieldsToUpdate): void {
+        $fields = $user->toArray();
+        foreach ($fields as $key => $value) {
+            if (array_key_exists($key, $fieldsToUpdate) && $value === $fieldsToUpdate[$key]) {
+                unset($fieldsToUpdate[$key]);
+            }
+        }
+    }
+
     public function getById($userId): ?User {
         $userRow = $this->database->getRowById('users', $userId);
         if ($userRow) {

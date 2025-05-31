@@ -1,6 +1,7 @@
 <?php
 require_once __DIR__ . '/Database.php';
 require_once __DIR__ . '/UserRepository.php';
+require_once __DIR__ . '/PlayerRepository.php';
 require_once __DIR__ . '/GameSession.php';
 require_once __DIR__ . '/User.php';
 
@@ -71,7 +72,6 @@ class GameSessionRepository {
     }
 
     public function getPlayers(GameSession $gameSession): array {
-        $players = $this->database;
-        return [];
+        return (new PlayerRepository($this->database))->getPlayers($gameSession->getId());
     }
 }
