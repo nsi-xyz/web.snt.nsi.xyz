@@ -58,7 +58,7 @@ if (isset($_SESSION["delete_account"])) {
   }
   $user_id = $_SESSION["user_logged_in"]["id"];
   delRow($db, "users", "id = $user_id");
-  logout("../login.php", 1);
+  logout("../login.php");
 }
 if (isset($_SESSION["delete_sessions"])) {
   unset($_SESSION["delete_sessions"]);

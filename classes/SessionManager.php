@@ -32,10 +32,9 @@ class SessionManager {
         session_regenerate_id();
         $_SESSION['session_start_time'] = time();
         $cookies = array(COOKIECHOCOLAT, COOKIECHOCOLATINE, COOKIEHAZLENUT, COOKIESESSION, COOKIEPUBLICITAIRE, COOKIEGOOGLE, COOKIEFACEBOOK, COOKIEAMAZON);
-        $cookieManager = new CookieManager();
           for ($i = 0; $i < count($cookies); $i++) {
             $cookie = $cookies[$i];
-            $cookieManager->create($cookie['name'], $cookie['value']);
+            if (!$this->cookieManager->exists($cookie['name'])) $this->cookieManager->create($cookie['name'], $cookie['value']);
         }
         $this->initLocale();
         $this->initCurrentUser();
@@ -99,15 +98,13 @@ class SessionManager {
     }
 
     private function authCookieExists(): bool {
-        $cookieManager = new CookieManager();
-        return $cookieManager->exists('LOGGED_IN');
+        return $this->cookieManager->exists('LOGGED_IN');
     }
 
     private function createAuthCookie(): void {
         $currentUserUsername = $this->getCurrentUser()->getUsername();
         $currentUserHashedPassword = $this->getCurrentUser()->getHashedPassword();
-        $cookieManager = new CookieManager();
-        $cookieManager->create(AUTHCOOKIE_NAME, "{$currentUserUsername}_" . urlencode($currentUserHashedPassword), AUTHCOOKIE_DURATION);
+        $this->cookieManager->create(AUTHCOOKIE_NAME, "{$currentUserUsername}_" . urlencode($currentUserHashedPassword), AUTHCOOKIE_DURATION);
     }
 
     public function getStayConnected(): bool {
@@ -138,4 +135,13 @@ class SessionManager {
         return isset($_SESSION['current_user']) && $_SESSION['current_user'] instanceof Guest;
     }
 
+    public function logout($url, $msg = null): void {
+        if ($this->cookieManager->exists(AUTHCOOKIE_NAME)) {
+            $this->cookieManager->delete(AUTHCOOKIE_NAME);
+        }
+        session_unset();
+        $this->init();
+        if ($msg !== null) FlashMessenger::info($msg);
+        Redirector::to($url);
+    }
 }

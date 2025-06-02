@@ -8,9 +8,11 @@ class GameSession {
     private int $hostId;
     private ?User $host = null;
     private string $createdAt;
+    private ?string $startedAt;
     private int $duration;
     private string $visibility;
     private int $slots;
+    private string $access_scope;
     private int $status;
 
     public function __construct(array $gameSessionRow) {
@@ -19,9 +21,11 @@ class GameSession {
         $this->code = $gameSessionRow['code'];
         $this->hostId = $gameSessionRow['host_id'];
         $this->createdAt = $gameSessionRow['created_at'];
+        $this->startedAt = $gameSessionRow['started_at'];
         $this->duration = $gameSessionRow['duration'];
-        $this->duration = $gameSessionRow['visibility'];
+        $this->visibility = $gameSessionRow['visibility'];
         $this->slots = $gameSessionRow['slots'];
+        $this->access_scope = $gameSessionRow['access_scope'];
         $this->status = $gameSessionRow['status'];
     }
 
@@ -53,8 +57,22 @@ class GameSession {
         return $this->createdAt;
     }
 
+    public function getCreationDate(): DateTime {
+        return new DateTime($this->getCreatedAt());
+    }
+
+    public function getStartedAt(): ?string {
+        return $this->startedAt;
+    }
+
     public function getDuration(): int {
         return $this->duration;
+    }
+
+    public function getTimeLeft(): int {
+        $now = new DateTime();
+        $end = (clone $this->getCreationDate())->modify("+{$this->getDuration()} seconds");
+        return max(0, $end->getTimestamp() - $now->getTimestamp());
     }
 
     public function getStatus(): int {

@@ -61,21 +61,19 @@ function tickPuzzle($database, $puzzleID = null) {
 /**
  * La fonction réinitialise la session et supprime tous les cookies.
  */
-function logout($redir, $reset = 0) {
+function logout($redir) {
   if (isset($_COOKIE["LOGGEDIN"])) {
     setcookie("LOGGEDIN", "", time() - AUTHCOOKIE_DURATION, "/");
   }
-  if ($reset) {
-    $cookies = array(COOKIE7, COOKIE8, COOKIECHOCOLAT, COOKIECHOCOLATINE, COOKIEHAZLENUT, COOKIESESSION, COOKIEPUBLICITAIRE, COOKIEGOOGLE, COOKIEFACEBOOK, COOKIEAMAZON);
-    for ($i = 0; $i <= 9; $i++) {
-      $cookie = $cookies[$i];
-      if (isset($_COOKIE[$cookie["name"]])) {
-        setcookie($cookie["name"], $cookie["value"], time() - GAMESESSION_DURATION, "/");
-      }
+  $cookies = array(COOKIE7, COOKIE8, COOKIECHOCOLAT, COOKIECHOCOLATINE, COOKIEHAZLENUT, COOKIESESSION, COOKIEPUBLICITAIRE, COOKIEGOOGLE, COOKIEFACEBOOK, COOKIEAMAZON);
+  for ($i = 0; $i <= 9; $i++) {
+    $cookie = $cookies[$i];
+    if (isset($_COOKIE[$cookie["name"]])) {
+      setcookie($cookie["name"], $cookie["value"], time() - GAMESESSION_DURATION, "/");
     }
-    if (isset($_COOKIE["PHPSESSID"])) {
-      setcookie("PHPSESSID", "", time() - GAMESESSION_DURATION, "/");
-    }
+  }
+  if (isset($_COOKIE["PHPSESSID"])) {
+    setcookie("PHPSESSID", "", time() - GAMESESSION_DURATION, "/");
   }
   session_unset();
   session_destroy();
@@ -420,7 +418,7 @@ function isUserStillConnected($database) {
 
 function checkSessionAuthenticity($database) {
   if (isUserConnected() && !isUserStillConnected($database)) {
-    logout("/login.php", 1);
+    logout("/login.php");
   }
 }
 

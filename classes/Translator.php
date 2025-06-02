@@ -5,6 +5,7 @@ class Translator {
     private array $messages;
     private string $locale = DEFAULT_LOCALE;
     private bool $debugMode = false;
+    private const LOCALES_LIST = [DEFAULT_LOCALE];
     private IntlDateFormatter $dateFormatter;
     private Collator $collator;
 
@@ -15,8 +16,9 @@ class Translator {
     }
 
     public function setLocale(string $locale): void {
-        $this->dateFormatter = new IntlDateFormatter(DEFAULT_LOCALE, IntlDateFormatter::FULL, IntlDateFormatter::MEDIUM);
-        $this->collator = collator_create(DEFAULT_LOCALE);
+        $localeDate = !in_array($locale, Translator::LOCALES_LIST) ? DEFAULT_LOCALE : $locale;
+        $this->dateFormatter = new IntlDateFormatter($localeDate, IntlDateFormatter::FULL, IntlDateFormatter::MEDIUM);
+        $this->collator = collator_create($localeDate);
         if ($locale === 'debug') {
             $this->debugMode = true;
             $this->messages = [];

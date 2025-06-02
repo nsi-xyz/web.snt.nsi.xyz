@@ -1,6 +1,5 @@
 <?php
 require_once './include/bootstrap.php';
-include "./panel/include/db.php";
 include "./include/functions.php";
 ?>
 <!DOCTYPE html> <!-- <?= $translator->getMessage('comment_index_welcome'); ?> -->
@@ -13,7 +12,6 @@ include "./include/functions.php";
   <link rel="stylesheet" href="css/pure-min.css">
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20,400,0,0">
   <link rel="stylesheet" href="css/style.css">
-  <script src="./js/messages.js"></script>
 </head>
 <body>
   <div id="layout">
@@ -45,13 +43,13 @@ include "./include/functions.php";
       </div>
     </div>
     <?php include("./include/footer.php"); ?>
-    <?php if ((strpos(traduction("info_home"), "Missing Translation") === false) && (traduction("info_home") != "")) : ?>
-      <script>
-        throwInfo("<?= $translator->getMessage("info_home"); ?>", "info");
-      </script>
-    <?php endif; ?>
   </div>
   <script src="./js/ui.js"></script>
-  <?php include("./include/timer.php"); ?>
+  <?php
+  if ($session->currentUserIsPlayer() || 1) {
+    $sessionsTimes = [];
+    include './include/timer.php';
+  }
+  ?>
 </body>
 </html>

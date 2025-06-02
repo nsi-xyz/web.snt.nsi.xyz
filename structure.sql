@@ -33,9 +33,11 @@ CREATE TABLE game_sessions (
     code VARCHAR(50) NOT NULL,
     host_id INT NOT NULL,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    started_at TIMESTAMP NULL DEFAULT NULL,
     duration INT,
     visibility ENUM('public', 'private') DEFAULT 'public',
     slots INT,
+    access_scope ENUM('everyone', 'nobody') DEFAULT 'everyone',
     status INT,
     FOREIGN KEY (host_id) REFERENCES users(id)
 );

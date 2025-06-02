@@ -13,6 +13,6 @@ class CookieManager {
     }
 
     public function delete(string $name, string $path = '/'): void {
-        setcookie($name, '', time() - GAMESESSION_DURATION, $path);
+        setcookie($name, '', time() - AUTHCOOKIE_DURATION, $path);
     }
 }

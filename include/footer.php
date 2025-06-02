@@ -27,3 +27,4 @@
     });
   </script>
 <?php endif; ?>
+<script src="./js/messages.js"></script>
