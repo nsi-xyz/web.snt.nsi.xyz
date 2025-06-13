@@ -99,4 +99,8 @@ class User {
     public function hasOpenSession(GameSessionRepository $gameSessionRepository): bool {
         return $gameSessionRepository->hasOpenSessionFor($this);
     }
+
+    public function getNumberOfOpenSessions(GameSessionRepository $gameSessionRepository): int {
+        return count($gameSessionRepository->getOpenSessionsFor($this));
+    }
 }

@@ -63,14 +63,14 @@ body {
         padding: 0;
         margin-top: 0;
     }
-    .h3-resolved {
+    .h3-solved {
         font-size: 3em;
         font-weight: 300;
         color: #7cb342;
         padding: 0;
         margin-top: 0;
     }
-    .h3-unresolved {
+    .h3-unsolved {
         font-size: 3em;
         font-weight: 300;
         color: #ff9800;
@@ -162,13 +162,13 @@ body {
         color: #8566c7;
     }
 
-    #menu .pure-menu-item-unresolved a:hover,
-    #menu .pure-menu-item-unresolved a:focus {
+    #menu .pure-menu-item-unsolved a:hover,
+    #menu .pure-menu-item-unsolved a:focus {
         color: #ff9800;
     }
 
-    #menu .pure-menu-item-resolved a:hover,
-    #menu .pure-menu-item-resolved a:focus {
+    #menu .pure-menu-item-solved a:hover,
+    #menu .pure-menu-item-solved a:focus {
         color: #7cb342;
     }
 
@@ -222,11 +222,11 @@ body {
     width: 250px;
 }
 
-    #menu .pure-menu-selected-unresolved {
+    #menu .pure-menu-selected-unsolved {
         background: #ff9800;
     }
 
-    #menu .pure-menu-selected-resolved {
+    #menu .pure-menu-selected-solved {
         background: #7cb342;
     }
 
@@ -409,7 +409,7 @@ th:nth-child(1) {
     white-space: nowrap;
 }
 
-.td-resolved {
+.td-solved {
     cursor: pointer;
     background-color: #7cb342;
     color: #fff;
@@ -424,7 +424,7 @@ th:nth-child(1) {
     text-align: center;
 }
 
-.td-unresolved {
+.td-unsolved {
     cursor: pointer;
     background-color: #ff9800;
     color: #fff;

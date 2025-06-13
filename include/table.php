@@ -1,24 +1,20 @@
 <table class="table">
-  <?php echo getCurrentPuzzleID() != NULL ? traduction("puzzle_message_already_resolved") : "" ?>
-          <tbody>
-            <tr>
-              <?php
-              for ($i = 1; $i <= 9; $i++) {
-                $class = puzzleIsResolved($i) ? "resolved" : "unresolved";
-                $p = basename($_SERVER['PHP_SELF']);
-                $path = ($p == "index.php" || $p == "help.php") ? "." : "..";
-                echo '<td class="td-'.$class.'" onclick="location.href=\''.$path.'/puzzles/puzzle'.$i.'.php\'">'.sprintf("%02d", $i).'</td>
-              ';
-              }
-              if ($_SESSION["puzzle10"]) {
-              $class = puzzleIsResolved(10) ? "resolved" : "unresolved";
-              echo '<td class="td-'.$class.'" onclick="location.href=\''.$path.'/puzzles/puzzle10.php\'">10</td>
-              ';
-              } else {
-                echo '<td class="td-hidden" onclick="alert(\''.traduction("puzzle_message_hidden_puzzle10").'\')">10</td>
-                ';
-              }
-              ?></tr>
-          </tbody>
+  <?= Page::getCurrentPuzzle() !== null ? $translator->getMessage('puzzle_message_already_solved') : '' ?>
+  <tbody>
+    <tr>
+      <?php $p_i = (in_array(Page::getCurrentPage(), array('index.php', 'help.php', 'login.php'))) ? '' : '.'; ?>
+      <?php for ($i = 1; $i <= PUZZLE_COUNT; $i++) : ?>
+        <?php
+        $class = $puzzleProgression->isPuzzleSolved($i) ? 'solved' : 'unsolved';
+        $tdClass = "td-$class";
+        ?>
+        <?php if ($i < 10 || ($i === 10 && $puzzleProgression->isPuzzle10Unlocked())) : ?>
+          <td class="<?= $tdClass ?>" onclick="location.href='.<?= $p_i ?>/puzzles/puzzle<?= $i ?>.php'"><?= sprintf('%02d', $i) ?></td>
+        <?php elseif ($i === 10 && !$puzzleProgression->isPuzzle10Unlocked()) : ?>
+          <td class="td-hidden" onclick="alert('<?= $translator->getMessage('puzzle_message_hidden_puzzle10') ?>')"><?= sprintf('%02d', $i) ?></td>
+        <?php endif; ?>
+      <?php endfor; ?>
+    </tr>
+  </tbody>
 </table>
-<?php echo count($_SESSION["puzzles_solved"]) == 10 ? traduction("puzzle_message_gg") : "" ?>
+<?= $puzzleProgression->allPuzzlesSolved() ? $translator->getMessage('puzzle_message_gg') : '' ?>

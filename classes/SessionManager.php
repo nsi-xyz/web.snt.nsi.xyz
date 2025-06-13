@@ -111,8 +111,8 @@ class SessionManager {
         return isset($_SESSION['stay_connected']) && $_SESSION['stay_connected'] === true;
     }
 
-    public function getSessionStartTime(): int {
-        return $_SESSION['session_start_time'];
+    public function getSessionStartTime(): ?int {
+        return $_SESSION['session_start_time'] ?? null;
     }
 
     public function setCurrentUser(User|Player|Guest $param): void {

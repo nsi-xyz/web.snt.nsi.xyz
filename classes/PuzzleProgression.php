@@ -41,6 +41,10 @@ class PuzzleProgression {
         }
     }
 
+    public function isPuzzle10Unlocked(): bool {
+        return $_SESSION['puzzle10'];
+    }
+
     public function getPuzzlesSolved(): array {
         if ($this->sessionManager->currentUserIsGuest() || $this->sessionManager->currentUserIsUser()) {
             return $_SESSION['puzzles_solved'];
@@ -58,8 +62,12 @@ class PuzzleProgression {
         return [];
     }
 
-    public function isPuzzleSolved(int $puzzleId) {
+    public function isPuzzleSolved(int $puzzleId): bool {
         return in_array($puzzleId, $this->getPuzzlesSolved());
+    }
+
+    public function allPuzzlesSolved(): bool {
+        return count($this->getPuzzlesSolved()) === PUZZLE_COUNT;
     }
 
     public function tickPuzzle($puzzleId): void {
