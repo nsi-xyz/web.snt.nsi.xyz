@@ -730,9 +730,10 @@ kbd {
     color: white;
 }
 
-#create-account {
+.create-account {
     color: #3b8bba;
     text-decoration: none;
+    cursor: pointer;
 }
 
 .error-message {

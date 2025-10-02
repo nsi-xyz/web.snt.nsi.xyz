@@ -36,6 +36,14 @@ class Database {
         return $rows ?: null;
     }
 
+    public function getRowsByCustomAttribut(string $table, string $attribut, string $value): ?array {
+        $sql = "SELECT * FROM `$table` WHERE `$attribut` = :val";
+        $stmt = $this->pdo->prepare($sql);
+        $stmt->execute(['val' => $value]);
+        $rows = $stmt->fetchAll();
+        return $rows ?: null;
+    }
+
     public function getRowByCustomAttribut(string $table, string $attribut, string $value): ?array {
         $sql = "SELECT * FROM `$table` WHERE `$attribut` = :val LIMIT 1";
         $stmt = $this->pdo->prepare($sql);

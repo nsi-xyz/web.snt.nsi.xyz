@@ -14,6 +14,7 @@ class Permission {
     public const ACCESS_TRADS_MANAGER = 'access.trads.manager';
     public const ACCESS_GROUPS_MANAGER = 'access.groups.manager';
     public const ACCESS_PUZZLES_MANAGER = 'access.puzzles.manager';
+    public const VIEW_GLOBAL_STATS = 'view.global.stats';
 
     // 0: Low
     // 1: Medium
@@ -64,6 +65,22 @@ class Permission {
             'description' => "Accéder à la gestion des utilisateurs",
             'level' => 3,
         ],
+        self::ACCESS_TRADS_MANAGER => [
+            'description' => "Accéder à la gestion des traductions",
+            'level' => 3,
+        ],
+        self::ACCESS_GROUPS_MANAGER => [
+            'description' => "Accéder à la gestion des rôles",
+            'level' => 3,
+        ],
+        self::ACCESS_PUZZLES_MANAGER => [
+            'description' => "Accéder à la gestion des énigmes",
+            'level' => 3,
+        ],
+        self::VIEW_GLOBAL_STATS => [
+            'description' => "Permet de voir les statistiques globales du site web",
+            'level' => 1,
+        ]
     ];
 
     public static function all(): array {

@@ -7,7 +7,7 @@ require_once __DIR__ . '/Redirector.php';
 require_once __DIR__ . '/Page.php';
 
 class ControlAccess {
-    public static function handlePanelAccess(SessionManager $session, Translator $translator, GameSessionRepository $gameSessionRepository): void {
+    public static function handlerPanelAccess(SessionManager $session, Translator $translator, GameSessionRepository $gameSessionRepository): void {
         $currentPage = Page::getCurrentPage();
         $inPanel = str_contains($_SERVER['PHP_SELF'], 'panel');
         $sessionCode = $_GET['session'] ?? null;
@@ -58,6 +58,18 @@ class ControlAccess {
             if (!$canAccess) {
                 FlashMessenger::error($translator->getMessage('error_not_authorized_message'));
                 Redirector::to('../login.php');
+            }
+        }
+    }
+
+    public static function handlerLoginAccess(SessionManager $session, Translator $translator): void {
+        $currentPage = Page::getCurrentPage();
+        if ($currentPage === 'login.php') {
+            if ($session->currentUserIsUser()) {
+                Redirector::to('./panel/');
+            } elseif ($session->currentUserIsPlayer()) {
+                FlashMessenger::error($translator->getMessage('error_player_already_in_session'));
+                Redirector::to('./index.php');
             }
         }
     }

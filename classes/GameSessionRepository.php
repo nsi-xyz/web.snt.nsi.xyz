@@ -44,7 +44,7 @@ class GameSessionRepository {
     }
 
     public function getByUser(User $user): array {
-        $gameSessionRows = $this->database->getRowByCustomAttribut('game_sessions', 'host_id', $user->getId());
+        $gameSessionRows = $this->database->getRowsByCustomAttribut('game_sessions', 'host_id', $user->getId());
         $gameSessions = [];
         foreach ($gameSessionRows as $gameSessionRow) {
             $gameSession = new GameSession($gameSessionRow);
@@ -84,6 +84,18 @@ class GameSessionRepository {
             $openGameSessions[] = $openGameSession;
         }
         return $openGameSessions;
+    }
+
+    public function getAll(): array {
+        $gameSessionsRows = $this->database->getRows('game_sessions');
+        if ($gameSessionsRows === null) return [];
+        $gameSessions = [];
+        foreach ($gameSessionsRows as $gameSessionRow) {
+            $gameSession = new GameSession($gameSessionRow);
+            $gameSession->setHost((new UserRepository($this->database))->getById($gameSession->getHostId()));
+            $gameSessions[] = $gameSession;
+        }
+        return $gameSessions;
     }
 
     public function isOpen(int $gameSessionId): bool {

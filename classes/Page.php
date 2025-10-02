@@ -12,4 +12,8 @@ class Page {
     public static function getGetMethod(string $key): ?string {
         return $_GET[$key] ?? null;
     }
+
+    public static function getMethodExists(string $key): bool {
+        return isset($_GET[$key]);
+    }
 }

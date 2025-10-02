@@ -50,12 +50,25 @@ class UserRepository {
     public function getByUsername($userUsername): ?User {
         $userRow = $this->database->getRowByCustomAttribut('users', 'username', $userUsername);
         if ($userRow) {
+            print_r($userRow);
             $user = new User($userRow);
             $userGroup = (new GroupRepository($this->database))->getById($user->getGroupId());
             $user->setGroup($userGroup);
             return $user;
         }
         return null;
+    }
+
+    public function getAll(): array {
+        $usersRows = $this->database->getRows('users');
+        if ($usersRows === null) return [];
+        $users = [];
+        foreach ($usersRows as $userRow) {
+            $user = new User($userRow);
+            $user->setGroup((new GroupRepository($this->database))->getById($user->getGroupId()));
+            $users[] = $user;
+        }
+        return $users;
     }
 
     public function exists($param): bool {

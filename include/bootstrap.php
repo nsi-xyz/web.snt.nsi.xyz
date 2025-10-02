@@ -12,6 +12,7 @@ require_once __DIR__ . '/../classes/ControlAccess.php';
 require_once __DIR__ . '/../classes/Page.php';
 require_once __DIR__ . '/../classes/GameSessionAutoCloser.php';
 require_once __DIR__ . '/../classes/PuzzleProgression.php';
+require_once __DIR__ . '/../include/functions.php';
 $session = new SessionManager($db);
 $cookieManager = new CookieManager();
 if (!$cookieManager->exists('PHPSESSID')) {
@@ -26,6 +27,7 @@ $gameSessionRepository = new GameSessionRepository($db);
 $puzzleProgression = new PuzzleProgression($db, $session);
 
 // Check page access rights
-ControlAccess::handlePanelAccess($session, $translator, $gameSessionRepository);
+ControlAccess::handlerPanelAccess($session, $translator, $gameSessionRepository);
+ControlAccess::handlerLoginAccess($session, $translator);
 // Stop finished sessions
 GameSessionAutoCloser::stopIfExpired($gameSessionRepository);
