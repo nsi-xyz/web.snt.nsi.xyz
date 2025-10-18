@@ -13,7 +13,7 @@ class UserRepository {
     }
 
     public function create(User $user): int {
-        if ($this->actor !== null || !$this->actor->hasPermission(Permission::USER_CREATE)) {
+        if ($this->actor !== null && !$this->actor->hasPermission(Permission::USER_CREATE)) {
             return -1; // Permission insuffisante
         }
         return 0;
@@ -50,7 +50,6 @@ class UserRepository {
     public function getByUsername($userUsername): ?User {
         $userRow = $this->database->getRowByCustomAttribut('users', 'username', $userUsername);
         if ($userRow) {
-            print_r($userRow);
             $user = new User($userRow);
             $userGroup = (new GroupRepository($this->database))->getById($user->getGroupId());
             $user->setGroup($userGroup);

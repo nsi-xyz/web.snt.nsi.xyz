@@ -28,14 +28,22 @@
     $selected_trads_class = $file == 'trads.php' ? 'pure-menu-item menu-item-divided pure-menu-selected-panel' : 'pure-menu-item-unselected';
     $selected_groups_class = $file == 'groups.php' ? 'pure-menu-item menu-item-divided pure-menu-selected-panel' : 'pure-menu-item-unselected';
     $selected_puzzles_class = $file == 'puzzles.php' ? 'pure-menu-item menu-item-divided pure-menu-selected-panel' : 'pure-menu-item-unselected';
-    $is_admin = $session->getCurrentUser()->getGroupId() == 1;
+    $currentUser = $session->getCurrentUser();
     ?>
-    <?php if ($is_admin) : ?>
-    <li class="<?= $selected_sessions_class ?>"><a href="./sessions.php" class="pure-menu-link">&#x1F5C2;&#xFE0F; Explorateur de sessions</a></li>
-    <li class="<?= $selected_users_class ?>"><a href="./users.php" class="pure-menu-link">&#x2699;&#xFE0F; Gestion des comptes</a></li>
-    <li class="<?= $selected_trads_class ?>"><a href="./trads.php" class="pure-menu-link">&#x1F5C3;&#xFE0F; Gestion des traductions</a></li>
-    <li class="<?= $selected_groups_class ?>"><a href="./groups.php" class="pure-menu-link">&#x1F3AD;&#xFE0F; Gestion des rôles</a></li>
-    <li class="<?= $selected_puzzles_class ?>"><a href="./puzzles.php" class="pure-menu-link">&#x1F9E9;&#xFE0F; Gestion des énigmes</a></li>
+    <?php if ($currentUser->hasPermission(Permission::ACCESS_SESSIONS_EXPLORER)) : ?>
+      <li class="<?= $selected_sessions_class ?>"><a href="./sessions.php" class="pure-menu-link">&#x1F5C2;&#xFE0F; Explorateur de sessions</a></li>
+    <?php endif; ?>
+    <?php if ($currentUser->hasPermission(Permission::ACCESS_USER_ACCOUNT_MANAGER)) : ?>
+      <li class="<?= $selected_users_class ?>"><a href="./users.php" class="pure-menu-link">&#x2699;&#xFE0F; Gestion des comptes</a></li>
+    <?php endif; ?>
+    <?php if ($currentUser->hasPermission(Permission::ACCESS_TRADS_MANAGER)) : ?>
+      <li class="<?= $selected_trads_class ?>"><a href="./trads.php" class="pure-menu-link">&#x1F5C3;&#xFE0F; Gestion des traductions</a></li>
+    <?php endif; ?>
+    <?php if ($currentUser->hasPermission(Permission::ACCESS_GROUPS_MANAGER)) : ?>
+      <li class="<?= $selected_groups_class ?>"><a href="./groups.php" class="pure-menu-link">&#x1F3AD;&#xFE0F; Gestion des rôles</a></li>
+    <?php endif; ?>
+    <?php if ($currentUser->hasPermission(Permission::ACCESS_PUZZLES_MANAGER)) : ?>
+      <li class="<?= $selected_puzzles_class ?>"><a href="./puzzles.php" class="pure-menu-link">&#x1F9E9;&#xFE0F; Gestion des énigmes</a></li>
     <?php endif; ?>
     <li class="pure-menu-item-back"><a href="../index.php" class="pure-menu-link">↩️ Retour aux énigmes</a></li>
     <li class="pure-menu-item-reset"><a href="../logout.php" class="pure-menu-link">&#x1F6AA; Se déconnecter</a></li>

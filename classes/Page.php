@@ -4,6 +4,10 @@ class Page {
         return basename($_SERVER['PHP_SELF']);
     }
 
+    public static function inPanel(): bool {
+        return str_contains($_SERVER['PHP_SELF'], 'panel');
+    }
+
     public static function getCurrentPuzzle(): ?string {
         $result = filter_var(Page::getCurrentPage(), FILTER_SANITIZE_NUMBER_INT);
         return $result === "" ? null : $result;

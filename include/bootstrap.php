@@ -24,6 +24,7 @@ $translator = new Translator($db);
 $translator->setLocale($session->getLocale());
 $userRepository = new UserRepository($db);
 $gameSessionRepository = new GameSessionRepository($db);
+$groupRepository = new GroupRepository($db);
 $puzzleProgression = new PuzzleProgression($db, $session);
 
 // Check page access rights

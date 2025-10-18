@@ -27,4 +27,4 @@
     });
   </script>
 <?php endif; ?>
-<script src="./js/messages.js"></script>
+<script src=".<?= Page::inPanel() ? '.' : '' ?>/js/messages.js"></script>

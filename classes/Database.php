@@ -12,6 +12,20 @@ class Database {
         }
     }
 
+    public function addRow(string $table, array $data): string {
+        $columns = array_keys($data);
+        $columnSql = implode(', ', array_map(fn($col) => "`$col`", $columns));
+        $placeholderSql = implode(', ', array_map(fn($col) => ":$col", $columns));
+        $params = [];
+        foreach ($data as $column => $value) {
+            $params[":$column"] = $value;
+        }
+        $sql = "INSERT INTO `$table` ($columnSql) VALUES ($placeholderSql)";
+        $stmt = $this->pdo->prepare($sql);
+        $stmt->execute($params);
+        return $this->pdo->lastInsertId();
+    }
+
     public function getRowById(string $table, int $id): ?array {
         $sql = "SELECT * FROM `$table` WHERE id = :id LIMIT 1";
         $stmt = $this->pdo->prepare($sql);

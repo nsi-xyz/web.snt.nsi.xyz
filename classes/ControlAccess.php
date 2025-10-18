@@ -9,7 +9,7 @@ require_once __DIR__ . '/Page.php';
 class ControlAccess {
     public static function handlerPanelAccess(SessionManager $session, Translator $translator, GameSessionRepository $gameSessionRepository): void {
         $currentPage = Page::getCurrentPage();
-        $inPanel = str_contains($_SERVER['PHP_SELF'], 'panel');
+        $inPanel = Page::inPanel();
         $sessionCode = $_GET['session'] ?? null;
         $sessionExists = $sessionCode && $gameSessionRepository->exists($sessionCode);
         $user = $session->getCurrentUser();

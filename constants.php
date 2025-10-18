@@ -12,6 +12,8 @@ define('USERNAME_MIN_LENGTH', 3);
 define('USERNAME_MAX_LENGTH', 16);
 define('PASSWORD_MIN_LENGTH', 7);
 define('PASSWORD_MAX_LENGTH', 32);
+define('GROUP_MIN_LENGTH', 1);
+define('GROUP_MAX_LENGTH', 32);
 
 // Patterns (PHP et HTML)
 define('PHPPATTERN_NAME', "/^(?![\-' ])(?!.*[\-']{3})(?!.* {2})[A-Za-zÀ-ÖØ-öø-ÿ' \-]+(?<![\-' ])$/u");
@@ -22,6 +24,9 @@ define('HTMLPATTERN_USERNAME', "^[a-z][a-z0-9]*([.\-][a-z0-9]+)*$");
 
 define('PHPPATTERN_PSEUDO', "/^(?![\-' .])(?!.*[\-'.]{3})(?!.* {2})(?!.*\.\.)(?!.*[\-']$)[A-Za-zÀ-ÖØ-öø-ÿ' .\-]+[.]?$/u");
 define('HTMLPATTERN_PSEUDO', "^(?![\-' .])(?!.*[\-'.]{3})(?!.* {2})(?!.*\.\.)(?!.*[\-']$)[A-Za-zÀ-ÖØ-öø-ÿ' .\-]+[.]?$");
+
+define('PHPPATTERN_GROUP', "/^(?![\-' ])(?!.*[\-']{3})(?!.* {2})[A-Za-zÀ-ÖØ-öø-ÿ' \-]+(?<![\-' ])$/u");
+define('HTMLPATTERN_GROUP', "^(?![\-' ])(?!.*[\-']{3})(?!.* {2})[A-Za-zÀ-ÖØ-öø-ÿ' \-]+(?<![\-' ])$");
 
 // Durations (in seconds)
 define('GAMESESSION_DURATION', 10800); // 3 hours

@@ -9,6 +9,10 @@ class Permission {
     public const USER_UPDATE_PASSWORD = 'user.update.password';
     public const SESSION_CREATE_SHORT = 'session.create.short';
     public const SESSION_CREATE_LONG = 'session.create.long';
+    public const GROUP_CREATE = 'group.create';
+    public const GROUP_VIEWER = 'group.viewer';
+    public const GROUP_EDIT = 'group.edit';
+    public const GROUP_DELETE = 'group.delete';
     public const ACCESS_SESSIONS_EXPLORER = 'access.sessions.explorer';
     public const ACCESS_USER_ACCOUNT_MANAGER = 'access.user.account.manager';
     public const ACCESS_TRADS_MANAGER = 'access.trads.manager';
@@ -30,15 +34,15 @@ class Permission {
             'level' => 2,
         ],
         self::USER_UPDATE_NAME => [
-            'description' => "Modifier le prénom d'un utilisateur",
+            'description' => "Modifier le nom d'un utilisateur",
             'level' => 1,
         ],
         self::USER_UPDATE_SURNAME => [
-            'description' => "Modifier le nom de famille d'un utilisateur",
+            'description' => "Modifier le prénom d'un utilisateur",
             'level' => 1,
         ],
         self::USER_UPDATE_USERNAME => [
-            'description' => "Modifier le nom d'utilisateur",
+            'description' => "Modifier le nom d'utilisateur d'un utilisateur",
             'level' => 2,
         ],
         self::USER_UPDATE_GROUP => [
@@ -46,7 +50,7 @@ class Permission {
             'level' => 2,
         ],
         self::USER_UPDATE_PASSWORD => [
-            'description' => "Changer le mot de passe",
+            'description' => "Réinitialiser le mot de passe d'un utilisateur",
             'level' => 3,
         ],
         self::SESSION_CREATE_SHORT => [
@@ -56,6 +60,22 @@ class Permission {
         self::SESSION_CREATE_LONG => [
             'description' => "Créer une session longue",
             'level' => 0,
+        ],
+        self::GROUP_CREATE => [
+            'description' => "Créer un nouveau rôle",
+            'level' => 1,
+        ],
+        self::GROUP_VIEWER => [
+            'description' => "Voir la liste des rôles",
+            'level' => 1,
+        ],
+        self::GROUP_EDIT => [
+            'description' => "Éditer les rôles",
+            'level' => 1,
+        ],
+        self::GROUP_DELETE => [
+            'description' => "Supprimer un rôle",
+            'level' => 2,
         ],
         self::ACCESS_SESSIONS_EXPLORER => [
             'description' => "Accéder à l'explorateur de sessions",
