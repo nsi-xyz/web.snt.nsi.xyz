@@ -45,6 +45,7 @@ class GameSessionRepository {
 
     public function getByUser(User $user): array {
         $gameSessionRows = $this->database->getRowsByCustomAttribut('game_sessions', 'host_id', $user->getId());
+        if ($gameSessionRows === null) return [];
         $gameSessions = [];
         foreach ($gameSessionRows as $gameSessionRow) {
             $gameSession = new GameSession($gameSessionRow);

@@ -103,4 +103,18 @@ class User {
     public function getNumberOfOpenSessions(GameSessionRepository $gameSessionRepository): int {
         return count($gameSessionRepository->getOpenSessionsFor($this));
     }
+
+    public function canEditGroup(Group $group): bool {
+        if (!$this->hasPermission(Permission::GROUP_EDIT)) return false;
+        if ($this->getGroup()->isLowerThan($group)) return false;
+        if ($group->isRoot()) return false;
+        return true;
+    }
+
+    public function canDeleteGroup(Group $group): bool {
+        if (!$this->hasPermission(Permission::GROUP_DELETE)) return false;
+        if ($this->getGroup()->isLowerThan($group)) return false;
+        if ($group->isRoot()) return false;
+        return true;
+    }
 }

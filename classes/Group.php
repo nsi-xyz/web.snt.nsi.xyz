@@ -45,6 +45,10 @@ class Group {
         return $this->permissions;
     }
 
+    public function isLowerThan(Group $other): bool {
+        return $this->getHierarchyLevel() <= $other->getHierarchyLevel();
+    }
+
     public function hasPermission(string $permission): bool {
         return in_array($permission, $this->permissions) || $this->isRoot();
     }

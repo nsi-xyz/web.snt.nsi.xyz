@@ -1,6 +1,7 @@
 <?php
 require_once __DIR__ . '/Database.php';
 require_once __DIR__ . '/Group.php';
+require_once __DIR__ . '/../exceptions/MissingPermissionException.php';
 
 class GroupRepository {
     private Database $database;
@@ -11,17 +12,17 @@ class GroupRepository {
         $this->actor = $actor;
     }
 
-    public function create($groupName, $permissions): int {
+    public function create($groupName, $permissions) {
         if ($this->actor !== null && !$this->actor->hasPermission(Permission::GROUP_CREATE)) {
-            return -1; // Access denied
+            throw new MissingPermissionException(Permission::GROUP_CREATE);
         }
         foreach ($permissions as $permission) {
             if (!$this->actor->hasPermission($permission)) {
-                return -1; // Access denied, cannot grant permission not possessed
+                throw new MissingPermissionException(); // Access denied, cannot grant permission not possessed
             }
         }
         if (!preg_match(PHPPATTERN_GROUP, $groupName)) {
-            return -2;
+            throw new InvalidInputException('Le nom du rôle n\'est pas valide.');
         }
         $groupId = $this->database->addRow('groups', array('name' => $groupName, 'hierarchy_level' => $this->getLowerHierarchyLevel() - 1));
         foreach ($permissions as $permission) {
@@ -43,6 +44,7 @@ class GroupRepository {
     public function getAll(): array {
         $groupsRows = $this->database->getRows('groups');
         if ($groupsRows === null) return [];
+        usort($groupsRows, fn($a, $b) => $b['hierarchy_level'] <=> $a['hierarchy_level']);
         $groups = [];
         foreach ($groupsRows as $groupRow) {
             $group = new Group($groupRow, $this->database->getPermissionsByGroupId($groupRow['id']));

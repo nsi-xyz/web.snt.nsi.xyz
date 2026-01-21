@@ -28,7 +28,15 @@ $groupRepository = new GroupRepository($db);
 $puzzleProgression = new PuzzleProgression($db, $session);
 
 // Check page access rights
-ControlAccess::handlerPanelAccess($session, $translator, $gameSessionRepository);
-ControlAccess::handlerLoginAccess($session, $translator);
+try {
+    ControlAccess::handlerPanelAccess($session, $translator, $gameSessionRepository);
+    ControlAccess::handlerLoginAccess($session, $translator);
+} catch (MissingPermissionException $e) {
+    FlashMessenger::error($e->getMessage());
+    Redirector::to('../login.php');
+} catch (UnauthorizedException $e) {
+    FlashMessenger::error($e->getMessage());
+    Redirector::to('../index.php');
+}
 // Stop finished sessions
 GameSessionAutoCloser::stopIfExpired($gameSessionRepository);

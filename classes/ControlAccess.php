@@ -5,60 +5,36 @@ require_once __DIR__ . '/GameSessionRepository.php';
 require_once __DIR__ . '/FlashMessenger.php';
 require_once __DIR__ . '/Redirector.php';
 require_once __DIR__ . '/Page.php';
+require_once __DIR__ . '/../exceptions/UnauthorizedException.php';
+require_once __DIR__ . '/../exceptions/MissingPermissionException.php';
 
 class ControlAccess {
     public static function handlerPanelAccess(SessionManager $session, Translator $translator, GameSessionRepository $gameSessionRepository): void {
         $currentPage = Page::getCurrentPage();
         $inPanel = Page::inPanel();
+        if (!$inPanel) return;
         $sessionCode = $_GET['session'] ?? null;
-        $sessionExists = $sessionCode && $gameSessionRepository->exists($sessionCode);
+        if ($currentPage === 'stats.php' && isset($_GET['share']) && $gameSessionRepository->exists($sessionCode)) {
+            return;
+        }
         $user = $session->getCurrentUser();
-        if ($inPanel) {
-            if ($currentPage === 'stats.php' && isset($_GET['share']) && $sessionExists) {
-                return;
-            }
-            $canAccess = false;
-            if ($session->currentUserIsUser()) {
-                switch ($currentPage) {
-                    case 'index.php':
-                        $canAccess = true;
-                        break;
-                    case 'session.php':
-                        $canAccess = true;
-                        break;
-                    case 'stats.php':
-                        $canAccess = true;
-                        break;
-                    case 'myaccount.php':
-                        $canAccess = true;
-                        break;
-                    case 'sessions.php':
-                        $canAccess = $user->hasPermission(Permission::ACCESS_SESSIONS_EXPLORER);
-                        break;
-                    case 'users.php':
-                        $canAccess = $user->hasPermission(Permission::ACCESS_USER_ACCOUNT_MANAGER);
-                        break;
-                    case 'trads.php':
-                        $canAccess = $user->hasPermission(Permission::ACCESS_TRADS_MANAGER);
-                        break;
-                    case 'groups.php':
-                        $canAccess = $user->hasPermission(Permission::ACCESS_GROUPS_MANAGER);
-                        break;
-                    case 'puzzles.php':
-                        $canAccess = $user->hasPermission(Permission::ACCESS_PUZZLES_MANAGER);
-                        break;
-                }
-            } elseif ($session->currentUserIsPlayer()) {
-                $canAccess = false;
-            } elseif ($session->currentUserIsGuest()) {
-                $canAccess = false;
+        $canAccess = false;
+        $permissionsMap = [
+            'sessions.php' => Permission::ACCESS_SESSIONS_EXPLORER,
+            'users.php' => Permission::ACCESS_USER_ACCOUNT_MANAGER,
+            'trads.php' => Permission::ACCESS_TRADS_MANAGER,
+            'groups.php' => Permission::ACCESS_GROUPS_MANAGER,
+            'puzzles.php' => Permission::ACCESS_PUZZLES_MANAGER
+        ];
+        if ($session->currentUserIsUser()) {
+            if (isset($permissionsMap[$currentPage])) {
+                $canAccess = $user->hasPermission($permissionsMap[$currentPage]);
             } else {
-                $canAccess = false;
+                $canAccess = true; 
             }
-            if (!$canAccess) {
-                FlashMessenger::error($translator->getMessage('error_not_authorized_message'));
-                Redirector::to('../login.php');
-            }
+        }
+        if (!$canAccess) {
+            throw new MissingPermissionException($permissionsMap[$currentPage], $translator->getMessage('error_not_authorized_message'));
         }
     }
 
@@ -68,8 +44,7 @@ class ControlAccess {
             if ($session->currentUserIsUser()) {
                 Redirector::to('./panel/');
             } elseif ($session->currentUserIsPlayer()) {
-                FlashMessenger::error($translator->getMessage('error_player_already_in_session'));
-                Redirector::to('./index.php');
+                throw new UnauthorizedException($translator->getMessage('error_player_already_in_session'));
             }
         }
     }

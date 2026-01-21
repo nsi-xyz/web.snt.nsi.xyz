@@ -4,6 +4,7 @@ require_once __DIR__ . '/Translator.php';
 require_once __DIR__ . '/GameSessionRepository.php';
 require_once __DIR__ . '/FlashMessenger.php';
 require_once __DIR__ . '/Redirector.php';
+require_once __DIR__ . '/../exceptions/MissingPermissionException.php';
 
 class ControlAction {
     public static function ensureCanUpdateUser(User $actor, User $targetUser, array $fieldsToUpdate): void {
