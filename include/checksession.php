@@ -2,7 +2,7 @@
 $dateFormatter = new IntlDateFormatter('fr_FR', IntlDateFormatter::FULL, IntlDateFormatter::MEDIUM);
 $collator = collator_create('fr_FR');
 // Constantes globales.
-define("VERSION", "2.14.2");
+define("VERSION", "2.14.3");
 define("NAME_MIN_LENGTH", 2);
 define("NAME_MAX_LENGTH", 24);
 define("PSEUDO_MIN_LENGTH", 3);
@@ -121,21 +121,14 @@ if (in_array("panel", explode("/", $_SERVER['PHP_SELF']))) {
     throwError(traduction("error_not_authorized_message"), "./index.php", "msg", true, true);
   }
 }
-if ((isUserConnected() && sessionInProgress($db, $_SESSION["user_logged_in"]["id"])) || (currentUserInSession())) {
-  if (currentUserInSession()) {
-    $id_session = $_SESSION["user_logged_in"]["id_session"];
-  } else {
-    $id_user = $_SESSION["user_logged_in"]["id"];
-    $id_session = getRows($db, "sessions", "*", "id_owner = $id_user AND status = 1")["id"];
-  }
-  $time_now = new DateTime(date("Y-m-d H:i:s", time()));
-  $session_date = getRows($db, "sessions", "date", "id = \"$id_session\"")["date"];
-  $session_duration = getRows($db, "sessions", "duration", "id = \"$id_session\"")["duration"];
-  $session_date_end = new DateTime(date("Y-m-d H:i:s", strtotime($session_date) + $session_duration));
-  $session_is_expired = $time_now > $session_date_end->modify("+1 second"); // Marge de 1 seconde pour éventuellement laisser le temps à session.php de stopper la session.
-  $session_is_open = getRows($db, "sessions", "*", "id = $id_session")["status"] == 1 ? true : false;
-  if ($session_is_open && $session_is_expired) {
-    stopSession($db, $id_session);
+$openSessions = getRows($db, "sessions", "*", "status > 0", 1);
+foreach ($openSessions as $openSession) {
+  $now = new DateTime();
+  $start = new DateTime($openSession['date']);
+  $duration = $openSession['duration'];
+  $end = (clone $start)->modify("+$duration seconds")->modify('+1 second');
+  if ($now > $end) {
+    stopSession($db, $openSession["id"]);
   }
 }
 if (currentUserInSession()) {
